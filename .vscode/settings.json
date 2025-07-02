@@ -1,5 +1,10 @@
 {
-    "cSpell.words": [
+    "powerHeader.autoInsert.enable": true,
+    "powerHeader.commentMode": "line",
+    "powerHeader.newLines": 2,
+    "powerHeader.template": "file://$WORKSPACE_FOLDER/licenseheader.txt",
+    "powerHeader.update.content": [],
+    "powerHeader.variables": [],    "cSpell.words": [
         "chrono",
         "serde"
     ]
