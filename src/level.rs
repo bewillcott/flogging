@@ -20,6 +20,21 @@
 //!
 //! Log Entry Level
 //!
+//! The `Level` module provides the enum containing the possible log entry levels.
+//! As they are ordered within the enum, enabling logging at a given level also
+//! enables logging at all higher levels.
+//!
+//! The levels in descending order are:
+//!
+//! - SEVERE (highest level)
+//! - WARNING
+//! - INFO
+//! - CONFIG
+//! - FINE
+//! - FINER
+//! - FINEST (lowest level)
+//!
+//! In addition there is a level **OFF** that can be used to turn off logging.
 
 use std::fmt;
 
@@ -35,11 +50,27 @@ pub enum Level {
     INFO,
     WARNING,
     SEVERE,
+    OFF,
+}
+
+impl Level {
+    pub fn value(&self) -> u8 {
+        match self {
+            Level::FINEST => 1,
+            Level::FINER => 2,
+            Level::FINE => 3,
+            Level::CONFIG => 4,
+            Level::INFO => 5,
+            Level::WARNING => 6,
+            Level::SEVERE => 7,
+            Level::OFF => 8,
+        }
+    }
 }
 
 impl fmt::Display for Level {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-      let label =  match self {
+        let label = match self {
             Level::FINEST => "FINEST",
             Level::FINER => "FINER",
             Level::FINE => "FINE",
@@ -47,9 +78,10 @@ impl fmt::Display for Level {
             Level::INFO => "INFO",
             Level::WARNING => "WARNING",
             Level::SEVERE => "SEVERE",
+            Level::OFF => "OFF",
         };
 
-        writeln!(f, "{label}")?;
+        write!(f, "{label}")?;
         Ok(())
     }
 }

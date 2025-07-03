@@ -23,6 +23,8 @@
 
 #![allow(unused)]
 
+mod utils;
+
 use super::level::Level;
 use anyhow::{Context, Error, Result};
 use sled::Config;
@@ -33,6 +35,7 @@ use std::sync::Arc;
 use tokio::sync::mpsc::{self, Receiver, Sender};
 use tokio::task::{self, JoinHandle};
 
+use crate::log::utils::{open_db, process_logs, read_log};
 use crate::log_entry::LogEntry;
 
 const REPORT_HEADER: &str = "Log Report\n=========\n";
@@ -56,7 +59,7 @@ impl Log {
             tx: Arc::new(sender),
         };
 
-        task::spawn(LogEntry::process_logs(receiver, db_open.clone()));
+        task::spawn(process_logs(receiver, db_open.clone()));
         Ok(log)
     }
 
@@ -113,7 +116,7 @@ impl Log {
             return Ok(None);
         }
 
-        let mut log_strings = LogEntry::read_log(self.db.clone());
+        let mut log_strings = read_log(self.db.clone());
 
         if !log_strings.is_empty() {
             let mut file: File;
@@ -138,12 +141,4 @@ impl Log {
             Ok(None)
         }
     }
-}
-
-/// Open or create a database at the given path.
-fn open_db(path: &str) -> Result<sled::Db, Error> {
-    Config::new()
-        .path(path)
-        .open()
-        .context("Failed to open database")
 }
