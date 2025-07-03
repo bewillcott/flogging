@@ -18,14 +18,21 @@
 // along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
 //
 //!
-//! Logging functionality.
+//! # Logging
+//!
+//! The primary purpose of logging, is to facilitate fault diagnosis through the
+//! provision of specific information as, when, and from where it is need. This could
+//! be during development, testing, or even during production runs.
+//!
+//! ## Key Elements
+//!
+//!
 //!
 
 #![allow(unused_imports)]
 
-mod level;
-mod log;
-mod log_entry;
+pub mod level;
 
-pub use level::Level;
-pub use log::Log;
+pub mod log;
+
+mod log_entry;

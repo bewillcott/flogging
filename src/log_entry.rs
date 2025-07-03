@@ -48,9 +48,9 @@ impl fmt::Display for LogEntry {
 impl LogEntry {
     pub(super) fn build(timestamp: String, level: Level, message: String) -> LogEntry {
         LogEntry {
-            timestamp: timestamp,
-            level: level,
-            message: message,
+            timestamp,
+            level,
+            message,
         }
     }
 
@@ -68,7 +68,7 @@ mod tests {
         let log_entry =
             LogEntry::build("timestamp".to_string(), Level::INFO, "message".to_string());
 
-            let output = log_entry.to_string();
-            println!("\noutput: {output}\n");
+        let output = log_entry.to_string();
+        println!("\noutput: {output}\n");
     }
 }

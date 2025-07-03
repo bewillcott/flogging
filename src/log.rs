@@ -1,5 +1,5 @@
 //
-// File Name:    log.rs
+// File Name:    logger.rs
 // Project Name: logging
 //
 // Copyright (C) 2025 Bradley Willcott
