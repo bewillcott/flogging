@@ -32,7 +32,7 @@ use std::fmt;
 // use std::sync::Arc;
 // use tokio::sync::mpsc;
 
-#[derive(Debug, serde::Serialize)]
+#[derive(Debug)]
 pub(super) struct LogEntry {
     timestamp: String,
     level: Level,

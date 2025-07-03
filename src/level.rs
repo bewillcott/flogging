@@ -41,7 +41,7 @@ use std::fmt;
 /// Log entry level setting.\
 /// Default level: INFO.
 #[allow(unused)]
-#[derive(Debug, serde::Serialize, Clone, Default, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, Default, PartialEq, PartialOrd)]
 pub enum Level {
     /// FINEST indicates a highly detailed tracing message.
     FINEST,

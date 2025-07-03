@@ -26,22 +26,25 @@
 mod utils;
 
 use super::level::Level;
+// use std::error::Error;
 use anyhow::{Context, Error, Result};
-use sled::Config;
+// use sled::Config;
 use std::fs::{File, exists};
 use std::io::Write;
 use std::path::Path;
-use std::sync::Arc;
-use tokio::sync::mpsc::{self, Receiver, Sender};
-use tokio::task::{self, JoinHandle};
+use std::sync::mpsc::Sender;
+use std::sync::{Arc, mpsc};
+use std::thread;
+// use tokio::sync::mpsc::{self, Receiver, Sender};
+// use tokio::task::{self, JoinHandle};
 
 use crate::log_entry::LogEntry;
-use crate::logger::utils::{open_db, process_logs, read_log};
+// use crate::logger::utils::{open_db, process_logs, read_log};
 
 const REPORT_HEADER: &str = "Log Report\n=========\n";
 
 pub struct Logger {
-    db: Arc<sled::Db>,
+    db: String,
     level: Level,
     tx: Arc<Sender<LogEntry>>,
 }
@@ -50,16 +53,16 @@ impl Logger {
     /// Create new Log instance, opening the log file (name as supplied).\
     /// Logging level is set to it's default setting (INFO).
     pub fn new(log_file_name: &str) -> Result<Logger, Error> {
-        let (sender, receiver) = mpsc::channel(10);
-        let db_open = Arc::new(open_db(log_file_name)?);
+        let (sender, receiver) = mpsc::channel();
+        // let db_open = Arc::new(open_db(log_file_name)?);
 
         let log = Logger {
-            db: db_open.clone(),
+            db: "db_open.clone()".to_string(),
             level: Level::default(),
             tx: Arc::new(sender),
         };
 
-        task::spawn(process_logs(receiver, db_open.clone()));
+        // thread::spawn(process_logs(receiver, db_open.clone()));
         Ok(log)
     }
 
@@ -99,13 +102,13 @@ impl Logger {
         // build LogEntry
         let entry = LogEntry::build(timestamp, self.level.clone(), msg);
         // Send LogEntry
-        self.tx.send(entry).await?;
+        self.tx.send(entry)?;
         Ok(())
     }
 
     /// Clear the log database of all records.
     pub fn clear(&self) -> Result<(), Error> {
-        self.db.clear()?;
+        // self.db.clear()?;
         Ok(())
     }
 
@@ -116,29 +119,29 @@ impl Logger {
             return Ok(None);
         }
 
-        let mut log_strings = read_log(self.db.clone());
+        // let mut log_strings = read_log(self.db.clone());
 
-        if !log_strings.is_empty() {
-            let mut file: File;
+        // if !log_strings.is_empty() {
+        //     let mut file: File;
 
-            if exists(filename)? {
-                file = File::options().write(true).truncate(true).open(filename)?;
-            } else {
-                file = File::options().write(true).create(true).open(filename)?;
-            }
+        //     if exists(filename)? {
+        //         file = File::options().write(true).truncate(true).open(filename)?;
+        //     } else {
+        //         file = File::options().write(true).create(true).open(filename)?;
+        //     }
 
-            file.write(REPORT_HEADER.as_bytes());
+        //     file.write(REPORT_HEADER.as_bytes());
 
-            for s in &mut log_strings {
-                s.push('\n');
-                file.write(s.as_bytes());
-            }
+        //     for s in &mut log_strings {
+        //         s.push('\n');
+        //         file.write(s.as_bytes());
+        //     }
 
-            file.flush();
+        //     file.flush();
 
-            Ok(Some(log_strings))
-        } else {
+        //     Ok(Some(log_strings))
+        // } else {
             Ok(None)
-        }
+        // }
     }
 }

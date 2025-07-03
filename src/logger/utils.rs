@@ -20,45 +20,45 @@
 // ! _Add file documentation comments here_
 // !
 
-use std::sync::Arc;
+use std::{io::Error, sync::{mpsc, Arc}};
 
-use anyhow::{Context, Error, Result};
-use sled::Config;
-use tokio::sync::mpsc;
+// use anyhow::{Context, Error, Result};
+// use sled::Config;
+// use tokio::sync::mpsc;
 
 use crate::log_entry::LogEntry;
 
-/// Open or create a database at the given path.
-pub(super) fn open_db(path: &str) -> Result<sled::Db, Error> {
-    Config::new()
-        .path(path)
-        .open()
-        .context("Failed to open database")
-}
+// /// Open or create a database at the given path.
+// pub(super) fn open_db(path: &str) -> Result<Db, Error> {
+//     Config::new()
+//         .path(path)
+//         .open()
+//         .context("Failed to open database")
+// }
 
-pub(super) async fn process_logs(
-    mut receiver: mpsc::Receiver<LogEntry>,
-    log_db: Arc<sled::Db>,
-) -> Result<(), Error> {
-    while let Some(log_entry) = receiver.recv().await {
-        write_log(log_db.clone(), log_entry).await?;
-    }
+// pub(super) async fn process_logs(
+//     mut receiver: mpsc::Receiver<LogEntry>,
+//     log_db: Arc<sled::Db>,
+// ) -> Result<(), Error> {
+//     while let Some(log_entry) = receiver.recv().await {
+//         write_log(log_db.clone(), log_entry).await?;
+//     }
 
-    Ok(())
-}
+//     Ok(())
+// }
 
-pub(super) fn read_log(db: Arc<sled::Db>) -> Vec<String> {
-    db.into_iter()
-        .values()
-        .map(|v| String::from_utf8(v.unwrap().to_vec()).unwrap())
-        .collect()
-}
+// pub(super) fn read_log(db: Arc<sled::Db>) -> Vec<String> {
+//     db.into_iter()
+//         .values()
+//         .map(|v| String::from_utf8(v.unwrap().to_vec()).unwrap())
+//         .collect()
+// }
 
-async fn write_log(db: Arc<sled::Db>, log_entry: LogEntry) -> Result<(), Error> {
-    let key = format!("log_entry:{}", log_entry.timestamp());
-    let value = serde_json::to_string(&log_entry).context("Failed to serialize log entry")?;
+// async fn write_log(db: Arc<sled::Db>, log_entry: LogEntry) -> Result<(), Error> {
+//     let key = format!("log_entry:{}", log_entry.timestamp());
+//     let value = serde_json::to_string(&log_entry).context("Failed to serialize log entry")?;
 
-    db.insert(&key, value.as_bytes())
-        .context("Failed to write log entry")
-        .map(|_| ())
-}
+//     db.insert(&key, value.as_bytes())
+//         .context("Failed to write log entry")
+//         .map(|_| ())
+// }
