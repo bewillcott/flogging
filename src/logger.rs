@@ -18,7 +18,7 @@
 // along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
 //
 //!
-//! Log
+//! Logger
 //!
 
 #![allow(unused)]
@@ -35,25 +35,25 @@ use std::sync::Arc;
 use tokio::sync::mpsc::{self, Receiver, Sender};
 use tokio::task::{self, JoinHandle};
 
-use crate::log::utils::{open_db, process_logs, read_log};
 use crate::log_entry::LogEntry;
+use crate::logger::utils::{open_db, process_logs, read_log};
 
 const REPORT_HEADER: &str = "Log Report\n=========\n";
 
-pub struct Log {
+pub struct Logger {
     db: Arc<sled::Db>,
     level: Level,
     tx: Arc<Sender<LogEntry>>,
 }
 
-impl Log {
+impl Logger {
     /// Create new Log instance, opening the log file (name as supplied).\
     /// Logging level is set to it's default setting (INFO).
-    pub fn new(log_file_name: &str) -> Result<Log, Error> {
+    pub fn new(log_file_name: &str) -> Result<Logger, Error> {
         let (sender, receiver) = mpsc::channel(10);
         let db_open = Arc::new(open_db(log_file_name)?);
 
-        let log = Log {
+        let log = Logger {
             db: db_open.clone(),
             level: Level::default(),
             tx: Arc::new(sender),
@@ -87,7 +87,7 @@ impl Log {
     /// Log an entry.\
     /// The level is the current default level.
     ///
-    /// See [Log::set_level]
+    /// See [Logger::set_level]
     pub async fn log(&mut self, message: &str) -> Result<(), Error> {
         let timestamp = chrono::Local::now().to_rfc3339();
         let mut msg = message.to_string();

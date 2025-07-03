@@ -26,13 +26,17 @@
 //!
 //! ## Key Elements
 //!
-//!
+//! - `Logger`: The main entity on which applications make logging calls. A Logger instance
+//! is used to log messages for a specific system or application component.
+//! - `Level`: Defines a set of standard logging levels that can be used to control logging
+//! output. Programs can be configured to output logging for some levels while ignoring
+//! output for others.
 //!
 
 #![allow(unused_imports)]
 
 pub mod level;
 
-pub mod log;
+pub mod logger;
 
 mod log_entry;
