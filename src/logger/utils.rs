@@ -26,7 +26,7 @@ use std::{io::Error, sync::{mpsc, Arc}};
 // use sled::Config;
 // use tokio::sync::mpsc;
 
-use crate::log_entry::LogEntry;
+use crate::logger::LogEntry;
 
 // /// Open or create a database at the given path.
 // pub(super) fn open_db(path: &str) -> Result<Db, Error> {

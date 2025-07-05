@@ -23,39 +23,49 @@
 
 // #![allow(dead_code)]
 
+use chrono::{DateTime, Local};
+
 use super::level::Level;
 // use anyhow::{Context, Error};
 // use std::cell::{RefCell, RefMut};
-use std::fmt;
+use std::{fmt, time::Instant};
 // use std::ops::Deref;
 // use std::str::FromStr;
 // use std::sync::Arc;
 // use tokio::sync::mpsc;
 
 #[derive(Debug)]
-pub(super) struct LogEntry {
-    timestamp: String,
+pub(crate) struct LogEntry {
+    timestamp: DateTime<Local>,
     level: Level,
     message: String,
 }
 
 impl fmt::Display for LogEntry {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "{} : ({}) {}", self.timestamp, self.level, self.message)
+        write!(f, "{} : ({}) {}", self.timestamp, self.level, self.message)
     }
 }
 
 impl LogEntry {
-    pub(super) fn build(timestamp: String, level: Level, message: String) -> LogEntry {
+    pub(crate) fn new(level: Level, message: String) -> LogEntry {
         LogEntry {
-            timestamp,
+            timestamp: Local::now(),
             level,
             message,
         }
     }
 
-    pub(super) fn timestamp(&self) -> String {
-        self.timestamp.clone()
+    pub(crate) fn timestamp(&self) -> DateTime<Local> {
+        self.timestamp
+    }
+
+    pub(crate) fn level(&self)-> Level{
+        self.level.clone()
+    }
+
+    pub(crate) fn message(&self)->String{
+        self.message.clone()
     }
 }
 
@@ -66,7 +76,7 @@ mod tests {
     #[test]
     fn to_string() {
         let log_entry =
-            LogEntry::build("timestamp".to_string(), Level::INFO, "message".to_string());
+            LogEntry::new( Level::INFO, "message".to_string());
 
         let output = log_entry.to_string();
         println!("\noutput: {output}\n");

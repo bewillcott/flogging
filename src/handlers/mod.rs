@@ -1,5 +1,5 @@
 //
-// File Name:    lib.rs
+// File Name:    handlers.rs
 // Project Name: logging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -17,21 +17,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
 //
-//!
-//! # Logging
-//!
-//! The primary purpose of logging, is to facilitate fault diagnosis through the
-//! provision of specific information as, when, and from where it is need. This could
-//! be during development, testing, or even during production runs.
-//!
-//! ## Key Elements
-//!
-//! - `Logger`: The main entity on which applications make logging calls. A Logger instance
-//! is used to log messages for a specific system or application component.
-//! - `Level`: Defines a set of standard logging levels that can be used to control logging
-//! output. Programs can be configured to output logging for some levels while ignoring
-//! output for others.
+//! Handlers
 //!
 
-pub mod logger;
-mod handlers;
+#![allow(unused)]
+
+pub(crate) mod console_handler;
+pub(crate) mod file_handler;
+pub(crate) mod formatter;
+pub(crate) mod handler;

@@ -23,47 +23,65 @@
 
 #![allow(unused)]
 
+pub mod level;
+pub(crate) mod log_entry;
+mod log_manager;
 mod utils;
 
-use super::level::Level;
-// use std::error::Error;
 use anyhow::{Context, Error, Result};
-// use sled::Config;
+use std::collections::HashSet;
+use std::fmt::Debug;
 use std::fs::{File, exists};
 use std::io::Write;
+use std::ops::DerefMut;
 use std::path::Path;
 use std::sync::mpsc::Sender;
-use std::sync::{Arc, mpsc};
+use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
-// use tokio::sync::mpsc::{self, Receiver, Sender};
-// use tokio::task::{self, JoinHandle};
 
-use crate::log_entry::LogEntry;
-// use crate::logger::utils::{open_db, process_logs, read_log};
+use crate::handlers::handler::Handler;
+use crate::logger::level::Level;
+use crate::logger::log_entry::LogEntry;
+use crate::logger::log_manager::{LOG_MANAGER, LogManager};
 
 const REPORT_HEADER: &str = "Log Report\n=========\n";
 
+#[derive(Debug, Clone)]
 pub struct Logger {
-    db: String,
+    name: String,
     level: Level,
-    tx: Arc<Sender<LogEntry>>,
+    handlers: Vec<Box<Handler>>,
 }
 
 impl Logger {
     /// Create new Log instance, opening the log file (name as supplied).\
     /// Logging level is set to it's default setting (INFO).
-    pub fn new(log_file_name: &str) -> Result<Logger, Error> {
-        let (sender, receiver) = mpsc::channel();
-        // let db_open = Arc::new(open_db(log_file_name)?);
+    pub(crate) fn new(name: &str) -> Logger {
+        let v: Vec<Box<Handler>> = Vec::new();
 
-        let log = Logger {
-            db: "db_open.clone()".to_string(),
+        Logger {
+            name: name.to_string(),
             level: Level::default(),
-            tx: Arc::new(sender),
-        };
+            handlers: Vec::new(),
+        }
+    }
 
-        // thread::spawn(process_logs(receiver, db_open.clone()));
-        Ok(log)
+    /// Find or create a logger for a named subsystem.
+    ///
+    /// If a logger has already been created with the given name it is returned.
+    /// Otherwise a new logger is created.
+    pub fn get_logger(name: String) -> Logger {
+        let mut mgr: MutexGuard<'_, LogManager> = LOG_MANAGER.lock().unwrap();
+
+        match mgr.get_logger(name.clone()) {
+            Some(logger) => logger.clone(),
+            None => {
+                let logger = Logger::new(&name);
+                let rl = logger.clone();
+                mgr.add_logger(name, logger);
+                rl
+            }
+        }
     }
 
     /// Reset default logging level, for this Log instance,\
@@ -91,8 +109,7 @@ impl Logger {
     /// The level is the current default level.
     ///
     /// See [Logger::set_level]
-    pub async fn log(&mut self, message: &str) -> Result<(), Error> {
-        let timestamp = chrono::Local::now().to_rfc3339();
+    pub async fn log(&mut self, level: Level, message: &str) -> Result<(), Error> {
         let mut msg = message.to_string();
 
         if msg.ends_with('\n') {
@@ -100,9 +117,9 @@ impl Logger {
         }
 
         // build LogEntry
-        let entry = LogEntry::build(timestamp, self.level.clone(), msg);
+        let entry = LogEntry::new(self.level.clone(), msg);
         // Send LogEntry
-        self.tx.send(entry)?;
+        // self.tx.send(entry)?;
         Ok(())
     }
 
@@ -115,9 +132,9 @@ impl Logger {
     /// Process the log database, producing both an external text file (`filename`)\
     /// and a `String` which is returned.
     pub fn report(&self, filename: &str) -> Result<Option<Vec<String>>, Error> {
-        if self.db.is_empty() {
-            return Ok(None);
-        }
+        // if self.db.is_empty() {
+        //     return Ok(None);
+        // }
 
         // let mut log_strings = read_log(self.db.clone());
 
@@ -141,7 +158,7 @@ impl Logger {
 
         //     Ok(Some(log_strings))
         // } else {
-            Ok(None)
+        Ok(None)
         // }
     }
 }

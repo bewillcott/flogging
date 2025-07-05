@@ -13,6 +13,18 @@
 			],
 			"group": "build",
 			"label": "rust: cargo doc (dev)"
+		},
+		{
+			"type": "cargo",
+			"command": "test",
+			"env": {
+				"RUST_BACKTRACE": "0"
+			},
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "test",
+			"label": "rust: cargo test"
 		}
 	]
 }

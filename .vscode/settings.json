@@ -4,8 +4,13 @@
     "powerHeader.newLines": 2,
     "powerHeader.template": "file://$WORKSPACE_FOLDER/licenseheader.txt",
     "powerHeader.update.content": [],
-    "powerHeader.variables": [],    "cSpell.words": [
+    "powerHeader.variables": [],
+    "cSpell.words": [
         "chrono",
+        "nanos",
         "serde"
-    ]
+    ],
+    // "rust-analyzer.runnables.extraEnv": {
+    //     "RUST_BACKTRACE": 0,
+    // },
 }
