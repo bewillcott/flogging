@@ -1,31 +1,32 @@
-//
-// File Name:    logger.rs
-// Project Name: logging
-//
-// Copyright (C) 2025 Bradley Willcott
-//
-// This library (crate) is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This library (crate) is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
-//
-//!
-//! Logger
-//!
+/*
+ * File Name:    mod.rs
+ * Project Name: logging
+ *
+ * Copyright (C) 2025 Bradley Willcott
+ *
+ * This library (crate) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This library (crate) is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*!
+ * # Logger
+ */
 
 #![allow(unused)]
 
+mod builder;
 pub mod level;
 pub(crate) mod log_entry;
-pub(crate) mod log_manager;
 mod utils;
 
 use anyhow::{Context, Error, Result};
@@ -42,55 +43,74 @@ use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
 
 use crate::handlers::handler::{self, Handler, HandlerTrait};
+use crate::logger::builder::LoggerBuilder;
 use crate::logger::level::Level;
 use crate::logger::log_entry::LogEntry;
-use crate::logger::log_manager::LogManager;
 
 const REPORT_HEADER: &str = "Log Report\n=========\n";
 
 #[derive(Debug, Clone)]
-pub struct Logger<'a> {
-    name: &'a String,
+pub struct Logger {
+    /**
+     * Identify the source of log messages passed to this logger.
+     */
+    name: String,
+    /**
+     * Default level used by `log(msg)`.
+     */
     level: Level,
-    handlers: Vec<Box<&'a Handler>>,
+    /**
+     * Holds the handlers associated with this logger.
+     */
+    handlers: Vec<Box<Handler>>,
 }
 
-impl<'a> Logger<'a> {
-    /// Create new Log instance, opening the log file (name as supplied).\
-    /// Logging level is set to it's default setting (INFO).
-    pub(super) fn new(name: &'a String) -> Logger<'a> {
-        Logger {
-            name: name,
-            level: Level::default(),
-            handlers: Vec::new(),
-        }
+#[allow(private_interfaces)]
+impl Logger {
+    /**
+     * Create new Logger instance.
+     *
+     * Logging level is set to it's default setting (INFO).\
+     * No `handlers` are are set.
+     */
+    pub(super) fn new(name: String) -> LoggerBuilder {
+        LoggerBuilder::new(name)
     }
-
-    /// Reset default logging level, for this Log instance,\
-    /// back to it's initial setting (INFO).
-    ///
-    /// Returns itself for chaining purposes.
+    /**
+     * Reset this `Logger` instance's default logging level.
+     *
+     * Returns itself for chaining purposes.
+     *
+     * See [Level]
+     */
     pub fn reset_level(&mut self) -> &mut Self {
         self.level = Level::default();
         self
     }
 
-    /// Set default logging level for this Log instance.\
-    /// Returns itself for chaining purposes.
+    /**
+     * Set default logging level for this Log instance.
+     *
+     * Returns itself for chaining purposes.
+     */
     pub fn set_level(&mut self, level: Level) -> &mut Self {
         self.level = level;
         self
     }
 
-    /// Obtain the current default logging level for this Log instance.
+    /**
+     * Obtain the current default logging level for this Log instance.
+     */
     pub fn level(&self) -> Level {
         self.level.clone()
     }
 
-    /// Log an entry.\
-    /// The level is the current default level.
-    ///
-    /// See [Logger::set_level]
+    /**
+     * Log an entry.\
+     * The level is the current default level.
+     *
+     * See [Logger::set_level]
+     */
     pub async fn log(&mut self, level: Level, message: &str) -> Result<(), Error> {
         let mut msg = message.to_string();
 
@@ -105,14 +125,18 @@ impl<'a> Logger<'a> {
         Ok(())
     }
 
-    /// Clear the log database of all records.
+    /**
+     * Clear the log database of all records.
+     */
     pub fn clear(&self) -> Result<(), Error> {
         // self.db.clear()?;
         Ok(())
     }
 
-    /// Process the log database, producing both an external text file (`filename`)\
-    /// and a `String` which is returned.
+    /**
+     * Process the log database, producing both an external text file (`filename`)\
+     * and a `String` which is returned.
+     */
     pub fn report(&self, filename: &str) -> Result<Option<Vec<String>>, Error> {
         // if self.db.is_empty() {
         //     return Ok(None);

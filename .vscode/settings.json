@@ -1,6 +1,6 @@
 {
     "powerHeader.autoInsert.enable": true,
-    "powerHeader.commentMode": "line",
+    "powerHeader.commentMode": "raw",
     "powerHeader.newLines": 2,
     "powerHeader.template": "file://$WORKSPACE_FOLDER/licenseheader.txt",
     "powerHeader.update.content": [],
@@ -12,7 +12,4 @@
         "serde"
     ],
     "editor.quickSuggestionsDelay": 4000,
-    // "rust-analyzer.runnables.extraEnv": {
-    //     "RUST_BACKTRACE": 0,
-    // },
 }
