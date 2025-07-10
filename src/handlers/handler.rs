@@ -69,7 +69,7 @@ pub(crate) trait HandlerTrait: Display + Send + Sync {
     ///
     /// The close method will perform a flush and then close the Handler.
     /// After close has been called this Handler should no longer be used.
-    /// Method calls may either be silently ignored or may throw runtime exceptions.
+    /// Method calls may either be silently ignored or may return `Error`s.
     fn close(&mut self);
 
     /// Flush any buffered output.

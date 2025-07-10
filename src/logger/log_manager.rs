@@ -19,30 +19,34 @@
 //
 //! # Log Manager
 //!
-//! There is a single global LogManager object that is used to maintain a set of
-//! shared state about Loggers and log services.
+//! There is a single global `LogManager` object that is used to maintain a set of
+//! shared state about `Logger`s and log services.
 //!
 
 #![allow(unused)]
 
-use crate::{handlers::handler::HandlerTrait, logger::Logger};
+use crate::{
+    handlers::handler::{Handler, HandlerTrait},
+    logger::Logger,
+};
 use std::{
+    cell::LazyCell,
     collections::HashMap,
+    marker::PhantomData,
     ops::DerefMut,
+    ptr::NonNull,
+    rc::Rc,
     sync::{Arc, LazyLock, Mutex},
 };
 
-pub(crate) static LOG_MANAGER: LazyLock<Arc<Mutex<LogManager>>> =
-    LazyLock::new(|| Arc::new(Mutex::new(LogManager::new())));
-
-pub(crate) struct LogManager {
-    loggers: HashMap<String, Logger>,
+pub(crate) struct LogManager<'a> {
+    loggers: HashMap<String, Box<Logger<'a>>>,
     handlers: HashMap<String, Box<dyn HandlerTrait>>,
     properties: HashMap<String, String>,
 }
 
-impl LogManager {
-    fn new() -> LogManager {
+impl<'a> LogManager<'a> {
+    pub(crate) fn new() -> LogManager<'a> {
         LogManager {
             loggers: HashMap::new(),
             handlers: HashMap::new(),
@@ -54,10 +58,13 @@ impl LogManager {
     ///
     /// This does nothing and returns false if a logger with the same name is already registered.
     ///
-    /// The Logger factory methods call this method to register each newly created Logger.
-    pub(crate) fn add_logger(&mut self, name: String, logger: Logger) -> bool {
-        if !self.loggers.contains_key(&name) {
-            self.loggers.insert(name, logger);
+    /// The `Logger` factory methods call this method to register each newly created Logger.
+  pub(crate)  fn add_logger(&mut self, name: &'a String, logger: Logger<'a>) -> bool {
+        if !self.loggers.contains_key(name) {
+            unsafe {
+                let log = Box::new(logger);
+                self.loggers.insert(name.clone(), log);
+            }
             true
         } else {
             false
@@ -66,8 +73,47 @@ impl LogManager {
 
     /// Method to find a named logger.
     ///
-    /// Returns matching logger or None.
-    pub(crate) fn get_logger(&mut self, name: String) -> Option<&Logger> {
-        self.loggers.get(&name)
+    /// Returns matching logger or `None`.
+    pub(crate) fn get_logger(&'a mut self, name: &'a String) -> Option<&'a mut Logger<'a>> {
+        unsafe {
+            match self.loggers.get_mut(name) {
+                Some(logger) => unsafe {
+                    let mut r = logger.as_mut();
+                    Some(r)
+                },
+                None => None,
+            }
+        }
+    }
+
+    /// Add a new handler.
+    ///
+    /// This does nothing and returns false if a logger with the same name is already registered.
+    ///
+    /// The `Logger` factory methods call this method to register each newly created Logger.
+    pub(crate) fn add_handler(
+        &mut self,
+        name: String,
+        handler: Box<dyn HandlerTrait + 'static>,
+    ) -> bool {
+        if !self.handlers.contains_key(&name) {
+            self.handlers.insert(name.clone(), handler);
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Method to find a named handler.
+    ///
+    /// Returns matching handler or `None`.
+    pub(crate) fn get_handler(&mut self, name: String) -> Option<&Box<dyn HandlerTrait + 'static>> {
+        self.handlers.get(&name)
+    }
+}
+
+impl<'a> Default for LogManager<'a> {
+    fn default() -> Self {
+        Self::new()
     }
 }

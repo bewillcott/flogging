@@ -8,8 +8,10 @@
     "cSpell.words": [
         "chrono",
         "nanos",
+        "PCDATA",
         "serde"
     ],
+    "editor.quickSuggestionsDelay": 4000,
     // "rust-analyzer.runnables.extraEnv": {
     //     "RUST_BACKTRACE": 0,
     // },

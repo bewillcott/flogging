@@ -33,5 +33,48 @@
 //! output for others.
 //!
 
-pub mod logger;
+#![allow(unused)]
+
 mod handlers;
+pub mod logger;
+
+use crate::handlers::handler::{Handler, HandlerTrait};
+use crate::logger::Logger;
+use crate::logger::log_manager::LogManager;
+
+pub struct Logging<'a> {
+    manager: Box<LogManager<'a>>,
+}
+
+impl<'a> Logging<'a> {
+    pub fn new() -> Self {
+        Self {
+            manager: Default::default(),
+        }
+    }
+
+    /// Find or create a handler for a named subsystem.
+    ///
+    /// If a handler has already been created with the given name it is returned.
+    /// Otherwise a new handler is created.
+    // pub fn get_handler(&self, name: &'a String, handler: Handler) -> Box<&'_ dyn HandlerTrait> {
+    //     let mut mgr = LogManager::new();
+    // }
+
+    /// Find or create a logger for a named subsystem.
+    ///
+    /// If a logger has already been created with the given name it is returned.
+    /// Otherwise a new logger is created.
+    pub fn get_logger(&'a mut self, name: &'a String) -> &'a mut Logger {
+        let mgr = self.manager.as_mut();
+
+        if let Some(logger) = mgr.get_logger(name) {
+            return logger;
+        }
+        let mgr2 = self.manager.as_mut();
+
+        let mut logger = Logger::new(name);
+        mgr2.add_logger(name, logger);
+        mgr.get_logger(name).unwrap()
+    }
+}

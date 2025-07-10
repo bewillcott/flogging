@@ -25,62 +25,44 @@
 
 pub mod level;
 pub(crate) mod log_entry;
-mod log_manager;
+pub(crate) mod log_manager;
 mod utils;
 
 use anyhow::{Context, Error, Result};
 use std::collections::HashSet;
+use std::collections::hash_map::IterMut;
 use std::fmt::Debug;
 use std::fs::{File, exists};
 use std::io::Write;
+use std::marker::PhantomData;
 use std::ops::DerefMut;
 use std::path::Path;
 use std::sync::mpsc::Sender;
 use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
 
-use crate::handlers::handler::Handler;
+use crate::handlers::handler::{self, Handler, HandlerTrait};
 use crate::logger::level::Level;
 use crate::logger::log_entry::LogEntry;
-use crate::logger::log_manager::{LOG_MANAGER, LogManager};
+use crate::logger::log_manager::LogManager;
 
 const REPORT_HEADER: &str = "Log Report\n=========\n";
 
 #[derive(Debug, Clone)]
-pub struct Logger {
-    name: String,
+pub struct Logger<'a> {
+    name: &'a String,
     level: Level,
-    handlers: Vec<Box<Handler>>,
+    handlers: Vec<Box<&'a Handler>>,
 }
 
-impl Logger {
+impl<'a> Logger<'a> {
     /// Create new Log instance, opening the log file (name as supplied).\
     /// Logging level is set to it's default setting (INFO).
-    pub(crate) fn new(name: &str) -> Logger {
-        let v: Vec<Box<Handler>> = Vec::new();
-
+    pub(super) fn new(name: &'a String) -> Logger<'a> {
         Logger {
-            name: name.to_string(),
+            name: name,
             level: Level::default(),
             handlers: Vec::new(),
-        }
-    }
-
-    /// Find or create a logger for a named subsystem.
-    ///
-    /// If a logger has already been created with the given name it is returned.
-    /// Otherwise a new logger is created.
-    pub fn get_logger(name: String) -> Logger {
-        let mut mgr: MutexGuard<'_, LogManager> = LOG_MANAGER.lock().unwrap();
-
-        match mgr.get_logger(name.clone()) {
-            Some(logger) => logger.clone(),
-            None => {
-                let logger = Logger::new(&name);
-                let rl = logger.clone();
-                mgr.add_logger(name, logger);
-                rl
-            }
         }
     }
 
