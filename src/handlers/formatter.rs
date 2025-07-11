@@ -22,39 +22,36 @@
  * # Formatter
  */
 
-
-
 #![allow(unused)]
 
 use std::fmt;
 
-use crate::logger::log_entry::LogEntry;
+use crate::logger::LogEntry;
 
 #[derive(Debug, Clone)]
-pub(crate) enum Formatter {
-    ///
+pub enum Formatter {
     Iso8601,
-    SimpleFormatter,
+    Simple,
     UnixTimestamp,
 }
 
 impl Formatter {
-    pub(crate) fn format(&self, log_entry: LogEntry) -> String {
+    pub(crate) fn format(&self, log_entry: &LogEntry) -> String {
         let fmt = match self {
             Formatter::Iso8601 => "%+".to_string(),
-            Formatter::SimpleFormatter => "".to_string(), //"%c".to_string()
+            Formatter::Simple => "".to_string(), //"%c".to_string()
             Formatter::UnixTimestamp => "%s".to_string(),
         };
 
         let dt = log_entry.timestamp().format(&fmt);
 
         match self {
-            Formatter::Iso8601 => format!("{dt} [{}] {}", log_entry.level(), log_entry.message()),
-            Formatter::SimpleFormatter => {
-                format!("[{}] {}", log_entry.level(), log_entry.message())
+            Formatter::Iso8601 => format!("{dt} |{}| [{}] {}",log_entry.name(), log_entry.level(), log_entry.message()),
+            Formatter::Simple => {
+                format!("|{}| [{}] {}",log_entry.name(), log_entry.level(), log_entry.message())
             }
             Formatter::UnixTimestamp => {
-                format!("{dt}: [{}] {}", log_entry.level(), log_entry.message())
+                format!("{dt}: |{}| [{}] {}",log_entry.name(), log_entry.level(), log_entry.message())
             }
         }
     }
@@ -62,34 +59,34 @@ impl Formatter {
 
 impl fmt::Display for Formatter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
+        write!(f, "{self:?}")
     }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::logger::level::Level;
+    use crate::logger::Level;
 
     #[test]
     fn iso8601() {
         let le = LogEntry::new(Level::INFO, "This is a test message".to_string());
         let f = Formatter::Iso8601;
-        let fs = f.format(le);
+        let fs = f.format(&le);
         println!("\n{fs}\n");
     }
     #[test]
     fn simple_formatter() {
         let le = LogEntry::new(Level::INFO, "This is a test message".to_string());
-        let f = Formatter::SimpleFormatter;
-        let fs = f.format(le);
+        let f = Formatter::Simple;
+        let fs = f.format(&le);
         println!("\n{fs}\n");
     }
     #[test]
     fn unix_timestamp() {
         let le = LogEntry::new(Level::INFO, "This is a test message".to_string());
         let f = Formatter::UnixTimestamp;
-        let fs = f.format(le);
+        let fs = f.format(&le);
         println!("\n{fs}\n");
     }
 }

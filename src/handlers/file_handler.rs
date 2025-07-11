@@ -22,14 +22,12 @@
  * # FileHandler
  */
 
-
-
 #![allow(unused)]
 
 use std::{
     fmt,
     fs::{File, exists},
-    io::{Error, ErrorKind::InvalidInput},
+    io::{Error, ErrorKind::InvalidInput, Write},
 };
 
 use crate::{
@@ -37,35 +35,31 @@ use crate::{
         formatter::Formatter::{self, Iso8601},
         handler::HandlerTrait,
     },
-    logger::{level::Level, log_entry::LogEntry},
+    logger::{Level, LogEntry},
 };
 
 #[derive(Debug)]
-pub(crate) struct FileHandler {
+pub struct FileHandler {
     name: String,
     format: Formatter,
-    level: Level,
     file: Option<File>,
 }
 
 impl FileHandler {
-    fn new(filename: String) -> Result<Self, Error> {
+    pub fn create(filename: &str) -> Result<Self, Error> {
         if filename.is_empty() {
             return Err(Error::new(InvalidInput, "'filename' must not be empty"));
         }
 
         let fh = FileHandler {
-            name: filename.clone(),
+            name: filename.to_string(),
             format: Iso8601,
-            level: Level::default(),
             file: {
-                let f: File;
-
-                if exists(&filename)? {
-                    f = File::options().write(true).truncate(true).open(&filename)?;
-                } else {
-                    f = File::options().write(true).create(true).open(&filename)?;
-                }
+                let f = File::options()
+                    .write(true)
+                    .append(true)
+                    .create(true)
+                    .open(&filename)?;
 
                 Some(f)
             },
@@ -76,21 +70,19 @@ impl FileHandler {
 }
 impl fmt::Display for FileHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let name: String;
-
-        if self.name.is_empty() {
-            name = "<name>".to_string();
+        let name = if self.name.is_empty() {
+            "<name>".to_string()
         } else {
-            name = self.name.clone();
+            self.name.clone()
         };
 
-        write!(f, "{} [{}]: {}", name, self.level, self.format)
+        write!(f, "{} : {}", name, self.format)
     }
 }
 
 impl HandlerTrait for FileHandler {
-    fn new(name: String) -> Result<Self, Error> {
-        FileHandler::new(name)
+    fn create(name: &str) -> Result<Self, Error> {
+        FileHandler::create(name)
     }
 
     fn close(&mut self) {
@@ -104,28 +96,28 @@ impl HandlerTrait for FileHandler {
         }
     }
 
-    fn get_formatter(&self) -> Formatter {
-        self.format.clone()
+    fn get_formatter(&self) -> &Formatter {
+        &self.format
     }
 
-    fn get_level(&self) -> Level {
-        self.level.clone()
+    fn is_open(&self) -> bool {
+        self.file.is_some()
     }
 
-    fn is_loggable(&self, log_entry: LogEntry) -> bool {
-        log_entry.level() >= self.level
-    }
+    fn publish(&mut self, log_entry: &LogEntry) {
+        if self.is_open() {
+            let mut buf = self.format.format(log_entry);
+            buf.push_str("\n");
 
-    fn publish(&mut self, log_entry: LogEntry) {
-        todo!()
+            self.file
+                .as_mut()
+                .unwrap()
+                .write_all(buf.as_bytes());
+        }
     }
 
     fn set_formatter(&mut self, format: Formatter) {
         self.format = format;
-    }
-
-    fn set_level(&mut self, level: Level) {
-        self.level = level;
     }
 }
 //     let mut file: File;

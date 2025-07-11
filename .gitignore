@@ -1,4 +1,5 @@
 /target
 LICENSE.html
 README.html
-temp.txt
+*.txt
+*.log

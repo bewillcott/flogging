@@ -11,5 +11,5 @@
         "PCDATA",
         "serde"
     ],
-    "editor.quickSuggestionsDelay": 4000,
+    // "editor.quickSuggestionsDelay": 4000,
 }

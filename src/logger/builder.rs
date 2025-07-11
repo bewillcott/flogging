@@ -22,9 +22,11 @@
  * # LoggerBuilder
  */
 
-use super::*;
+use crate::handlers::formatter::Formatter;
 
-pub(super) struct LoggerBuilder {
+use super::{Handler, HandlerTrait, Level, Logger};
+
+pub struct LoggerBuilder {
     name: String,
     level: Level,
     handlers: Vec<Box<dyn HandlerTrait>>,
@@ -37,21 +39,45 @@ impl LoggerBuilder {
      * Logging level is set to it's default setting (INFO).\
      * No `handlers` are are set.
      */
-    pub(super) fn new(name: String) -> Self {
+    pub(super) fn create(name: String) -> Self {
         LoggerBuilder {
-            name: name,
+            name,
             level: Level::default(),
             handlers: Vec::new(),
         }
     }
 
-    pub fn set_level(&mut self, level: Level) -> &mut Self {
+    pub fn set_level(mut self, level: Level) -> Self {
         self.level = level;
         self
     }
 
-    pub fn set_handler(&mut self, handler: impl HandlerTrait + 'static) -> &mut Self {
-        self.handlers.push(Box::new(handler));
+    pub fn add_handler(mut self, handler: Handler, filename: Option<&str>) -> Self {
+        self.add_handler_with(handler, filename, None)
+    }
+
+    pub fn add_handler_with(
+        mut self,
+        handler: Handler,
+        filename: Option<&str>,
+        formatter: Option<Formatter>,
+    ) -> Self {
+        let name = filename.unwrap_or(&self.name);
+        let mut h = handler.create(name).unwrap();
+
+        if let Some(f)= formatter{
+            h.set_formatter(f);
+        }
+
+        self.handlers.push(h);
         self
+    }
+
+    pub fn build(self) -> Logger {
+        Logger {
+            name: self.name.clone(),
+            level: self.level.clone(),
+            handlers: self.handlers,
+        }
     }
 }

@@ -22,13 +22,26 @@
  * # Integrated Testing of Log Messages
  */
 
+#[allow(unused_variables)]
 #[cfg(test)]
 mod tests {
-    // use logging::logger::Logger;
+    use logging::{Handler, Level::*, Logger};
 
     #[test]
     fn add_a_log_message() {
-        //    let logger = Logger::get_logger("Test".to_string());
-        //    logger.
+        let mut logger = Logger::builder("it_log_messages.rs")
+            .add_handler(Handler::ConsoleHandler, None)
+            .add_handler(Handler::FileHandler, Some("test.log"))
+            .set_level(FINE)
+            .build();
+
+        // logger.set_level(OFF);
+        logger.log(FINE, "This a just a test.");
+
+        let mut logger = Logger::console_logger("Test 2");
+        logger.set_level(SEVERE);
+        logger.reset_level();
+
+        logger.log(WARNING, "This is test two!");
     }
 }

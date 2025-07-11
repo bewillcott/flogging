@@ -22,27 +22,25 @@
  * # ConsoleHandler
  */
 
-
-
 use std::{fmt, io::Error};
 
 use crate::{
     handlers::{formatter::Formatter, handler::HandlerTrait},
-    logger::{level::Level, log_entry::LogEntry},
+    logger::{Level, LogEntry},
 };
 
-pub(crate) struct ConsoleHandler {
+pub struct ConsoleHandler {
     name: String,
     level: Level,
     format: Formatter,
 }
 
 impl ConsoleHandler {
-    fn new(name: String) -> Self {
+    fn create(name: &str) -> Self {
         ConsoleHandler {
-            name,
+            name: name.to_string(),
             level: Level::default(),
-            format: Formatter::SimpleFormatter,
+            format: Formatter::Simple,
         }
     }
 }
@@ -54,42 +52,30 @@ impl fmt::Display for ConsoleHandler {
 }
 
 impl HandlerTrait for ConsoleHandler {
-    fn new(name: String) -> Result<Self, Error>
+    fn create(name: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        todo!()
+        Ok(ConsoleHandler::create(name))
     }
 
-    fn close(&mut self) {
-        todo!()
+    fn close(&mut self) {}
+
+    fn flush(&mut self) {}
+
+    fn get_formatter(&self) -> &Formatter {
+        &self.format
     }
 
-    fn flush(&mut self) {
-        todo!()
+    fn is_open(&self) -> bool {
+        true
     }
 
-    fn get_formatter(&self) -> Formatter {
-        todo!()
-    }
-
-    fn get_level(&self) -> Level {
-        todo!()
-    }
-
-    fn is_loggable(&self, log_entry: LogEntry) -> bool {
-        todo!()
-    }
-
-    fn publish(&mut self, log_entry: LogEntry) {
-        todo!()
+    fn publish(&mut self, log_entry: &LogEntry) {
+        eprintln!("{}", self.format.format(log_entry));
     }
 
     fn set_formatter(&mut self, format: Formatter) {
-        todo!()
-    }
-
-    fn set_level(&mut self, level: Level) {
-        todo!()
+        self.format = format;
     }
 }

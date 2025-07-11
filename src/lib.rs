@@ -28,48 +28,36 @@
  * ## Key Elements
  *
  * - `Logger`: The main entity on which applications make logging calls. A Logger instance
- * is used to log messages for a specific system or application component.
+ *   is used to log messages for a specific system or application component.
  * - `Level`: Defines a set of standard logging levels that can be used to control logging
- * output. Programs can be configured to output logging for some levels while ignoring
- * output for others.
+ *   output. Programs can be configured to output logging for some levels while ignoring
+ *   output for others.
  */
 
 #![allow(unused)]
 
 mod handlers;
-pub mod logger;
+mod logger;
 
-use crate::handlers::handler::{Handler, HandlerTrait};
-use crate::logger::Logger;
+pub use crate::handlers::handler::Handler;
+pub use crate::logger::*;
 
-pub struct Logging {
-    loggers: Vec<Logger>,
-}
+// /**
+//  * Find or create a handler for a named subsystem.
+//  *
+//  * If a handler has already been created with the given name it is returned.
+//  * Otherwise a new handler is created.
+//  */
+// pub fn get_handler(&self, name: &'a String, handler: Handler) -> Box<&'_ dyn HandlerTrait> {
+//     let mut mgr = LogManager::new();
+// }
 
-impl Logging {
-    pub fn new() -> Self {
-        Self {
-            loggers: Vec::new(),
-        }
-    }
-
-    /**
-     * Find or create a handler for a named subsystem.
-     *
-     * If a handler has already been created with the given name it is returned.
-     * Otherwise a new handler is created.
-     */
-    // pub fn get_handler(&self, name: &'a String, handler: Handler) -> Box<&'_ dyn HandlerTrait> {
-    //     let mut mgr = LogManager::new();
-    // }
-
-    /**
-     * Find or create a logger for a named subsystem.
-     *
-     * If a logger has already been created with the given name it is returned.
-     * Otherwise a new logger is created.
-     */
-    pub fn get_logger(&mut self, name: &String) -> &mut Logger {
-        todo!()
-    }
-}
+// /**
+//  * Create a logger for a named subsystem.
+//  *
+//  * If a logger has already been created with the given name it is returned.
+//  * Otherwise a new logger is created.
+//  */
+// pub fn get_logger(name: &str) -> &mut Logger {
+//     Logger::new(name.to_string())
+// }

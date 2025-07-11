@@ -22,49 +22,40 @@
  * # Handler
  */
 
-#![allow(unused)]
+// #![allow(unused)]
 
 use std::{fmt::Display, io::Error};
 
 use crate::{
     handlers::{console_handler::ConsoleHandler, file_handler::FileHandler, formatter::Formatter},
-    logger::{level::Level, log_entry::LogEntry},
+    logger::{Level, LogEntry},
 };
 
 #[derive(Debug, Clone)]
-pub(crate) enum Handler {
+pub enum Handler {
     ConsoleHandler,
     FileHandler,
 }
 
 impl Handler {
-    pub(crate) fn new(&self, name: String) -> Result<Box<dyn HandlerTrait>, Error> {
-        let r: Box<dyn HandlerTrait + 'static> = match self {
-            Handler::ConsoleHandler => Box::new({
-                match ConsoleHandler::new(name) {
-                    Ok(h) => h,
-                    Err(e) => return Err(e),
-                }
-            }),
-            Handler::FileHandler => Box::new({
-                match FileHandler::new(name) {
-                    Ok(h) => h,
-                    Err(e) => return Err(e),
-                }
-            }),
+    pub(crate) fn create(&self, name: &str) -> Result<Box<dyn HandlerTrait>, Error> {
+        let r: Box<dyn HandlerTrait> = match self {
+            Handler::ConsoleHandler => Box::new(ConsoleHandler::create(name)?),
+            Handler::FileHandler => Box::new(FileHandler::create(name)?),
         };
 
         Ok(r)
     }
 }
 
-pub(crate) trait HandlerTrait: Display + Send + Sync {
+#[allow(private_interfaces)]
+pub trait HandlerTrait: Display + Send + Sync {
     /**
      * Create a new handler instance.
      *
      * **name**: Used to identify handler.
      */
-    fn new(name: String) -> Result<Self, Error>
+    fn create(name: &str) -> Result<Self, Error>
     where
         Self: Sized;
 
@@ -85,17 +76,12 @@ pub(crate) trait HandlerTrait: Display + Send + Sync {
     /**
      * Return the format String for this Handler.
      */
-    fn get_formatter(&self) -> Formatter;
+    fn get_formatter(&self) -> &Formatter;
 
     /**
-     * Get the log level specifying which messages will be logged by this Handler.
+     * Check status of this handler.
      */
-    fn get_level(&self) -> Level;
-
-    /**
-     * Check if this Handler would actually log a given LogEntry.
-     */
-    fn is_loggable(&self, log_entry: LogEntry) -> bool;
+    fn is_open(&self) -> bool;
 
     /**
      * Publish a LogEntry.
@@ -105,17 +91,12 @@ pub(crate) trait HandlerTrait: Display + Send + Sync {
      *
      * The Handler is responsible for formatting the message, when and if necessary.
      */
-    fn publish(&mut self, log_entry: LogEntry);
+    fn publish(&mut self, log_entry: &LogEntry);
 
     /**
      * Set a Format.
      */
     fn set_formatter(&mut self, format: Formatter);
-
-    /**
-    * Set the log level specifying which message levels will be logged by this Handler.
-     */
-    fn set_level(&mut self, level: Level);
 }
 
 #[cfg(test)]
@@ -124,18 +105,18 @@ mod test {
 
     #[test]
     fn file_handler() {
-        let name = "temp.txt".to_string();
+        let name = "temp.txt";
         let h = Handler::FileHandler;
-        let fh = h.new(name);
+        let fh = h.create(name);
 
         println!("\n{}\n", fh.unwrap());
     }
 
     #[test]
     fn file_handler_error() {
-        let name = "".to_string();
+        let name = "";
         let h = Handler::FileHandler;
-        let fh = h.new(name);
+        let fh = h.create(name);
 
         assert!(fh.is_err());
     }

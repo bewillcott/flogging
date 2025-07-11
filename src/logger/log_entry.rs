@@ -22,24 +22,15 @@
  * # Log Entry
  */
 
-
-
-// #![allow(dead_code)]
-
 use chrono::{DateTime, Local};
 
 use super::level::Level;
-// use anyhow::{Context, Error};
-// use std::cell::{RefCell, RefMut};
 use std::{fmt, time::Instant};
-// use std::ops::Deref;
-// use std::str::FromStr;
-// use std::sync::Arc;
-// use tokio::sync::mpsc;
 
 #[derive(Debug)]
 pub(crate) struct LogEntry {
     timestamp: DateTime<Local>,
+    name: String,
     level: Level,
     message: String,
 }
@@ -54,13 +45,10 @@ impl LogEntry {
     pub(crate) fn new(level: Level, message: String) -> LogEntry {
         LogEntry {
             timestamp: Local::now(),
+            name: String::new(),
             level,
             message,
         }
-    }
-
-    pub(crate) fn timestamp(&self) -> DateTime<Local> {
-        self.timestamp
     }
 
     pub(crate) fn level(&self) -> Level {
@@ -69,6 +57,18 @@ impl LogEntry {
 
     pub(crate) fn message(&self) -> String {
         self.message.clone()
+    }
+
+    pub(crate) fn name(&self)-> String{
+        self.name.clone()
+    }
+
+    pub(crate) fn set_name(&mut self, name: String){
+        self.name = name.clone();
+    }
+
+    pub(crate) fn timestamp(&self) -> DateTime<Local> {
+        self.timestamp.clone()
     }
 }
 
