@@ -68,7 +68,7 @@ impl LogEntry {
     }
 
     pub(crate) fn timestamp(&self) -> DateTime<Local> {
-        self.timestamp.clone()
+        self.timestamp
     }
 }
 

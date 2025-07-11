@@ -115,7 +115,7 @@ impl Logger {
         entry.set_name(self.name.clone());
 
         for mut handler in &mut self.handlers {
-            handler.publish(&entry);
+            handler.publish(entry);
         }
     }
 

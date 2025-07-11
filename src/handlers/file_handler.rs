@@ -56,10 +56,9 @@ impl FileHandler {
             format: Iso8601,
             file: {
                 let f = File::options()
-                    .write(true)
                     .append(true)
                     .create(true)
-                    .open(&filename)?;
+                    .open(filename)?;
 
                 Some(f)
             },
@@ -107,7 +106,7 @@ impl HandlerTrait for FileHandler {
     fn publish(&mut self, log_entry: &LogEntry) {
         if self.is_open() {
             let mut buf = self.format.format(log_entry);
-            buf.push_str("\n");
+            buf.push('\n');
 
             self.file
                 .as_mut()
