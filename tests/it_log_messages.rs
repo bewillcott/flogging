@@ -44,4 +44,24 @@ mod tests {
 
         logger.log(WARNING, "This is test two!");
     }
+
+    #[test]
+    fn shared_log_file() {
+        let mut logger1 = Logger::builder("logger1")
+            .add_handler(Handler::ConsoleHandler, None)
+            .add_handler(Handler::FileHandler, Some("test.log"))
+            .set_level(FINE)
+            .build();
+
+        let mut logger2 = Logger::builder("logger2")
+            .add_handler(Handler::ConsoleHandler, None)
+            .add_handler(Handler::FileHandler, Some("test.log"))
+            .set_level(FINE)
+            .build();
+
+        logger1.log(FINE, "This a just a test.");
+        logger2.log(WARNING, "This a just a test.");
+        logger1.log(SEVERE, "This a just a test.");
+        logger2.log(FINE, "This a just a test.");
+    }
 }

@@ -141,7 +141,7 @@ impl Logger {
         }
 
         // build LogEntry
-        let mut log_entry = LogEntry::new(self.level.clone(), msg);
+        let mut log_entry = LogEntry::new(level, msg);
         // Send LogEntry
         self._log(&mut log_entry);
     }

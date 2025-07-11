@@ -125,7 +125,18 @@ pub enum Level {
 
 impl fmt::Display for Level {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{self:?}")
+        let label = match self {
+            Level::FINEST => "FINEST",
+            Level::FINER => "FINER",
+            Level::FINE => "FINE",
+            Level::CONFIG => "CONFIG",
+            Level::INFO => "INFO",
+            Level::WARNING => "WARNING",
+            Level::SEVERE => "SEVERE",
+            Level::OFF => "OFF",
+        };
+
+        label.fmt(f)
     }
 }
 
@@ -138,7 +149,7 @@ mod tests {
         let log_level = Level::default();
         let b = Level::FINE;
 
-        println!("\n{log_level}\n");
+        println!("\n|{log_level}|\n");
 
         assert!(b < log_level);
     }
