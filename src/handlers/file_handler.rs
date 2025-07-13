@@ -1,26 +1,28 @@
-/*
- * File Name:    file_handler.rs
- * Project Name: logging
- *
- * Copyright (C) 2025 Bradley Willcott
- *
- * This library (crate) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This library (crate) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
- */
+//
+// File Name:    file_handler.rs
+// Project Name: flogging
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
+//
 
-/*!
- * # FileHandler
- */
+//!
+//! # FileHandler
+//!
 
 #![allow(unused)]
 
@@ -55,10 +57,7 @@ impl FileHandler {
             name: filename.to_string(),
             format: Iso8601,
             file: {
-                let f = File::options()
-                    .append(true)
-                    .create(true)
-                    .open(filename)?;
+                let f = File::options().append(true).create(true).open(filename)?;
 
                 Some(f)
             },
@@ -108,10 +107,7 @@ impl HandlerTrait for FileHandler {
             let mut buf = self.format.format(log_entry);
             buf.push('\n');
 
-            self.file
-                .as_mut()
-                .unwrap()
-                .write_all(buf.as_bytes());
+            self.file.as_mut().unwrap().write_all(buf.as_bytes());
         }
     }
 
@@ -119,19 +115,3 @@ impl HandlerTrait for FileHandler {
         self.format = format;
     }
 }
-//     let mut file: File;
-
-//     if exists(filename)? {
-//         file = File::options().write(true).truncate(true).open(filename)?;
-//     } else {
-//         file = File::options().write(true).create(true).open(filename)?;
-//     }
-
-//     file.write(REPORT_HEADER.as_bytes());
-
-//     for s in &mut log_strings {
-//         s.push('\n');
-//         file.write(s.as_bytes());
-//     }
-
-//     file.flush();

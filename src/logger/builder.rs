@@ -1,26 +1,28 @@
-/*
- * File Name:    builder.rs
- * Project Name: logging
- *
- * Copyright (C) 2025 Bradley Willcott
- *
- * This library (crate) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This library (crate) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
- */
+//
+// File Name:    builder.rs
+// Project Name: flogging
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
+//
 
-/*!
- * # LoggerBuilder
- */
+//!
+//! # LoggerBuilder
+//!
 
 use crate::handlers::formatter::Formatter;
 
@@ -33,12 +35,6 @@ pub struct LoggerBuilder {
 }
 
 impl LoggerBuilder {
-    /**
-     * Create new Logger instance.
-     *
-     * Logging level is set to it's default setting (INFO).\
-     * No `handlers` are are set.
-     */
     pub(super) fn create(name: String) -> Self {
         LoggerBuilder {
             name,
@@ -47,16 +43,23 @@ impl LoggerBuilder {
         }
     }
 
-    pub fn set_level(mut self, level: Level) -> Self {
-        self.level = level;
-        self
+    pub fn add_console_handler(mut self) -> Self {
+        self.add_handler_with(Handler::ConsoleHandler, None, None)
     }
 
-    pub fn add_handler(mut self, handler: Handler, filename: Option<&str>) -> Self {
-        self.add_handler_with(handler, filename, None)
+    pub fn add_console_handler_with(mut self, formatter: Formatter) -> Self {
+        self.add_handler_with(Handler::ConsoleHandler, None, Some(formatter))
     }
 
-    pub fn add_handler_with(
+    pub fn add_file_handler(mut self, filename: &str) -> Self {
+        self.add_handler_with(Handler::FileHandler, Some(filename), None)
+    }
+
+    pub fn add_file_handler_with(mut self, filename: &str, formatter: Formatter) -> Self {
+        self.add_handler_with(Handler::FileHandler, Some(filename), Some(formatter))
+    }
+
+    fn add_handler_with(
         mut self,
         handler: Handler,
         filename: Option<&str>,
@@ -65,7 +68,7 @@ impl LoggerBuilder {
         let name = filename.unwrap_or(&self.name);
         let mut h = handler.create(name).unwrap();
 
-        if let Some(f)= formatter{
+        if let Some(f) = formatter {
             h.set_formatter(f);
         }
 
@@ -75,9 +78,14 @@ impl LoggerBuilder {
 
     pub fn build(self) -> Logger {
         Logger {
-            name: self.name.clone(),
+            mod_path: self.name.clone(),
             level: self.level.clone(),
             handlers: self.handlers,
         }
+    }
+
+    pub fn set_level(mut self, level: Level) -> Self {
+        self.level = level;
+        self
     }
 }

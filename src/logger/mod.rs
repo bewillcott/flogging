@@ -1,41 +1,45 @@
-/*
- * File Name:    mod.rs
- * Project Name: logging
- *
- * Copyright (C) 2025 Bradley Willcott
- *
- * This library (crate) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This library (crate) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
- */
+//
+// File Name:    mod.rs
+// Project Name: flogging
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
+//
 
-/*!
- * # Logger
- */
+//!
+//! # Logger
+//!
 
 #![allow(unused)]
 
 mod builder;
 mod level;
 mod log_entry;
-mod utils;
 
 use anyhow::{Context, Error, Result};
+use std::cell::LazyCell;
 use std::collections::HashSet;
 use std::collections::hash_map::IterMut;
+use std::f32::consts;
 use std::fmt::Debug;
 use std::fs::{File, exists};
 use std::io::Write;
 use std::marker::PhantomData;
+use std::module_path;
 use std::ops::DerefMut;
 use std::path::Path;
 use std::sync::mpsc::Sender;
@@ -47,89 +51,228 @@ use crate::logger::builder::LoggerBuilder;
 pub use crate::logger::level::Level;
 pub(crate) use crate::logger::log_entry::LogEntry;
 
-const REPORT_HEADER: &str = "Log Report\n=========\n";
-
 pub struct Logger {
-    /**
-     * Identify the source of log messages passed to this logger.
-     */
-    name: String,
-    /**
-     * Default level used by `log(msg)`.
-     */
+    ///
+    /// Identify the source of log messages passed to this logger.
+    ///
+    /// This would ideally be the **mod** path.
+    ///
+    mod_path: String,
+    ///
+    /// Default level used by `log(msg)`.
+    ///
     level: Level,
-    /**
-     * Holds the handlers associated with this logger.
-     */
+    ///
+    /// Holds the handlers associated with this logger.
+    ///
     handlers: Vec<Box<dyn HandlerTrait>>,
 }
 
-#[allow(private_interfaces)]
 impl Logger {
-    /**
-     * Create new Logger instance.
-     *
-     * Logging level is set to it's default setting (INFO).\
-     * No `handlers` are are set.
-     */
-    pub fn builder(name: &str) -> LoggerBuilder {
-        LoggerBuilder::create(name.to_string())
+    ///
+    /// Create new Logger instance.
+    ///
+    /// Logging level is set to it's default setting (INFO).\
+    /// No `handlers` are set.
+    ///
+    pub fn builder(mod_path: &str) -> LoggerBuilder {
+        LoggerBuilder::create(mod_path.to_string())
     }
 
-    /**
-     * Create new Logger instance, with a `ConsoleHandler`.
-     *
-     * Logging level is set to it's default setting (INFO).\
-     * No `handlers` are are set.
-     */
-    pub fn console_logger(name: &str) -> Logger {
-        Logger::builder("Test")
-            .add_handler(Handler::ConsoleHandler, None)
-            .build()
+    ///
+    /// Log a CONFIG message.
+    ///
+    /// If the logger is currently enabled for the CONFIG message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    /// ## Examples
+    /// ```
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.info("config", "Some text to store.");
+    /// ```
+    ///
+    ///
+    pub fn config(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::CONFIG, fn_name, msg);
     }
 
-    /**
-     * Check if a message of the given level would actually be logged by this logger.
-     */
+    ///
+    /// Create new Logger instance, with a `ConsoleHandler`.
+    ///
+    /// Logging level is set to it's default setting (INFO).
+    ///
+    /// ## Parameters
+    /// `mod_path`- The module path. Suggest using [`module_path`].
+    ///
+    pub fn console_logger(mod_path: &str) -> Logger {
+        Logger::builder(mod_path).add_console_handler().build()
+    }
+
+    ///
+    /// Log a method entry.
+    ///
+    /// This is a convenience method that can be used to log entry to a method.
+    /// A `LogEntry` with message "Entry", log level FINER, and the given `fn_name` is logged.
+    ///
+    /// ## Parameters
+    /// `fn_name` - The name of the function/method from-which this method was called.
+    ///
+    pub fn entering(&mut self, fn_name: &str) {
+        self.log(Level::FINER, fn_name, "Entry");
+    }
+
+    ///
+    /// Log a method return.
+    ///
+    /// This is a convenience method that can be used to log returning from a method.
+    /// A `LogEntry` with message "Return", log level FINER, and the given `fn_name` is logged.
+    ///
+    /// ## Parameters
+    /// `fn_name` - The name of the function/method from-which this method was called.
+    ///
+    pub fn exiting(&mut self, fn_name: &str) {
+        self.log(Level::FINER, fn_name, "Return");
+    }
+
+    ///
+    /// Create new Logger instance, with a `FileHandler`.
+    ///
+    /// Logging level is set to it's default setting (INFO).
+    ///
+    /// ## Parameters
+    /// `mod_path`- The module path. Suggest using [`module_path`].\
+    /// `filename` - The name of the log file to use. Will be created
+    /// if it doesn't exist.
+    ///
+    /// ## Examples
+    /// ```
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::file_logger(module_path!(), "test.log");
+    /// log.info("file_logger", "Some text to store.");
+    /// ```
+    ///
+    // / [module_path]: (std::module_path)
+    pub fn file_logger(mod_path: &str, filename: &str) -> Logger {
+        Logger::builder(mod_path).add_file_handler(filename).build()
+    }
+
+    ///
+    /// Log a FINE message.
+    ///
+    /// If the logger is currently enabled for the FINE message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    pub fn fine(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::FINE, fn_name, msg);
+    }
+
+    ///
+    /// Log a FINER message.
+    ///
+    /// If the logger is currently enabled for the FINER message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    pub fn finer(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::FINER, fn_name, msg);
+    }
+
+    ///
+    /// Log a FINEST message.
+    ///
+    /// If the logger is currently enabled for the FINEST message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    pub fn finest(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::FINEST, fn_name, msg);
+    }
+
+    ///
+    /// Log a INFO message.
+    ///
+    /// If the logger is currently enabled for the INFO message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    pub fn info(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::INFO, fn_name, msg);
+    }
+
+    ///
+    /// Check if a message of the given level would actually be logged by this logger.
+    ///
     fn is_loggable(&self, level: &Level) -> bool {
         *level >= self.level
     }
 
-    /**
-     * Obtain the current default logging level for this Log instance.
-     */
+    ///
+    /// Obtain the current default logging level for this Log instance.
+    ///
     pub fn level(&self) -> &Level {
         &self.level
     }
 
-    /**
-     * Log a `LogEntry`.
-     *
-     * All the other logging methods in this class call through this method to actually
-     * perform any logging.
-     *
-     * ## Parameters
-     * `entry` - The `LogEntry` to be published.
-     */
+    ///
+    /// Log a `LogEntry`.
+    ///
+    /// All the other logging methods in this class call through this method to actually
+    /// perform any logging.
+    ///
+    /// ## Parameters
+    /// `entry` - The `LogEntry` to be published.
+    ///
     fn _log(&mut self, entry: &mut LogEntry) {
-        entry.set_name(self.name.clone());
+        entry.set_mod_path(self.mod_path.clone());
 
         for mut handler in &mut self.handlers {
             handler.publish(entry);
         }
     }
 
-    /**
-     * Log a message, with no arguments.
-     *
-     * If the logger is currently enabled for the given message level then the given
-     * message is forwarded to all the registered output `Handler` objects.
-     *
-     * ## Parameters
-     * `level` - One of the message level identifiers, e.g., SEVERE.\
-     * `msg` - The string message.
-     */
-    pub fn log(&mut self, level: Level, msg: &str) {
+    ///
+    /// Log a message, with no arguments.
+    ///
+    /// If the logger is currently enabled for the given message level then the given
+    /// message is forwarded to all the registered output `Handler` objects.
+    ///
+    /// ## Parameters
+    /// `level` - One of the message level identifiers, e.g., SEVERE.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.\
+    /// `msg` - The string message.
+    ///
+    pub fn log(&mut self, level: Level, fn_name: &str, msg: &str) {
         if !self.is_loggable(&level) {
             return;
         }
@@ -141,30 +284,65 @@ impl Logger {
         }
 
         // build LogEntry
-        let mut log_entry = LogEntry::new(level, msg);
+        let mut log_entry = LogEntry::create(level, fn_name.to_string(), msg);
         // Send LogEntry
         self._log(&mut log_entry);
     }
 
-    /**
-     * Reset this `Logger` instance's default logging level.
-     *
-     * Returns itself for chaining purposes.
-     *
-     * See [Level]
-     */
+    ///
+    /// Reset this `Logger` instance's default logging level.
+    ///
+    /// Returns itself for chaining purposes.
+    ///
+    /// See [Level]
+    ///
     pub fn reset_level(&mut self) -> &mut Self {
         self.level = Level::default();
         self
     }
 
-    /**
-     * Set default logging level for this Log instance.
-     *
-     * Returns itself for chaining purposes.
-     */
+    ///
+    /// Set default logging level for this Log instance.
+    ///
+    /// Returns itself for chaining purposes.
+    ///
     pub fn set_level(&mut self, level: Level) -> &mut Self {
         self.level = level;
         self
     }
+
+    ///
+    /// Log a SEVERE message.
+    ///
+    /// If the logger is currently enabled for the SEVERE message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    pub fn severe(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::SEVERE, fn_name, msg);
+    }
+
+    ///
+    /// Log a WARNING message.
+    ///
+    /// If the logger is currently enabled for the WARNING message level
+    /// then the given message is forwarded to all the registered output
+    /// Handler objects.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.\
+    /// `fn_name` - The name of the function/method from-which this method
+    /// was called.
+    ///
+    pub fn warning(&mut self, fn_name: &str, msg: &str) {
+        self.log(Level::WARNING, fn_name, msg);
+    }
 }
+
+#[cfg(test)]
+mod tests;

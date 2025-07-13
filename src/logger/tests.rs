@@ -1,5 +1,5 @@
 //
-// File Name:    mod.rs
+// File Name:    tests.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,12 +21,21 @@
 //
 
 //!
-//! # Handlers
+//! # Logger Tests
 //!
 
-#![allow(unused)]
+use super::*;
 
-pub(crate) mod console_handler;
-pub(crate) mod file_handler;
-pub mod formatter;
-pub(crate) mod handler;
+#[test]
+fn config() {
+    mod helper {
+        use super::*;
+
+        pub(super) fn help() {
+            let mut log = Logger::console_logger(module_path!());
+            log.info("help", "Some text to store.");
+        }
+    }
+
+    helper::help();
+}
