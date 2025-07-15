@@ -25,9 +25,7 @@
 //!
 
 use std::{cell::RefCell, collections::HashMap};
-
 use crate::handlers::{formatter::Formatter, string_handler::StringHandler};
-
 use super::{Handler, HandlerTrait, Level, Logger};
 
 pub struct LoggerBuilder {

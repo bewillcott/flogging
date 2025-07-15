@@ -140,3 +140,54 @@ fn add_a_log_message()
         println!()
     }
 }
+
+#[cfg(test)]
+mod temp {
+    use flogging::*;
+    use std::{error::Error, result::Result};
+
+    // Setting up the module level logger.
+    static_logger!({
+        Logger::builder(module_path!())
+            .add_console_handler()
+            .add_file_handler("test.log")
+            .set_level(Level::FINEST)
+            .build()
+    });
+
+    ///
+    /// ~~~
+    /// use flogging::*;
+    ///
+    /// static_logger!({
+    ///     Logger::console_logger(module_path!())
+    /// });
+    ///
+    /// #[logger]
+    /// fn my_func(){
+    ///     config!("Some text to store.");
+    /// }
+    /// ~~~
+    #[test]
+    #[logger]
+    fn do_something() {
+        entering!();
+
+        // do some work worth noting
+        info!("Did some work here.");
+
+        // ...
+
+        fine!("Bit more detail.");
+
+        if let Err(e) = error_prone() {
+            warning!(&e.to_string());
+        }
+        set_level!(Level::INFO);
+        exiting!();
+    }
+
+    fn error_prone() -> Result<(), Box<dyn Error>> {
+        Err(Box::from("Bad day!"))
+    }
+}

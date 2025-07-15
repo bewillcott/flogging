@@ -60,8 +60,8 @@ pub(crate) fn logger_impl(_attr: TokenStream, item: TokenStream) -> TokenStream 
         #vis #sig {
             // At the beginning of the function, create an instance of `Instant`
             let mut __binding = LOGGER;
-            let mut log = __binding.borrow_mut();
-            log.set_fn_name(stringify!(#function_identifier));
+            let mut __log = __binding.borrow_mut();
+            __log.set_fn_name(stringify!(#function_identifier));
 
             #(#statements)*
         }

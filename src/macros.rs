@@ -42,7 +42,6 @@ use crate::Logger;
 ///
 /// # Examples
 /// ```
-/// use std::cell::{LazyCell, RefCell};
 /// use flogging::*;
 ///
 /// static_logger!({

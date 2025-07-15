@@ -47,7 +47,7 @@ use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
 
 use crate::handlers::handler::{self, Handler, HandlerTrait};
-use crate::logger::builder::LoggerBuilder;
+pub use crate::logger::builder::*;
 pub use crate::logger::level::Level;
 pub(crate) use crate::logger::log_entry::LogEntry;
 

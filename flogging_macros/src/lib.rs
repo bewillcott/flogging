@@ -54,7 +54,6 @@ use proc_macro::TokenStream;
 ///
 /// ## Examples
 /// ```no_run
-/// use flogging_macros::*;
 /// use flogging::*;
 ///
 /// static_logger!({
@@ -70,31 +69,29 @@ use proc_macro::TokenStream;
 // #[proc_macro_error]
 #[proc_macro]
 pub fn config(msg: TokenStream) -> TokenStream {
-    let rtn: Result<TokenStream, proc_macro::LexError> =
-        format!("log.config({msg});\n").parse::<TokenStream>();
-    rtn.unwrap_or_default()
+    format!("__log.config({msg});\n").parse().unwrap()
 }
 
 ///
 /// Log a method entry.
 ///
 /// This is a convenience method that can be used to log entry to a method.
-/// A `LogEntry` with message "Entry", log level FINER, and the given `fn_name` is logged.
+/// A `LogEntry` with message "Entry" and log level FINER is logged.
 ///
 #[proc_macro]
 pub fn entering(_msg: TokenStream) -> TokenStream {
-    "log.entering();\n".parse().unwrap()
+    "__log.entering();\n".parse().unwrap()
 }
 
 ///
 /// Log a method return.
 ///
 /// This is a convenience method that can be used to log returning from a method.
-/// A `LogEntry` with message "Return", log level FINER, and the given `fn_name` is logged.
+/// A `LogEntry` with message "Return" and log level FINER is logged.
 ///
 #[proc_macro]
 pub fn exiting(_msg: TokenStream) -> TokenStream {
-    "log.exiting();\n".parse().unwrap()
+    "__log.exiting();\n".parse().unwrap()
 }
 
 ///
@@ -123,11 +120,10 @@ pub fn exiting(_msg: TokenStream) -> TokenStream {
 ///
 /// ## Parameters
 /// `msg` - The string message.
-/// was called.
 ///
 #[proc_macro]
 pub fn fine(msg: TokenStream) -> TokenStream {
-    format!("log.fine({msg});\n").parse().unwrap()
+    format!("__log.fine({msg});\n").parse().unwrap()
 }
 
 ///
@@ -147,7 +143,7 @@ pub fn fine(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn finer(msg: TokenStream) -> TokenStream {
-    format!("log.finer({msg});\n").parse().unwrap()
+    format!("__log.finer({msg});\n").parse().unwrap()
 }
 
 ///
@@ -164,7 +160,7 @@ pub fn finer(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn finest(msg: TokenStream) -> TokenStream {
-    format!("log.finest({msg});\n").parse().unwrap()
+    format!("__log.finest({msg});\n").parse().unwrap()
 }
 
 ///
@@ -188,7 +184,7 @@ pub fn finest(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn info(msg: TokenStream) -> TokenStream {
-    format!("log.info({msg});\n").parse().unwrap()
+    format!("__log.info({msg});\n").parse().unwrap()
 }
 
 ///
@@ -197,6 +193,14 @@ pub fn info(msg: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn logger(attr: TokenStream, item: TokenStream) -> TokenStream {
     logger_impl(attr, item)
+}
+
+///
+/// Set default logging level for this Log instance.
+///
+#[proc_macro]
+pub fn set_level(level: TokenStream) -> TokenStream {
+    format!("__log.set_level({level});\n").parse().unwrap()
 }
 
 ///
@@ -218,7 +222,7 @@ pub fn logger(attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn severe(msg: TokenStream) -> TokenStream {
-    format!("log.severe({msg});\n").parse().unwrap()
+    format!("__log.severe({msg});\n").parse().unwrap()
 }
 
 ///
@@ -247,5 +251,5 @@ pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn warning(msg: TokenStream) -> TokenStream {
-    format!("log.warning({msg});\n").parse().unwrap()
+    format!("__log.warning({msg});\n").parse().unwrap()
 }
