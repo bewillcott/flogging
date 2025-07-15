@@ -98,6 +98,10 @@ impl HandlerTrait for FileHandler {
         &self.format
     }
 
+    fn get_log(&self) -> String {
+        String::new()
+    }
+
     fn is_open(&self) -> bool {
         self.file.is_some()
     }

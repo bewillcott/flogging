@@ -1,5 +1,5 @@
 //
-// File Name:    console_handler.rs
+// File Name:    string_handler.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,9 +21,8 @@
 //
 
 //!
-//! # ConsoleHandler
+//! # StringHandler
 //!
-
 use std::{fmt, io::Error};
 
 use crate::{
@@ -31,44 +30,59 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
-pub struct ConsoleHandler {
+pub struct StringHandler {
     name: String,
     formatter: Formatter,
+    log: Vec<String>,
 }
 
-impl ConsoleHandler {
+impl StringHandler {
     fn create(name: &str) -> Self {
-        ConsoleHandler {
+        StringHandler {
             name: name.to_string(),
             formatter: Formatter::Simple,
+            log: Vec::new(),
         }
     }
-}
 
-impl fmt::Display for ConsoleHandler {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} : {}", self.name, self.formatter)
+    fn log(&self) -> String {
+        let mut buf = String::new();
+
+        for s in &self.log {
+            buf.push_str(s);
+            buf.push('\n');
+        }
+
+        buf
     }
 }
 
-impl HandlerTrait for ConsoleHandler {
+impl fmt::Display for StringHandler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{} : {}\n\n{}", self.name, self.formatter, self.log())
+    }
+}
+
+impl HandlerTrait for StringHandler {
     fn create(name: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        Ok(ConsoleHandler::create(name))
+        Ok(StringHandler::create(name))
     }
 
     fn close(&mut self) {}
 
-    fn flush(&mut self) {}
+    fn flush(&mut self) {
+        self.log.clear();
+    }
 
     fn get_formatter(&self) -> &Formatter {
         &self.formatter
     }
 
     fn get_log(&self) -> String {
-        String::new()
+        self.log()
     }
 
     fn is_open(&self) -> bool {
@@ -76,7 +90,7 @@ impl HandlerTrait for ConsoleHandler {
     }
 
     fn publish(&mut self, log_entry: &LogEntry) {
-        eprintln!("{}", self.formatter.format(log_entry));
+        self.log.push(self.formatter.format(log_entry));
     }
 
     fn set_formatter(&mut self, format: Formatter) {

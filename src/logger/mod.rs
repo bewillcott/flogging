@@ -31,11 +31,11 @@ mod level;
 mod log_entry;
 
 use anyhow::{Context, Error, Result};
-use std::cell::LazyCell;
-use std::collections::HashSet;
+use std::cell::{LazyCell, RefCell};
 use std::collections::hash_map::IterMut;
+use std::collections::{HashMap, HashSet};
 use std::f32::consts;
-use std::fmt::Debug;
+use std::fmt;
 use std::fs::{File, exists};
 use std::io::Write;
 use std::marker::PhantomData;
@@ -58,14 +58,22 @@ pub struct Logger {
     /// This would ideally be the **mod** path.
     ///
     mod_path: String,
+
+    ///
+    /// The name of the function/method inside which the log message
+    /// is generated.
+    ///
+    fn_name: String,
+
     ///
     /// Default level used by `log(msg)`.
     ///
     level: Level,
+
     ///
     /// Holds the handlers associated with this logger.
     ///
-    handlers: Vec<Box<dyn HandlerTrait>>,
+    handlers: RefCell<HashMap<Handler, Box<dyn HandlerTrait>>>,
 }
 
 impl Logger {
@@ -214,6 +222,32 @@ impl Logger {
     }
 
     ///
+    /// Get the current function/method name.
+    ///
+    pub fn fn_name(&self) -> String {
+        self.fn_name.clone()
+    }
+
+    ///
+    /// Get required `Handler`.
+    ///
+    /// ## Examples
+    /// ```
+    /// use flogging::{Logger,Handler};
+    ///
+    /// let mut log = Logger::string_logger(module_path!());
+    /// log.info("get_handler", "Some text to store.");
+    ///
+    /// let h = log.get_handler(Handler::StringHandler);
+    /// ```
+    pub fn get_handler(&mut self, handler: Handler) -> Option<&dyn HandlerTrait> {
+        match self.handlers.get_mut().get(&handler) {
+            Some(val) => Some(&**val),
+            None => None,
+        }
+    }
+
+    ///
     /// Log a INFO message.
     ///
     /// If the logger is currently enabled for the INFO message level
@@ -255,8 +289,8 @@ impl Logger {
     fn _log(&mut self, entry: &mut LogEntry) {
         entry.set_mod_path(self.mod_path.clone());
 
-        for mut handler in &mut self.handlers {
-            handler.publish(entry);
+        for mut handler in self.handlers.get_mut() {
+            handler.1.publish(entry);
         }
     }
 
@@ -302,6 +336,13 @@ impl Logger {
     }
 
     ///
+    /// Set the current function/method name.
+    ///
+    pub fn set_fn_name(&mut self, fn_name: &str) {
+        self.fn_name = fn_name.to_string();
+    }
+
+    ///
     /// Set default logging level for this Log instance.
     ///
     /// Returns itself for chaining purposes.
@@ -328,6 +369,18 @@ impl Logger {
     }
 
     ///
+    /// Create new Logger instance, with a `ConsoleHandler`.
+    ///
+    /// Logging level is set to it's default setting (INFO).
+    ///
+    /// ## Parameters
+    /// `mod_path`- The module path. Suggest using [`module_path`].
+    ///
+    pub fn string_logger(mod_path: &str) -> Logger {
+        Logger::builder(mod_path).add_string_handler().build()
+    }
+
+    ///
     /// Log a WARNING message.
     ///
     /// If the logger is currently enabled for the WARNING message level
@@ -341,6 +394,19 @@ impl Logger {
     ///
     pub fn warning(&mut self, fn_name: &str, msg: &str) {
         self.log(Level::WARNING, fn_name, msg);
+    }
+}
+
+impl fmt::Display for Logger {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut buf = String::new();
+
+        for elem in self.handlers.borrow().iter() {
+            let s = format!("{:?}: {}\n", elem.0, elem.1);
+            buf.push_str(&s);
+        }
+
+        writeln!(f, "{} - [{}]\n\n{}", self.mod_path, self.level, buf)
     }
 }
 

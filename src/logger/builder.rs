@@ -24,14 +24,16 @@
 //! # LoggerBuilder
 //!
 
-use crate::handlers::formatter::Formatter;
+use std::{cell::RefCell, collections::HashMap};
+
+use crate::handlers::{formatter::Formatter, string_handler::StringHandler};
 
 use super::{Handler, HandlerTrait, Level, Logger};
 
 pub struct LoggerBuilder {
     name: String,
     level: Level,
-    handlers: Vec<Box<dyn HandlerTrait>>,
+    handlers: RefCell<HashMap<Handler, Box<dyn HandlerTrait>>>,
 }
 
 impl LoggerBuilder {
@@ -39,7 +41,7 @@ impl LoggerBuilder {
         LoggerBuilder {
             name,
             level: Level::default(),
-            handlers: Vec::new(),
+            handlers: RefCell::new(HashMap::new()),
         }
     }
 
@@ -72,13 +74,24 @@ impl LoggerBuilder {
             h.set_formatter(f);
         }
 
-        self.handlers.push(h);
+        let map = self.handlers.get_mut();
+        map.insert(handler, h);
+
         self
+    }
+
+    pub fn add_string_handler(mut self) -> Self {
+        self.add_handler_with(Handler::StringHandler, None, None)
+    }
+
+    pub fn add_string_handler_with(mut self, formatter: Formatter) -> Self {
+        self.add_handler_with(Handler::StringHandler, None, Some(formatter))
     }
 
     pub fn build(self) -> Logger {
         Logger {
             mod_path: self.name.clone(),
+            fn_name: String::new(),
             level: self.level.clone(),
             handlers: self.handlers,
         }

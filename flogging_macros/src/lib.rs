@@ -1,6 +1,6 @@
 //
-// File Name:    mod.rs
-// Project Name: flogging
+// File Name:    lib.rs
+// Project Name: flogger_macros
 //
 // Copyright (C) 2025 Bradley Willcott
 //
@@ -21,13 +21,27 @@
 //
 
 //!
-//! # Handlers
+//! # Flogging Macros
 //!
 
-#![allow(unused)]
+extern crate proc_macro;
+use proc_macro::TokenStream;
+use regex::Regex;
 
-pub(crate) mod console_handler;
-pub(crate) mod file_handler;
-pub mod formatter;
-pub(crate) mod handler;
-pub(crate) mod string_handler;
+///
+/// Shows the stringified `TokenStreams` that the attribute macros see.
+///
+#[proc_macro_attribute]
+pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
+    println!("attr: \"{attr}\"");
+    println!("item: \"{item}\"");
+    // println!("fn_name: \"{}\"", process_item(&item).unwrap_or_default());
+    item
+}
+
+fn _process_item<'a>(item: &TokenStream) -> Option<String> {
+    let re = Regex::new(r"^.*fn\s+(?<fn_name>[_]*[a-z][_\w]*)(.*)$").unwrap();
+    let binding = item.to_string();
+    let caps = re.captures(&binding).unwrap();
+    Some(caps["fn_name"].to_string().clone())
+}

@@ -9,3 +9,5 @@ license = "GPL-3.0-or-later"
 [dependencies]
 anyhow = "1.0.98"
 chrono = { version = "0.4.41", features = ["std","alloc"] }
+flogging_macros = {path = "flogging_macros", version = "0.1.0"}
+regex = "1.11.1"

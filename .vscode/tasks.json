@@ -2,6 +2,8 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "rust: cargo doc",
+			"group": "build",
 			"type": "cargo",
 			"command": "doc",
 			"args": [
@@ -9,11 +11,11 @@
 			],
 			"problemMatcher": [
 				"$rustc"
-			],
-			"group": "build",
-			"label": "rust: cargo doc"
+			]
 		},
 		{
+			"label": "rust: cargo doc (dev)",
+			"group": "build",
 			"type": "cargo",
 			"command": "doc",
 			"args": [
@@ -22,11 +24,11 @@
 			],
 			"problemMatcher": [
 				"$rustc"
-			],
-			"group": "build",
-			"label": "rust: cargo doc (dev)"
+			]
 		},
 		{
+			"label": "rust: cargo test (no backtrace)",
+			"group": "test",
 			"type": "cargo",
 			"command": "test",
 			"env": {
@@ -34,21 +36,38 @@
 			},
 			"problemMatcher": [
 				"$rustc"
-			],
-			"group": "test",
-			"label": "rust: cargo test"
+			]
 		},
 		{
-			"type": "cargo",
-			"command": "build",
-			"problemMatcher": [
-				"$rustc"
-			],
+			"label": "rust: cargo build",
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
-			"label": "rust: cargo build"
+			"type": "cargo",
+			"command": "build",
+			"problemMatcher": [
+				"$rustc"
+			]
+		},
+		{
+			"label": "rust: cargo miri test",
+			"group": "test",
+			"type": "process",
+			"command": "cargo",
+			"options": {
+				"env": {
+					"MIRIFLAGS": "-Zmiri-backtrace=0 -Zmiri-disable-isolation"
+				}
+			},
+			"args": [
+				"+nightly-2025-07-06",
+				"miri",
+				"test"
+			],
+			"problemMatcher": [
+				"$rustc"
+			]
 		}
 	]
 }

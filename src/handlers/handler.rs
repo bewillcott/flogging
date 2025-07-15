@@ -29,14 +29,18 @@
 use std::{fmt::Display, io::Error};
 
 use crate::{
-    handlers::{console_handler::ConsoleHandler, file_handler::FileHandler, formatter::Formatter},
+    handlers::{
+        console_handler::ConsoleHandler, file_handler::FileHandler, formatter::Formatter,
+        string_handler::StringHandler,
+    },
     logger::{Level, LogEntry},
 };
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
     ConsoleHandler,
     FileHandler,
+    StringHandler,
 }
 
 impl Handler {
@@ -44,6 +48,7 @@ impl Handler {
         let r: Box<dyn HandlerTrait> = match self {
             Handler::ConsoleHandler => Box::new(ConsoleHandler::create(name)?),
             Handler::FileHandler => Box::new(FileHandler::create(name)?),
+            Handler::StringHandler => Box::new(StringHandler::create(name)?),
         };
 
         Ok(r)
@@ -76,11 +81,18 @@ pub trait HandlerTrait: Display + Send + Sync {
     fn flush(&mut self);
 
     ///
+    /// Return a copy of the internal buffer as a `String`.
+    ///
+    fn get_log(&self) -> String;
+
+    ///
     /// Return the format String for this Handler.
     ///
     fn get_formatter(&self) -> &Formatter;
 
+    ///
     /// Check status of this handler.
+    ///
     fn is_open(&self) -> bool;
 
     ///

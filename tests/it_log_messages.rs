@@ -24,18 +24,26 @@
 //! # Integrated Testing of Log Messages
 //!
 
-#[allow(unused_variables)]
+#[allow(unused_variables, unused_imports)]
 #[cfg(test)]
 mod tests {
-    use flogging::{Level::*, Logger};
+    use flogging::{Handler, Level::*, Logger};
+    use flogging_macros::show_streams;
+    use regex::{Regex, RegexBuilder};
 
+    ///
+    /// This is a test of adding log messages.
+    ///
     #[test]
+    #[show_streams]
     fn add_a_log_message() {
         let mut logger = Logger::builder(module_path!())
             .add_console_handler()
             .add_file_handler("test.log")
             .set_level(FINE)
             .build();
+
+        println!("module_path!(): {}", module_path!());
 
         // logger.set_level(OFF);
         logger.fine("add_a_log_message", "This a just a test.");
@@ -65,5 +73,58 @@ mod tests {
         logger2.warning("shared_log_file", "This a just a test.");
         logger1.severe("shared_log_file", "This a just a test.");
         logger2.fine("shared_log_file", "This a just a test.");
+
+        println!("\n{}", logger1);
+    }
+
+    #[test]
+
+    fn string_handler() {
+        let mut log = Logger::string_logger(module_path!());
+        log.set_level(FINEST);
+
+        log.entering("string_handler");
+        log.info("string_handler", "Believe it or not!");
+        log.fine("string_handler", "Something is happening.");
+        log.finest("string_handler", "We're now down with the worms!");
+        log.exiting("string_handler");
+
+        println!("\n{}", log);
+        // print!("{}", log.get_handler(Handler::StringHandler).unwrap().get_log());
+    }
+
+    #[test]
+    fn regex() {
+        let item = "///
+/// This is a test of adding log messages.
+///
+fn add_a_log_message()
+{
+    let mut logger =
+    Logger::builder(module_path!()).add_console_handler().add_file_handler(\"test.log\").set_level(FINE).build();
+    logger.fine(\"add_a_log_message\", \"This a just a test.\"); let mut logger =
+    Logger::console_logger(module_path!()); logger.set_level(SEVERE);
+    logger.reset_level();
+    logger.warning(\"add_a_log_message\", \"This is test two!\");
+}";
+
+        let re = RegexBuilder::new(
+            r"(?<head>.*)fn\s+(?<fn_name>[_]*[a-z][_\w]*)(?<begin>[^\{]*)\{(?<body>.*)\}$",
+        )
+        .dot_matches_new_line(true)
+        .build()
+        .unwrap();
+        let binding = item.to_string();
+        let caps = re.captures(&binding).unwrap();
+        let head = caps["head"].to_string();
+        let fn_name = caps["fn_name"].to_string();
+        let begin = caps["begin"].to_string();
+        let body = caps["body"].to_string();
+
+        println!("head: {head}");
+        println!("fn_name: {fn_name}");
+        println!("begin: {begin}");
+        println!("body: {body}");
+        println!()
     }
 }
