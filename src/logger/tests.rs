@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2025 Bradley Willcott
 //
-// SPDX-License-Identifier: GPL-2.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 // This library (crate) is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,7 +33,8 @@ fn config() {
 
         pub(super) fn help() {
             let mut log = Logger::console_logger(module_path!());
-            log.info("help", "Some text to store.");
+            log.set_fn_name("help");
+            log.info("Some text to store.");
         }
     }
 

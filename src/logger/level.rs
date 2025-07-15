@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2025 Bradley Willcott
 //
-// SPDX-License-Identifier: GPL-2.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 // This library (crate) is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -50,15 +50,24 @@ use std::fmt;
 #[derive(Debug, Clone, Default, PartialEq, PartialOrd)]
 pub enum Level {
     ///
+    /// ALL is a special level that can be used to turn on logging
+    /// for all levels.
+    ///
+    ALL,
+
+    ///
     /// FINEST indicates a highly detailed tracing message.
     ///
     FINEST,
+
     ///
     /// FINER indicates a fairly detailed tracing message.
     /// Suggest logging calls for entering, returning,
-    /// or throwing an exception are traced at this level.
+    /// or `Error`s, such as returned via `Result`, are traced at
+    /// this level.
     ///
     FINER,
+
     ///
     /// FINE is a message level providing tracing information.
     ///
@@ -78,6 +87,7 @@ pub enum Level {
     /// also worth logging as FINE.
     ///
     FINE,
+
     ///
     /// CONFIG is a message level for static configuration messages.
     ///
@@ -89,6 +99,7 @@ pub enum Level {
     /// graphics depth, the GUI look-and-feel, etc.
     ///
     CONFIG,
+
     ///
     /// INFO is a message level for informational messages.
     ///
@@ -101,6 +112,7 @@ pub enum Level {
     ///
     #[default]
     INFO,
+
     ///
     /// WARNING is a message level indicating a potential problem.
     ///
@@ -109,6 +121,7 @@ pub enum Level {
     /// potential problems.
     ///
     WARNING,
+
     ///
     /// SEVERE is a message level indicating a serious failure.
     ///
@@ -118,6 +131,7 @@ pub enum Level {
     /// and to system administrators.
     ///
     SEVERE,
+
     ///
     /// OFF is a special level that can be used to turn off logging.
     ///
@@ -127,6 +141,7 @@ pub enum Level {
 impl fmt::Display for Level {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let label = match self {
+            Level::ALL => "ALL",
             Level::FINEST => "FINEST",
             Level::FINER => "FINER",
             Level::FINE => "FINE",

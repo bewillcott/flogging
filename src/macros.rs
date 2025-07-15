@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2025 Bradley Willcott
 //
-// SPDX-License-Identifier: GPL-2.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 // This library (crate) is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,13 +24,14 @@
 //! # Macros
 //!
 
+use crate::Logger;
 
 ///
 /// Setup module level logger access.
 ///
 /// The basic macro syntax is:
 ///
-/// ```no_run
+/// ```text
 /// static_logger!({/* the block of Rust code to build a Logger goes here */});
 /// ```
 /// Notice there are curly braces "`{}`" wrapping the inner Rust code. They
@@ -55,11 +56,10 @@
 #[macro_export]
 macro_rules! static_logger {
     ($block:block) => {
+        use flogging::Logger as FLogger;
+        use std::cell::{LazyCell as FLazyCell, RefCell as FRefCell};
+
         // Setup module level logger access.
-        const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
-            RefCell::new({
-                $block
-            })
-        });
+        const LOGGER: FLazyCell<FRefCell<FLogger>> = FLazyCell::new(|| FRefCell::new({ $block }));
     };
 }

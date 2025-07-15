@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2025 Bradley Willcott
 //
-// SPDX-License-Identifier: GPL-2.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 // This library (crate) is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

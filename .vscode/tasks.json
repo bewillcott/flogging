@@ -51,6 +51,18 @@
 			]
 		},
 		{
+			"label": "rust: cargo clippy",
+			"group": "test",
+			"type": "process",
+			"command": "cargo",
+			"args": [
+				"clippy"
+			],
+			"problemMatcher": [
+				"$rustc"
+			]
+		},
+		{
 			"label": "rust: cargo miri test",
 			"group": "test",
 			"type": "process",

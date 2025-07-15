@@ -1,9 +1,12 @@
+workspace = { members = ["flogging_macros"]}
+
 [package]
 name = "flogging"
 version = "0.3.0"
 edition = "2024"
 description = "Just another [...] logger. This one loosely based on the Java logging package: java.util.logging."
 license = "GPL-3.0-or-later"
+resolver = "2"
 
 
 [dependencies]

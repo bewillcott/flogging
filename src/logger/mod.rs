@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2025 Bradley Willcott
 //
-// SPDX-License-Identifier: GPL-2.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 // This library (crate) is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -95,21 +95,19 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.
+    /// `msg` - The string message.
     ///
     /// ## Examples
     /// ```
     /// use flogging::Logger;
     ///
     /// let mut log = Logger::console_logger(module_path!());
-    /// log.info("config", "Some text to store.");
+    /// log.config("Some text to store.");
     /// ```
     ///
     ///
-    pub fn config(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::CONFIG, fn_name, msg);
+    pub fn config(&mut self, msg: &str) {
+        self.log(Level::CONFIG, &self.fn_name(), msg);
     }
 
     ///
@@ -128,26 +126,20 @@ impl Logger {
     /// Log a method entry.
     ///
     /// This is a convenience method that can be used to log entry to a method.
-    /// A `LogEntry` with message "Entry", log level FINER, and the given `fn_name` is logged.
+    /// A `LogEntry` with message "Entry" and log level FINER is logged.
     ///
-    /// ## Parameters
-    /// `fn_name` - The name of the function/method from-which this method was called.
-    ///
-    pub fn entering(&mut self, fn_name: &str) {
-        self.log(Level::FINER, fn_name, "Entry");
+    pub fn entering(&mut self) {
+        self.log(Level::FINER, &self.fn_name(), "Entry");
     }
 
     ///
     /// Log a method return.
     ///
     /// This is a convenience method that can be used to log returning from a method.
-    /// A `LogEntry` with message "Return", log level FINER, and the given `fn_name` is logged.
+    /// A `LogEntry` with message "Return" and log level FINER is logged.
     ///
-    /// ## Parameters
-    /// `fn_name` - The name of the function/method from-which this method was called.
-    ///
-    pub fn exiting(&mut self, fn_name: &str) {
-        self.log(Level::FINER, fn_name, "Return");
+    pub fn exiting(&mut self) {
+        self.log(Level::FINER, &self.fn_name(), "Return");
     }
 
     ///
@@ -165,7 +157,7 @@ impl Logger {
     /// use flogging::Logger;
     ///
     /// let mut log = Logger::file_logger(module_path!(), "test.log");
-    /// log.info("file_logger", "Some text to store.");
+    /// log.info("Some text to store.");
     /// ```
     ///
     // / [module_path]: (std::module_path)
@@ -181,12 +173,11 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
+    /// `msg` - The string message.
     /// was called.
     ///
-    pub fn fine(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::FINE, fn_name, msg);
+    pub fn fine(&mut self, msg: &str) {
+        self.log(Level::FINE, &self.fn_name(), msg);
     }
 
     ///
@@ -197,12 +188,10 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.
+    /// `msg` - The string message.
     ///
-    pub fn finer(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::FINER, fn_name, msg);
+    pub fn finer(&mut self, msg: &str) {
+        self.log(Level::FINER, &self.fn_name(), msg);
     }
 
     ///
@@ -213,12 +202,10 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.
+    /// `msg` - The string message.
     ///
-    pub fn finest(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::FINEST, fn_name, msg);
+    pub fn finest(&mut self, msg: &str) {
+        self.log(Level::FINEST, &self.fn_name(), msg);
     }
 
     ///
@@ -236,7 +223,7 @@ impl Logger {
     /// use flogging::{Logger,Handler};
     ///
     /// let mut log = Logger::string_logger(module_path!());
-    /// log.info("get_handler", "Some text to store.");
+    /// log.info("Some text to store.");
     ///
     /// let h = log.get_handler(Handler::StringHandler);
     /// ```
@@ -255,12 +242,10 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.
+    /// `msg` - The string message.
     ///
-    pub fn info(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::INFO, fn_name, msg);
+    pub fn info(&mut self, msg: &str) {
+        self.log(Level::INFO, &self.fn_name(), msg);
     }
 
     ///
@@ -338,8 +323,9 @@ impl Logger {
     ///
     /// Set the current function/method name.
     ///
-    pub fn set_fn_name(&mut self, fn_name: &str) {
+    pub fn set_fn_name(&mut self, fn_name: &str) -> &mut Self {
         self.fn_name = fn_name.to_string();
+        self
     }
 
     ///
@@ -360,12 +346,10 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.
+    /// `msg` - The string message.
     ///
-    pub fn severe(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::SEVERE, fn_name, msg);
+    pub fn severe(&mut self, msg: &str) {
+        self.log(Level::SEVERE, &self.fn_name(), msg);
     }
 
     ///
@@ -388,12 +372,10 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.
+    /// `msg` - The string message.
     ///
-    pub fn warning(&mut self, fn_name: &str, msg: &str) {
-        self.log(Level::WARNING, fn_name, msg);
+    pub fn warning(&mut self, msg: &str) {
+        self.log(Level::WARNING, &self.fn_name(), msg);
     }
 }
 
@@ -406,7 +388,11 @@ impl fmt::Display for Logger {
             buf.push_str(&s);
         }
 
-        writeln!(f, "{} - [{}]\n\n{}", self.mod_path, self.level, buf)
+        writeln!(
+            f,
+            "{}::{} - [{}]\n\n{}",
+            self.mod_path, self.fn_name, self.level, buf
+        )
     }
 }
 
