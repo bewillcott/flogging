@@ -27,9 +27,16 @@ are many other logging crates out there, but where is the fun in that? As a hobb
 
 A lot of the functionality has been inspired by, and even copied from (at the API level), the JDK's `java.util.logging` package. Whether or not it will ever become a _full_ port, only time and my level of interest, will tell. Remember, "learning experience"?
 
-### What's in a name?
+## What's in a name?
 
-`Flogging`, as-in, "Just another f\*ing logger", or "Flogging a dead horse". As I wrote above, there are <i>many</i> other logging crates around. This is just my learning spin on a very well covered tool.
+`Flogging`, as-in, "Just another f\*ing logger", or "Flogging a dead horse". As I wrote above, there are _many_ other logging crates around. This is just my learning spin on a very well covered tool.
+
+## Final word
+
+Having said all that, with jokes aside, this is a fully working project. One that I
+hope others will benefit from. If not just using it, then perhaps learning from
+the source code, the various solutions to the problems involved in providing the
+functionality.
 
 Anyway, have fun.\
 [Bradley Willcott][bw]\

@@ -1,5 +1,5 @@
 /target
 LICENSE.html
-README.html
+**/README.html
 *.txt
 *.log
