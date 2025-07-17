@@ -60,7 +60,9 @@ use proc_macro_error::proc_macro_error;
 /// `msg` - The same as for [`std::format!`][format].
 ///
 /// ## Examples
+///
 /// ```no_run
+/// extern crate flogging;
 /// use flogging::*;
 /// use chrono::Local;
 ///
@@ -233,7 +235,7 @@ pub fn info(msg: TokenStream) -> TokenStream {
 ///
 /// This is required to be able to use the [macros](index.html#macros)
 ///
-/// ```
+/// ```no_run
 /// #[logger]
 /// pub fn my_func(msg: &str){
 ///     entering!();

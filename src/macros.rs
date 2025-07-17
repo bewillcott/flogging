@@ -42,6 +42,7 @@ use crate::Logger;
 ///
 /// # Examples
 /// ```
+/// extern crate flogging;
 /// use flogging::*;
 ///
 /// static_logger!({

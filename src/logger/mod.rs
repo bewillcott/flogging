@@ -99,6 +99,7 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
+    /// extern crate flogging;
     /// use flogging::Logger;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -154,6 +155,7 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
+    /// extern crate flogging;
     /// use flogging::Logger;
     ///
     /// let mut log = Logger::file_logger(module_path!(), "test.log");
@@ -220,6 +222,7 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
+    /// extern crate flogging;
     /// use flogging::{Logger,Handler};
     ///
     /// let mut log = Logger::string_logger(module_path!());
