@@ -49,14 +49,14 @@ mod tests {
         config!("Some testing config stuff.");
         entering!();
 
-        config!("Just come config stuff.");
+        config!("Just some config stuff.");
         println!("module_path!(): {}", module_path!());
 
         fine!("This a fine test.");
         finer!("This a finer test.");
         finest!("This the finest test.");
-        warning!("Lookout, your momma, she comin'!");
-        severe!("Oh Shit! Now you've done it!!");
+        warning!("Lookout, the sky's falling!");
+        severe!("Oh Shit! We're done for now!!");
 
         exiting!();
     }
@@ -80,10 +80,10 @@ mod tests {
 
         logger2.set_fn_name("shared_log_file");
 
-        logger1.fine("This a just a test.");
-        logger2.warning("This a just a test.");
-        logger1.severe("This a just a test.");
-        logger2.fine("This a just a test.");
+        logger1.fine("This a fine test.");
+        logger2.warning("This a warning test.");
+        logger1.severe("This a severe test.");
+        logger2.fine("This another fine test.");
 
         println!("\n{}", logger1);
     }
@@ -181,7 +181,7 @@ mod temp {
         fine!("Bit more detail.");
 
         if let Err(e) = error_prone() {
-            warning!(&e.to_string());
+            warning!("{}", e);
         }
         set_level!(Level::INFO);
         exiting!();

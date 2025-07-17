@@ -27,9 +27,31 @@
 //! provision of specific information as, when, and from where it is needed. This could
 //! be during development, testing, or even during production runs.
 //!
+//! ## Setting up
+//!
+//! You need to add this crate to your project:
+//! ```
+//! cargo add flogging
+//! ```
+//! or add this text to the projects `Cargo.toml` file:
+//! ```
+//! [dependencies]
+//! flogging = "0.3.0"
+//! ```
+//!
 //! ## Examples
 //!
+//! This example demonstrates using the macros.
 //!
+//! Let's see what is required:
+//!
+//! 1. At the module level:
+//!     - `use flogging::*;`
+//!     - `static_logger!({...});`[->][static_logger]
+//! 2. On each function/method you want to add logging to:
+//!     - `#[logger]`[->][logger]
+//! 3. Inside each such attributed function/method:
+//!     - Any of the logging [macros]
 //!
 //! ```
 //! use flogging::*;
@@ -45,18 +67,19 @@
 //! });
 //!
 //! #[logger]
-//! fn do_something(){
+//! fn do_something() {
 //!     entering!();
 //!
 //!     // do some work worth noting
-//!     info!("Did some work here.");
+//!     let result = "Just something to log.";
+//!     info!("Did some work here.\n  {result}");
 //!
 //!     // ...
 //!
 //!     fine!("Bit more detail.");
 //!
 //!     if let Err(e) = error_prone() {
-//!         warning!(&e.to_string());
+//!         warning!("Error: {}", e);
 //!     }
 //!
 //!     exiting!();
@@ -71,8 +94,12 @@
 //! }
 //!
 //! #[logger]
-//! fn main(){
+//! fn main() {
 //!     entering!();
+//!     info!(
+//!         "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
+//!     );
+//!     warning!("Those same macros (info, etc.) MUST have atleast the format string.");
 //!     config!("This is running on Fedora Linux 42.");
 //!     do_something();
 //!     info!("Job's done.");
@@ -83,13 +110,15 @@
 //! Output:
 //! ```code
 //! |flogging->main| [FINER  ] Entry
+//! |flogging->main| [INFO   ] All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`
+//! |flogging->main| [WARNING] Those same macros (info, etc.) MUST have atleast the format string.
 //! |flogging->main| [CONFIG ] This is running on Fedora Linux 42.
 //! |flogging->do_something| [FINER  ] Entry
-//! |flogging->do_something| [INFO   ] Did some work here.
+//! |flogging->do_something| [INFO   ] Did some work here. Just something to log.
 //! |flogging->do_something| [FINE   ] Bit more detail.
 //! |flogging->error_prone| [FINER  ] Entry
 //! |flogging->error_prone| [FINER  ] Return
-//! |flogging->do_something| [WARNING] Bad day!
+//! |flogging->do_something| [WARNING] Error: Bad day!
 //! |flogging->do_something| [FINER  ] Return
 //! |flogging->main| [INFO   ] Job's done.
 //! |flogging->main| [FINER  ] Return
@@ -110,28 +139,17 @@
 //! Though this crate has all the methods a developer with time and patience would be happy
 //! with, I believe the most efficient way is to use the supplied macros.
 //!
-//! - [`static_logger!()`][static_logger] - Setup module level logger access.
-//! - [`logger!()`][logger] - Provides for logging within the attributed function/method.
-//!
-//! - [`entering!()`][entering] - This is a convenience method that can be used to log entry to a method.
-//! - [`exiting!()`][exiting] - This is a convenience method that can be used to log returning from a method.
-//! - [`finest!()`][finest] - FINEST indicates a highly detailed tracing message.
-//! - [`finer!()`][finer] - FINER indicates a fairly detailed tracing message.
-//! - [`fine!()`][fine] - FINE is a message level providing tracing information.
-//! - [`config!()`][config] - CONFIG is a message level for static configuration messages.
-//! - [`info!()`][info] - INFO is a message level for informational messages.
-//! - [`warning!()`][warning] - WARNING is a message level indicating a potential problem.
-//! - [`severe!()`][severe] - SEVERE is a message level indicating a serious failure.
-//!
+//! [macros]: index.html#macros-1
 //!
 
 #![allow(unused_imports)]
 
 mod handlers;
 mod logger;
-pub mod macros;
+mod macros;
 
 pub use flogging_macros::*;
 pub use handlers::{formatter::Formatter, handler::Handler};
 use logger::LogEntry;
 pub use logger::*;
+pub use macros::*;

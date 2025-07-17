@@ -21,7 +21,7 @@
 //
 
 //!
-//! # Logger Macro
+//! # Logger Macro Impl
 //!
 
 use proc_macro::TokenStream;

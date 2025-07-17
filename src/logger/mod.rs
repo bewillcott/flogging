@@ -126,7 +126,7 @@ impl Logger {
     /// Log a method entry.
     ///
     /// This is a convenience method that can be used to log entry to a method.
-    /// A `LogEntry` with message "Entry" and log level FINER is logged.
+    /// A `LogEntry` with message "Entry" and log level FINER, is logged.
     ///
     pub fn entering(&mut self) {
         self.log(Level::FINER, &self.fn_name(), "Entry");
@@ -136,7 +136,7 @@ impl Logger {
     /// Log a method return.
     ///
     /// This is a convenience method that can be used to log returning from a method.
-    /// A `LogEntry` with message "Return" and log level FINER is logged.
+    /// A `LogEntry` with message "Return" and log level FINER, is logged.
     ///
     pub fn exiting(&mut self) {
         self.log(Level::FINER, &self.fn_name(), "Return");
@@ -148,7 +148,7 @@ impl Logger {
     /// Logging level is set to it's default setting (INFO).
     ///
     /// ## Parameters
-    /// `mod_path`- The module path. Suggest using [`module_path`].\
+    /// `mod_path`- The module path. Suggest using [`std::module_path`][mp].\
     /// `filename` - The name of the log file to use. Will be created
     /// if it doesn't exist.
     ///
@@ -160,7 +160,7 @@ impl Logger {
     /// log.info("Some text to store.");
     /// ```
     ///
-    // / [module_path]: (std::module_path)
+    /// [mp]: https://doc.rust-lang.org/std/macro.module_path.html
     pub fn file_logger(mod_path: &str, filename: &str) -> Logger {
         Logger::builder(mod_path).add_file_handler(filename).build()
     }

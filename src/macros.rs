@@ -34,11 +34,11 @@ use crate::Logger;
 /// ```text
 /// static_logger!({/* the block of Rust code to build a Logger goes here */});
 /// ```
-/// Notice there are curly braces "`{}`" wrapping the inner Rust code. They
-/// are required.
+/// Notice there are curly braces "`{}`" wrapping the inner Rust code.
+/// **They are required.**
 ///
 /// The code you put in here will depend on what configuration of `Logger` you
-/// need to setup.
+/// want to setup.
 ///
 /// # Examples
 /// ```

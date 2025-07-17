@@ -10,7 +10,8 @@
         "comin",
         "nanos",
         "PCDATA",
-        "serde"
+        "serde",
+        "strfmt"
     ],
     // "editor.quickSuggestionsDelay": 4000,
 }

@@ -37,18 +37,19 @@ static_logger!({
 });
 
 #[logger]
-fn do_something(){
+fn do_something() {
     entering!();
 
     // do some work worth noting
-    info!("Did some work here.");
+    let result = "Just something to log.";
+    info!("Did some work here. {result}");
 
     // ...
 
     fine!("Bit more detail.");
 
     if let Err(e) = error_prone() {
-        warning!(&e.to_string());
+        warning!("Error: {}", e);
     }
 
     exiting!();
@@ -63,8 +64,12 @@ fn error_prone() -> Result<(), Box<dyn Error>> {
 }
 
 #[logger]
-fn main(){
+fn main() {
     entering!();
+    info!(
+        "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
+    );
+    warning!("Those same macros (info, etc.) MUST have atleast the format string.");
     config!("This is running on Fedora Linux 42.");
     do_something();
     info!("Job's done.");

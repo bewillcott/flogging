@@ -24,14 +24,21 @@
 //! # Flogging Macros
 //!
 
+mod format;
 mod logger;
-mod show_streams;
 
+extern crate dyn_fmt;
 extern crate proc_macro;
 extern crate proc_macro_error;
-use crate::{logger::logger_impl, show_streams::show_streams_impl};
+
+use crate::{format::format_impl, logger::logger_impl};
 use proc_macro::TokenStream;
-// use proc_macro_error::proc_macro_error;
+use proc_macro_error::proc_macro_error;
+
+// #[proc_macro]
+// pub fn tester(item: TokenStream) -> TokenStream {
+//     tester_impl(item)
+// }
 
 ///
 /// Log a CONFIG message.
@@ -50,11 +57,12 @@ use proc_macro::TokenStream;
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`][format].
 ///
 /// ## Examples
 /// ```no_run
 /// use flogging::*;
+/// use chrono::Local;
 ///
 /// static_logger!({
 ///     Logger::console_logger(module_path!())
@@ -63,35 +71,48 @@ use proc_macro::TokenStream;
 /// #[logger]
 /// fn my_func(){
 ///     config!("Some text to store.");
+///
+///     let time = Local::now();
+///     config!("The configuration as at: {}", time);
+///     config!("The configuration as at: {time}");
+///     config!("The configuration as at: {time:?}");
 /// }
 /// ```
+/// Output:
+/// ```
+/// |flogging->my_func| [CONFIG ] Some text to store.
+/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-17 14:52:04.470069898 +08:00
+/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-17 14:52:04.470069898 +08:00
+/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-17T14:52:04.470069898+08:00
+/// ```
+/// [format]: https://doc.rust-lang.org/std/macro.format.html
 ///
-// #[proc_macro_error]
+#[proc_macro_error]
 #[proc_macro]
 pub fn config(msg: TokenStream) -> TokenStream {
-    format!("__log.config({msg});\n").parse().unwrap()
+    format_impl("__log.config({&_fmt});\n", msg)
 }
 
 ///
 /// Log a method entry.
 ///
 /// This is a convenience method that can be used to log entry to a method.
-/// A `LogEntry` with message "Entry" and log level FINER is logged.
+/// A `LogEntry` with message "Entry" and log level FINER, is logged.
 ///
 #[proc_macro]
 pub fn entering(_msg: TokenStream) -> TokenStream {
-    "__log.entering();\n".parse().unwrap()
+    "__log.entering();\n".parse().unwrap_or_default()
 }
 
 ///
 /// Log a method return.
 ///
 /// This is a convenience method that can be used to log returning from a method.
-/// A `LogEntry` with message "Return" and log level FINER is logged.
+/// A `LogEntry` with message "Return" and log level FINER, is logged.
 ///
 #[proc_macro]
 pub fn exiting(_msg: TokenStream) -> TokenStream {
-    "__log.exiting();\n".parse().unwrap()
+    "__log.exiting();\n".parse().unwrap_or_default()
 }
 
 ///
@@ -119,11 +140,16 @@ pub fn exiting(_msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `fine!` for `config!`.
 ///
 #[proc_macro]
 pub fn fine(msg: TokenStream) -> TokenStream {
-    format!("__log.fine({msg});\n").parse().unwrap()
+    format_impl("__log.fine({&_fmt});\n", msg)
 }
 
 ///
@@ -139,11 +165,16 @@ pub fn fine(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `finer!` for `config!`.
 ///
 #[proc_macro]
 pub fn finer(msg: TokenStream) -> TokenStream {
-    format!("__log.finer({msg});\n").parse().unwrap()
+    format_impl("__log.finer({&_fmt});\n", msg)
 }
 
 ///
@@ -156,11 +187,16 @@ pub fn finer(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `finest!` for `config!`.
 ///
 #[proc_macro]
 pub fn finest(msg: TokenStream) -> TokenStream {
-    format!("__log.finest({msg});\n").parse().unwrap()
+    format_impl("__log.finest({&_fmt});\n", msg)
 }
 
 ///
@@ -180,15 +216,32 @@ pub fn finest(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `info!` for `config!`.
 ///
 #[proc_macro]
 pub fn info(msg: TokenStream) -> TokenStream {
-    format!("__log.info({msg});\n").parse().unwrap()
+    format_impl("__log.info({&_fmt});\n", msg)
 }
 
 ///
 /// Provides for logging within the attributed function/method.
+///
+/// This is required to be able to use the [macros](index.html#macros)
+///
+/// ```
+/// #[logger]
+/// pub fn my_func(msg: &str){
+///     entering!();
+///     fine!("msg: {msg}");
+///
+///     ...
+/// }
+/// ```
 ///
 #[proc_macro_attribute]
 pub fn logger(attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -200,7 +253,9 @@ pub fn logger(attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn set_level(level: TokenStream) -> TokenStream {
-    format!("__log.set_level({level});\n").parse().unwrap()
+    format!("__log.set_level({level});\n")
+        .parse()
+        .unwrap_or_default()
 }
 
 ///
@@ -218,19 +273,16 @@ pub fn set_level(level: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `severe!` for `config!`.
 ///
 #[proc_macro]
 pub fn severe(msg: TokenStream) -> TokenStream {
-    format!("__log.severe({msg});\n").parse().unwrap()
-}
-
-///
-/// Shows the stringified `TokenStreams` that the attribute macros see.
-///
-#[proc_macro_attribute]
-pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
-    show_streams_impl(attr, item)
+    format_impl("__log.severe({&_fmt});\n", msg)
 }
 
 ///
@@ -247,9 +299,14 @@ pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The string message.
+/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `warning!` for `config!`.
 ///
 #[proc_macro]
 pub fn warning(msg: TokenStream) -> TokenStream {
-    format!("__log.warning({msg});\n").parse().unwrap()
+    format_impl("__log.warning({&_fmt});\n", msg)
 }

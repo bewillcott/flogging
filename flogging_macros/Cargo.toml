@@ -7,9 +7,10 @@ edition = "2024"
 proc-macro = true
 
 [dependencies]
-syn = "2.0"
+syn = {version = "2.0.104", features = ["full", "visit", "extra-traits"]}
 quote = "1.0"
 regex = "1.11.1"
 proc-macro2 = "1.0.95"
 darling = "0.21.0"
 proc-macro-error = { version = "1", default-features = false }
+dyn-fmt = "0.4.3"

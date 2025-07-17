@@ -1,5 +1,5 @@
 //
-// File Name:    show_streams.rs
+// File Name:    fmt_log.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,33 +21,26 @@
 //
 
 //!
-//! # Show Streams Macro
+//! # format Macro Impl
+//!
+//! Format the Log function call (Rust code)
 //!
 
+use dyn_fmt::AsStrFormatExt;
 use proc_macro::TokenStream;
-use regex::RegexBuilder;
 
-pub(crate) fn show_streams_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
-    println!("attr: \"{attr}\"");
-    println!("item: \"{item}\"");
-    println!("fn_name: \"{}\"", get_fn_name(&item).unwrap_or_default());
-    item
-}
+pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
+    // println!("msg: {}", &msg);
 
-pub(crate) fn get_fn_name(item: &TokenStream) -> Option<String> {
-    let re = RegexBuilder::new(r"^.*fn\s+(?<fn_name>[_]*[a-z][_\w]*)(.*)$")
-        .dot_matches_new_line(true)
-        .build()
-        .unwrap();
+    let mut buf = String::new();
+    let fmt = "let _fmt = format!({});\n".format(&[&msg.to_string()]);
 
-    let binding = item.clone().to_string();
-    let caps = match re.captures(&binding) {
-        Some(caps) => caps,
-        None => {
-            eprintln!("Nothing captured!");
-            return None;
-        }
-    };
+    buf.push_str(&fmt);
+    buf.push_str(fmt_str);
 
-    Some(caps["fn_name"].to_string().clone())
+    let rtn = buf.parse().unwrap_or_default();
+
+    // println!("{rtn}");
+
+    rtn
 }
