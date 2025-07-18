@@ -52,7 +52,7 @@ pub(crate) fn logger_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     // Store the function identifier for logging
     let function_identifier = if attr.to_string().is_empty() {
         sig.ident.clone().to_string()
-    }else{
+    } else {
         attr.to_string()
     };
 
@@ -64,7 +64,8 @@ pub(crate) fn logger_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
         #(#attrs)*
         // Reconstruct the function declaration
         #vis #sig {
-            // At the beginning of the function, create an instance of `Instant`
+            // At the beginning of the function, borrow a reference to
+            // module level static logger.
             let __binding = LOGGER;
             let mut __log = __binding.borrow_mut();
             __log.set_fn_name(#function_identifier);

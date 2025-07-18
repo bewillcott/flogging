@@ -27,6 +27,8 @@
 #[allow(unused_variables, unused_imports)]
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     use flogging::{Level::*, *};
     use flogging_macros::*;
     use regex::{Regex, RegexBuilder};
@@ -55,7 +57,7 @@ mod tests {
         fine!("This a fine test.");
         finer!("This a finer test.");
         finest!("This the finest test.");
-        warning!("Lookout, the sky's falling!");
+        warning!("Lookout - the sky's falling!");
         severe!("Oh Shit! We're done for now!!");
 
         exiting!();
@@ -110,7 +112,7 @@ mod tests {
         let item = "///
 /// This is a test of adding log messages.
 ///
-fn add_a_log_message()
+fn add_a_log_message(fmt: &str, msg: &str)
 {
     let mut logger =
     Logger::builder(module_path!()).add_console_handler().add_file_handler(\"test.log\").set_level(FINE).build();
@@ -121,7 +123,7 @@ fn add_a_log_message()
 }";
 
         let re = RegexBuilder::new(
-            r"(?<head>.*)fn\s+(?<fn_name>[_]*[a-z][_\w]*)(?<begin>[^\{]*)\{(?<body>.*)\}$",
+            r"(?<head>.*)fn\s+(?<fn_name>[_]*[a-z][_\w]*)\((?<attrs>[^\{]*)\).*\{(?<body>.*)\}$",
         )
         .dot_matches_new_line(true)
         .build()
@@ -130,14 +132,65 @@ fn add_a_log_message()
         let caps = re.captures(&binding).unwrap();
         let head = caps["head"].to_string();
         let fn_name = caps["fn_name"].to_string();
-        let begin = caps["begin"].to_string();
+
+        let tmp = caps["attrs"].to_string();
+        let attrs: Vec<&str> = tmp.split(',').collect();
+
         let body = caps["body"].to_string();
 
         println!("head: {head}");
         println!("fn_name: {fn_name}");
-        println!("begin: {begin}");
+        println!("attrs: {attrs:?}");
         println!("body: {body}");
         println!()
+    }
+
+    #[test]
+    fn regex_params() {
+        let t = "\"{}\", arg";
+        let t2 = "\"Some text{:?}\n\", arg";
+        let t1 = "arg";
+        let t1a = "arg, arg1";
+        let s = "\"Lookout, the sky's falling!\"";
+        let s1 = "\"Lookout, the sky's {falling}!\"";
+
+        let regex_str = "(?<fmt>\".*\\{.*\\}.*\")(,[\\s]*(?<attrs>.*)*)";
+
+        let text = s1;
+
+        if text.starts_with('\"') && text.ends_with('\"') {
+            println!("{text}");
+            return;
+        }
+
+        let re = RegexBuilder::new(regex_str)
+            .dot_matches_new_line(true)
+            .build()
+            .unwrap();
+
+        if re.is_match(text) {
+            println!("{}", text);
+        } else {
+            println!("None");
+            let count = text.split(',').count();
+
+            let mut buf = String::new();
+
+            if count == 1 {
+                buf.push_str("\"{}\", ");
+            } else {
+                buf.push_str("\"{}");
+
+                for _i in 1..count {
+                    buf.push_str(", {}");
+                }
+
+                buf.push_str("\", ");
+            }
+
+            buf.push_str(text);
+            println!("buf: {buf}");
+        }
     }
 }
 
@@ -181,7 +234,7 @@ mod temp {
         fine!("Bit more detail.");
 
         if let Err(e) = error_prone() {
-            warning!("{}", e);
+            warning!(e);
         }
         set_level!(Level::INFO);
         exiting!();
@@ -224,6 +277,7 @@ mod my_mod {
     fn my_func(data: &str) -> bool {
         entering!();
         entering!("data: \"{data}\"");
+        entering!(data);
 
         // ...
 

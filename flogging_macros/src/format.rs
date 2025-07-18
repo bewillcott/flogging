@@ -28,13 +28,14 @@
 
 use dyn_fmt::AsStrFormatExt;
 use proc_macro::TokenStream;
+use regex::RegexBuilder;
 
 pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
     // println!("msg: {}", &msg);
 
-    let mut buf = String::new();
-    let fmt = "let __fmt = format!({});\n".format(&[&msg.to_string()]);
+    let fmt = "let __fmt = format!({});\n".format(&[&process_msg(msg).unwrap()]);
 
+    let mut buf = String::new();
     buf.push_str(&fmt);
     buf.push_str(fmt_str);
 
@@ -43,4 +44,48 @@ pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
     // println!("{rtn}");
 
     rtn
+}
+
+fn process_msg(msg: TokenStream) -> Option<String> {
+    let text = msg.to_string();
+
+    if text.is_empty() {
+        return None;
+    }
+
+    if text.starts_with('\"') && text.ends_with('\"') {
+        return Some(text);
+    }
+
+    let regex_str = "(?<fmt>\".*\\{.*\\}.*\")(,[\\s]*(?<attrs>.*)*)";
+
+    let re = RegexBuilder::new(regex_str)
+        .dot_matches_new_line(true)
+        .build()
+        .unwrap();
+
+    if re.is_match(&text) {
+        Some(text)
+    } else {
+        println!("None");
+        let count = text.split(',').count();
+
+        let mut buf = String::new();
+
+        if count == 1 {
+            buf.push_str("\"{}\", ");
+        } else {
+            buf.push_str("\"{}");
+
+            for _i in 1..count {
+                buf.push_str(", {}");
+            }
+
+            buf.push_str("\", ");
+        }
+
+        buf.push_str(&text);
+
+        Some(buf)
+    }
 }

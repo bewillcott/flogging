@@ -67,19 +67,41 @@ mod tests {
     #[logger]
     #[test]
     fn format2() {
+        use super::Temp;
+
         let arg = "Serious stuff".to_string();
         let arg1 = "NOW!!".to_string();
         let arg2 = "Signed: Brad".to_string();
 
-        config!("Testing `config` macro: {arg:?}, {} ({arg2})", arg1);
+        config!("arg: {arg} {} ({})", arg1, arg2);
+        config!(arg, arg1, arg2);
+
+        let temp = Temp::new("Freddy".to_string());
+
+        info!(temp);
+    }
+}
+
+use std::fmt;
+
+#[allow(dead_code)]
+pub struct Temp {
+    val: String,
+}
+
+#[allow(dead_code)]
+impl Temp {
+    pub fn new(val: String) -> Self {
+        Self { val }
     }
 
-    // #[logger]
-    // #[test]
-    // fn tester() {
-    //     let arg = "Some text".to_string();
-    //     let arg1 = "Some more text".to_string();
+    pub fn val(&self) -> String {
+        self.val.clone()
+    }
+}
 
-    //     tester!("This is some text: {} - {}", arg, arg1);
-    // }
+impl fmt::Display for Temp {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.val.fmt(f)
+    }
 }

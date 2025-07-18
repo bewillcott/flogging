@@ -41,8 +41,8 @@ fn do_something() {
     entering!();
 
     // do some work worth noting
-    let result = "Just something to log.";
-    info!("Did some work here. {result}");
+    let _result = "Just something to log.";
+    info!("Did some work here. {_result}");
 
     // ...
 
@@ -101,6 +101,21 @@ mod my_mod {
     }
 }
 
+use chrono::Local;
+
+#[logger]
+pub fn my_func(data: &str) {
+    config!("Some text to store.");
+
+    let time = Local::now();
+
+    config!(time);
+    config!(time, data);
+    config!("The configuration as at: {}", time);
+    config!("The configuration as at: {time}: {}", data);
+    config!("The configuration as at: {time:?}: {data}");
+}
+
 #[logger]
 fn main() {
     // entering!();
@@ -113,29 +128,29 @@ fn main() {
     // info!("Job's done.");
     // exiting!();
 
-    // let data = "Some data";
-    // my_mod::my_func(data);
+    let data = "Some data";
+    my_func(data);
 
-    extern crate flogging;
-    use flogging::*;
+    // extern crate flogging;
+    // use flogging::*;
 
-    let mut log = Logger::string_logger(module_path!());
-    log.set_fn_name("main");
+    // let mut log = Logger::string_logger(module_path!());
+    // log.set_fn_name("main");
 
-    log.info("It is cloudy today.");
+    // log.info("It is cloudy today.");
 
-    log.get_handler(StringHandler)
-        .unwrap()
-        .set_formatter(Iso8601);
+    // log.get_handler(StringHandler)
+    //     .unwrap()
+    //     .set_formatter(Iso8601);
 
-    log.warning("Rain is wet!");
+    // log.warning("Rain is wet!");
 
-    log.get_handler(StringHandler)
-        .unwrap()
-        .set_formatter(UnixTimestamp);
+    // log.get_handler(StringHandler)
+    //     .unwrap()
+    //     .set_formatter(UnixTimestamp);
 
-    log.severe("Hurricanes are windy!");
+    // log.severe("Hurricanes are windy!");
 
-    let log_str = log.get_handler(StringHandler).unwrap().get_log();
-    println!("log_str:\n{log_str}");
+    // let log_str = log.get_handler(StringHandler).unwrap().get_log();
+    // println!("log_str:\n{log_str}");
 }

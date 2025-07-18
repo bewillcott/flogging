@@ -23,6 +23,27 @@
 //!
 //! # Flogging Macros
 //!
+//! ## Special Note
+//!
+//! For the macros that accept the parameter: `msg`, the following is true:
+//!
+//! - They accept parameters the same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+//!     - plain text `&str`: "It's your time."
+//!     - format `&str` with interpolated variables: "Var: {var}"
+//!     - format `&str` with supporting parameters: "Var: {}", var
+//!     - Combination of the last two: "Vars {var1} - {}:{}", var2, var3
+//! - Additional Feature
+//!     - Just one or more variables: var1, var2, var3
+//!     - In this case, a default format string will be used: "{}, {}, {}"
+//!     - The number of "{}" will depend on the number of parameters
+//!     - Ideal for logging concrete instances that have very good Display implementations,
+//!         or you just need their data without further explanation
+//! - Special Cases
+//!     - [entering!] and [exiting!]
+//!     - These two macros have the same features as the others,
+//!         but they may also be used _without_ any parameters. In such
+//!         a case their defaults will be used.
+//!
 
 mod format;
 mod logger;
@@ -34,11 +55,6 @@ extern crate proc_macro_error;
 use crate::{format::format_impl, logger::logger_impl};
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
-
-// #[proc_macro]
-// pub fn tester(item: TokenStream) -> TokenStream {
-//     tester_impl(item)
-// }
 
 ///
 /// Log a CONFIG message.
@@ -57,12 +73,11 @@ use proc_macro_error::proc_macro_error;
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`][format].
+/// `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
 /// ```no_run
-/// extern crate flogging;
 /// use flogging::*;
 /// use chrono::Local;
 ///
@@ -71,21 +86,31 @@ use proc_macro_error::proc_macro_error;
 /// });
 ///
 /// #[logger]
-/// fn my_func(){
+/// pub fn my_func(data: &str) {
 ///     config!("Some text to store.");
 ///
 ///     let time = Local::now();
+///
+///     config!(time);
+///     config!(time, data);
 ///     config!("The configuration as at: {}", time);
-///     config!("The configuration as at: {time}");
-///     config!("The configuration as at: {time:?}");
+///     config!("The configuration as at: {time}: {}", data);
+///     config!("The configuration as at: {time:?}: {data}");
+/// }
+///
+/// fn main(){
+///     let data = "Some data";
+///     my_func(data);
 /// }
 /// ```
 /// Output:
-/// ```
+/// ```text
 /// |flogging->my_func| [CONFIG ] Some text to store.
-/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-17 14:52:04.470069898 +08:00
-/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-17 14:52:04.470069898 +08:00
-/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-17T14:52:04.470069898+08:00
+/// |flogging->my_func| [CONFIG ] 2025-07-18 19:52:06.927418853 +08:00
+/// |flogging->my_func| [CONFIG ] 2025-07-18 19:52:06.927418853 +08:00, Some data
+/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-18 19:52:06.927418853 +08:00
+/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-18 19:52:06.927418853 +08:00: Some data
+/// |flogging->my_func| [CONFIG ] The configuration as at: 2025-07-18T19:52:06.927418853+08:00: Some data
 /// ```
 /// [format]: https://doc.rust-lang.org/std/macro.format.html
 ///
