@@ -30,11 +30,11 @@
 //! ## Setting up
 //!
 //! You need to add this crate to your project:
-//! ```
+//! ```text
 //! cargo add flogging
 //! ```
 //! or add this text to the projects `Cargo.toml` file:
-//! ```
+//! ```text
 //! [dependencies]
 //! flogging = "0.3.0"
 //! ```
@@ -97,9 +97,7 @@
 //! #[logger]
 //! fn main() {
 //!     entering!();
-//!     info!(
-//!         "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
-//!     );
+//!     info!("All logging macros accept the same parameters as `std::format!(...)`");
 //!     warning!("Those same macros (info, etc.) MUST have atleast the format string.");
 //!     config!("This is running on Fedora Linux 42.");
 //!     do_something();
@@ -111,7 +109,7 @@
 //! Output:
 //! ```code
 //! |flogging->main| [FINER  ] Entry
-//! |flogging->main| [INFO   ] All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`
+//! |flogging->main| [INFO   ] All logging macros accept the same parameters as `std::format!(...)`
 //! |flogging->main| [WARNING] Those same macros (info, etc.) MUST have atleast the format string.
 //! |flogging->main| [CONFIG ] This is running on Fedora Linux 42.
 //! |flogging->do_something| [FINER  ] Entry

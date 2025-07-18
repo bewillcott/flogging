@@ -34,7 +34,7 @@ pub enum Formatter {
     /// ISO 8601 / RFC 3339 date & time format.
     ///
     /// Example:
-    /// ```
+    /// ```text
     /// 2001-07-08T00:34:60.026490+09:30
     /// ```
     /// Template:
@@ -42,14 +42,14 @@ pub enum Formatter {
     /// `dt` in the template would be the datetime
     /// string, similar to the above.
     ///
-    /// ```no_run
+    /// ```text
     /// format!(
     ///     "{dt:35} |{}->{}| [{:7}] {}",
     ///     log_entry.mod_path(),
     ///     log_entry.fn_name(),
     ///     log_entry.level(),
     ///     log_entry.message()
-    /// )
+    /// );
     /// ```
     /// Sample output:
     /// ```text
@@ -61,14 +61,14 @@ pub enum Formatter {
     /// Simple format.
     ///
     /// Template:
-    /// ```no_run
+    /// ```text
     /// format!(
     ///     "|{}->{}| [{:7}] {}",
     ///     log_entry.mod_path(),
     ///     log_entry.fn_name(),
     ///     log_entry.level(),
     ///     log_entry.message()
-    /// )
+    /// );
     /// ```
     /// Sample output:
     /// ```text
@@ -86,7 +86,7 @@ pub enum Formatter {
     /// the last whole second.
     ///
     /// Example:
-    /// ```
+    /// ```text
     /// 1752817859.157970496
     /// ```
     /// Template:
@@ -94,14 +94,14 @@ pub enum Formatter {
     /// `dt` in the template would be the datetime
     /// string, similar to the above.
     ///
-    /// ```no_run
+    /// ```text
     /// format!(
     ///     "{dt} |{}->{}| [{:7}] {}",
     ///     log_entry.mod_path(),
     ///     log_entry.fn_name(),
     ///     log_entry.level(),
     ///     log_entry.message()
-    /// )
+    /// );
     /// ```
     /// Sample output:
     /// ```text

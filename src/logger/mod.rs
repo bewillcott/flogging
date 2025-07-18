@@ -100,7 +100,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.config("Some text to store.");
@@ -366,7 +366,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.set_level(Level::FINEST);
@@ -396,7 +396,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.set_level(Level::FINEST);
@@ -426,7 +426,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.set_level(Level::FINEST);
@@ -456,12 +456,12 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::{Logger,Handler};
+    /// use flogging::*;
     ///
     /// let mut log = Logger::string_logger(module_path!());
     /// log.info("Some text to store.");
     ///
-    /// let h = log.get_handler(Handler::StringHandler);
+    /// let h = log.get_handler(StringHandler);
     /// ```
     pub fn get_handler(&mut self, handler: Handler) -> Option<&mut dyn HandlerTrait> {
         match self.handlers.get_mut().get_mut(&handler) {
@@ -483,7 +483,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.set_level(Level::FINEST);
@@ -603,7 +603,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.set_level(Level::FINEST);
@@ -672,7 +672,7 @@ impl Logger {
     /// ## Examples
     /// ```
     /// extern crate flogging;
-    /// use flogging::Logger;
+    /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
     /// log.set_level(Level::FINEST);

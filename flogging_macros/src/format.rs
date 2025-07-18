@@ -67,7 +67,6 @@ fn process_msg(msg: TokenStream) -> Option<String> {
     if re.is_match(&text) {
         Some(text)
     } else {
-        println!("None");
         let count = text.split(',').count();
 
         let mut buf = String::new();
