@@ -28,7 +28,9 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{ItemFn, parse_macro_input};
 
-pub(crate) fn logger_impl(_attr: TokenStream, item: TokenStream) -> TokenStream {
+pub(crate) fn logger_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
+    // println!("attr: (is_empty: {}) {attr}", attr.to_string().is_empty());
+
     // Parse the input as `ItemFn` which is a type provided
     // by `syn` to represent a function.
     let input = parse_macro_input!(item as ItemFn);
@@ -48,7 +50,11 @@ pub(crate) fn logger_impl(_attr: TokenStream, item: TokenStream) -> TokenStream 
     let statements = block.stmts;
 
     // Store the function identifier for logging
-    let function_identifier = sig.ident.clone();
+    let function_identifier = if attr.to_string().is_empty() {
+        sig.ident.clone().to_string()
+    }else{
+        attr.to_string()
+    };
 
     // Reconstruct the function as output using parsed input
     quote!(
@@ -59,9 +65,9 @@ pub(crate) fn logger_impl(_attr: TokenStream, item: TokenStream) -> TokenStream 
         // Reconstruct the function declaration
         #vis #sig {
             // At the beginning of the function, create an instance of `Instant`
-            let mut __binding = LOGGER;
+            let __binding = LOGGER;
             let mut __log = __binding.borrow_mut();
-            __log.set_fn_name(stringify!(#function_identifier));
+            __log.set_fn_name(#function_identifier);
 
             #(#statements)*
         }

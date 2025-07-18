@@ -129,8 +129,97 @@ impl Logger {
     /// This is a convenience method that can be used to log entry to a method.
     /// A `LogEntry` with message "Entry" and log level FINER, is logged.
     ///
+    /// ## Examples
+    /// ```
+    /// mod my_mod {
+    ///     extern crate flogging;
+    ///     use flogging::*;
+    ///     use std::cell::{LazyCell, RefCell};
+    ///
+    ///     // Setting up the module level logger.
+    ///     const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
+    ///         RefCell::new({
+    ///             Logger::builder(module_path!())
+    ///                 .add_console_handler()
+    ///                 .set_level(Level::FINEST)
+    ///                 .build()
+    ///         })
+    ///     });
+    ///
+    ///     pub fn my_func(data: &str) {
+    ///         let binding = LOGGER;
+    ///         let mut log = binding.borrow_mut();
+    ///         log.set_fn_name("my_func");
+    ///
+    ///         log.entering();
+    ///     }
+    /// }
+    ///
+    /// fn main() {
+    ///     let data = "Some data";
+    ///     my_mod::my_func(data);
+    /// }
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging::my_mod->my_func| [FINER  ] Entry
+    /// ```
+    ///
     pub fn entering(&mut self) {
         self.log(Level::FINER, &self.fn_name(), "Entry");
+    }
+
+    ///
+    /// Log a method entry.
+    ///
+    /// This is a convenience method that can be used to log entry to a method.
+    /// A `LogEntry` with message "Entry" and log level FINER, is logged.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.
+    ///
+    /// ## Examples
+    /// ```
+    /// mod my_mod {
+    ///     extern crate flogging;
+    ///     use flogging::*;
+    ///     use std::cell::{LazyCell, RefCell};
+    ///
+    ///     // Setting up the module level logger.
+    ///     const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
+    ///         RefCell::new({
+    ///             Logger::builder(module_path!())
+    ///                 .add_console_handler()
+    ///                 .set_level(Level::FINEST)
+    ///                 .build()
+    ///         })
+    ///     });
+    ///
+    ///     pub fn my_func(data: &str) {
+    ///         let binding = LOGGER;
+    ///         let mut log = binding.borrow_mut();
+    ///         log.set_fn_name("my_func");
+    ///
+    ///         log.entering_with(&format!("data: \"{data}\""));
+    ///     }
+    /// }
+    ///
+    /// fn main() {
+    ///     let data = "Some data";
+    ///     my_mod::my_func(data);
+    /// }
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging::my_mod->my_func| [FINER  ] Entry: (data: "Some data")
+    /// ```
+    ///
+    pub fn entering_with(&mut self, msg: &str) {
+        self.log(
+            Level::FINER,
+            &self.fn_name(),
+            &("Entry: (".to_string() + msg + ")"),
+        );
     }
 
     ///
@@ -139,8 +228,99 @@ impl Logger {
     /// This is a convenience method that can be used to log returning from a method.
     /// A `LogEntry` with message "Return" and log level FINER, is logged.
     ///
+    /// ## Examples
+    /// ```
+    /// mod my_mod {
+    ///     extern crate flogging;
+    ///     use flogging::*;
+    ///     use std::cell::{LazyCell, RefCell};
+    ///
+    ///     // Setting up the module level logger.
+    ///     const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
+    ///         RefCell::new({
+    ///             Logger::builder(module_path!())
+    ///                 .add_console_handler()
+    ///                 .set_level(Level::FINEST)
+    ///                 .build()
+    ///         })
+    ///     });
+    ///
+    ///     pub fn my_func(data: &str) {
+    ///         let binding = LOGGER;
+    ///         let mut log = binding.borrow_mut();
+    ///         log.set_fn_name("my_func");
+    ///
+    ///         log.exiting();
+    ///     }
+    /// }
+    ///
+    /// fn main() {
+    ///     let data = "Some data";
+    ///     my_mod::my_func(data);
+    /// }
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging::my_mod->my_func| [FINER  ] Return
+    /// ```
+    ///
     pub fn exiting(&mut self) {
         self.log(Level::FINER, &self.fn_name(), "Return");
+    }
+
+    ///
+    /// Log a method return.
+    ///
+    /// This is a convenience method that can be used to log returning from a method.
+    /// A `LogEntry` with message "Return" and log level FINER, is logged.
+    ///
+    /// ## Parameters
+    /// `msg` - The string message.
+    ///
+    /// ## Examples
+    /// ```
+    /// mod my_mod {
+    ///     extern crate flogging;
+    ///     use flogging::*;
+    ///     use std::cell::{LazyCell, RefCell};
+    ///
+    ///     // Setting up the module level logger.
+    ///     const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
+    ///         RefCell::new({
+    ///             Logger::builder(module_path!())
+    ///                 .add_console_handler()
+    ///                 .set_level(Level::FINEST)
+    ///                 .build()
+    ///         })
+    ///     });
+    ///
+    ///     pub fn my_func(data: &str) -> bool {
+    ///         let binding = LOGGER;
+    ///         let mut log = binding.borrow_mut();
+    ///         log.set_fn_name("my_func");
+    ///
+    ///         let rtn = true;
+    ///         log.exiting_with(&format!("rtn: {rtn}"));
+    ///         rtn
+    ///     }
+    /// }
+    ///
+    /// fn main() {
+    ///     let data = "Some data";
+    ///     my_mod::my_func(data);
+    /// }
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging::my_mod->my_func| [FINER  ] Return: (rtn: true)
+    /// ```
+    ///
+    pub fn exiting_with(&mut self, msg: &str) {
+        self.log(
+            Level::FINER,
+            &self.fn_name(),
+            &("Return: (".to_string() + msg + ")"),
+        );
     }
 
     ///
@@ -159,7 +339,13 @@ impl Logger {
     /// use flogging::Logger;
     ///
     /// let mut log = Logger::file_logger(module_path!(), "test.log");
+    /// log.set_fn_name("main");
+    ///
     /// log.info("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// 2025-07-18T12:14:47.322720683+08:00 |flogging->main| [INFO   ] Some text to store.
     /// ```
     ///
     /// [mp]: https://doc.rust-lang.org/std/macro.module_path.html
@@ -176,7 +362,22 @@ impl Logger {
     ///
     /// ## Parameters
     /// `msg` - The string message.
-    /// was called.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::FINEST);
+    /// log.set_fn_name("main");
+    ///
+    /// log.fine("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [FINE   ] Some text to store.
+    /// ```
     ///
     pub fn fine(&mut self, msg: &str) {
         self.log(Level::FINE, &self.fn_name(), msg);
@@ -192,6 +393,22 @@ impl Logger {
     /// ## Parameters
     /// `msg` - The string message.
     ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::FINEST);
+    /// log.set_fn_name("main");
+    ///
+    /// log.finer("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [FINER  ] Some text to store.
+    /// ```
+    ///
     pub fn finer(&mut self, msg: &str) {
         self.log(Level::FINER, &self.fn_name(), msg);
     }
@@ -205,6 +422,22 @@ impl Logger {
     ///
     /// ## Parameters
     /// `msg` - The string message.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::FINEST);
+    /// log.set_fn_name("main");
+    ///
+    /// log.finest("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [FINEST ] Some text to store.
+    /// ```
     ///
     pub fn finest(&mut self, msg: &str) {
         self.log(Level::FINEST, &self.fn_name(), msg);
@@ -230,9 +463,9 @@ impl Logger {
     ///
     /// let h = log.get_handler(Handler::StringHandler);
     /// ```
-    pub fn get_handler(&mut self, handler: Handler) -> Option<&dyn HandlerTrait> {
-        match self.handlers.get_mut().get(&handler) {
-            Some(val) => Some(&**val),
+    pub fn get_handler(&mut self, handler: Handler) -> Option<&mut dyn HandlerTrait> {
+        match self.handlers.get_mut().get_mut(&handler) {
+            Some(val) => Some(&mut **val),
             None => None,
         }
     }
@@ -246,6 +479,22 @@ impl Logger {
     ///
     /// ## Parameters
     /// `msg` - The string message.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::FINEST);
+    /// log.set_fn_name("main");
+    ///
+    /// log.info("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [INFO   ] Some text to store.
+    /// ```
     ///
     pub fn info(&mut self, msg: &str) {
         self.log(Level::INFO, &self.fn_name(), msg);
@@ -294,7 +543,7 @@ impl Logger {
     /// was called.\
     /// `msg` - The string message.
     ///
-    pub fn log(&mut self, level: Level, fn_name: &str, msg: &str) {
+    fn log(&mut self, level: Level, fn_name: &str, msg: &str) {
         if !self.is_loggable(&level) {
             return;
         }
@@ -351,6 +600,22 @@ impl Logger {
     /// ## Parameters
     /// `msg` - The string message.
     ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::FINEST);
+    /// log.set_fn_name("main");
+    ///
+    /// log.severe("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [SEVERE ] Some text to store.
+    /// ```
+    ///
     pub fn severe(&mut self, msg: &str) {
         self.log(Level::SEVERE, &self.fn_name(), msg);
     }
@@ -360,8 +625,35 @@ impl Logger {
     ///
     /// Logging level is set to it's default setting (INFO).
     ///
+    /// I expect this will be primarily used during unit testing of
+    /// the logging output. Though, any requirement to pass-on the log entry,
+    /// perhaps for further processing, would also be a valid use case.
+    ///
     /// ## Parameters
     /// `mod_path`- The module path. Suggest using [`module_path`].
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::string_logger(module_path!());
+    /// log.set_fn_name("main");
+    ///
+    /// log.info("Some text to store.");
+    /// log.warning("Rain is wet!");
+    /// log.severe("Hurricanes are windy!");
+    ///
+    /// let log_str = log.get_handler(StringHandler).unwrap().get_log();
+    /// println!("log_str:\n{log_str}");
+    /// ```
+    /// Output:
+    /// ```text
+    /// log_str:
+    /// |flogging->main| [INFO   ] Some text to store.
+    /// |flogging->main| [WARNING] Rain is wet!
+    /// |flogging->main| [SEVERE ] Hurricanes are windy!
+    /// ```
     ///
     pub fn string_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_string_handler().build()
@@ -376,6 +668,22 @@ impl Logger {
     ///
     /// ## Parameters
     /// `msg` - The string message.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::Logger;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::FINEST);
+    /// log.set_fn_name("main");
+    ///
+    /// log.warning("Some text to store.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [WARNING] Some text to store.
+    /// ```
     ///
     pub fn warning(&mut self, msg: &str) {
         self.log(Level::WARNING, &self.fn_name(), msg);

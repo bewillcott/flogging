@@ -190,4 +190,47 @@ mod temp {
     fn error_prone() -> Result<(), Box<dyn Error>> {
         Err(Box::from("Bad day!"))
     }
+
+    #[test]
+    #[logger(alt text)]
+    fn my_func() {
+        entering!();
+        entering!("Testing");
+
+        exiting!();
+        exiting!("Done!");
+    }
+}
+
+#[cfg(test)]
+mod my_mod {
+    use flogging::*;
+
+    // Setting up the module level logger.
+    static_logger!({
+        Logger::builder(module_path!())
+            .add_console_handler()
+            .add_file_handler("test.log")
+            .set_level(Level::FINEST)
+            .build()
+    });
+
+    #[test]
+    fn test_my_func() {
+        my_func("Some data");
+    }
+
+    #[logger]
+    fn my_func(data: &str) -> bool {
+        entering!();
+        entering!("data: \"{data}\"");
+
+        // ...
+
+        let rtn = true;
+
+        exiting!();
+        exiting!("rtn: {rtn}");
+        rtn
+    }
 }

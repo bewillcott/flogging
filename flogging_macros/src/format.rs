@@ -33,7 +33,7 @@ pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
     // println!("msg: {}", &msg);
 
     let mut buf = String::new();
-    let fmt = "let _fmt = format!({});\n".format(&[&msg.to_string()]);
+    let fmt = "let __fmt = format!({});\n".format(&[&msg.to_string()]);
 
     buf.push_str(&fmt);
     buf.push_str(fmt_str);

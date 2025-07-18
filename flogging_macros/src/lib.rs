@@ -92,7 +92,7 @@ use proc_macro_error::proc_macro_error;
 #[proc_macro_error]
 #[proc_macro]
 pub fn config(msg: TokenStream) -> TokenStream {
-    format_impl("__log.config({&_fmt});\n", msg)
+    format_impl("__log.config({&__fmt});\n", msg)
 }
 
 ///
@@ -103,7 +103,11 @@ pub fn config(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn entering(_msg: TokenStream) -> TokenStream {
-    "__log.entering();\n".parse().unwrap_or_default()
+    if _msg.to_string().is_empty() {
+        "__log.entering();\n".parse().unwrap_or_default()
+    } else {
+        format_impl("__log.entering_with({&__fmt});\n", _msg)
+    }
 }
 
 ///
@@ -114,7 +118,11 @@ pub fn entering(_msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn exiting(_msg: TokenStream) -> TokenStream {
-    "__log.exiting();\n".parse().unwrap_or_default()
+    if _msg.to_string().is_empty() {
+        "__log.exiting();\n".parse().unwrap_or_default()
+    } else {
+        format_impl("__log.exiting_with({&__fmt});\n", _msg)
+    }
 }
 
 ///
@@ -151,7 +159,7 @@ pub fn exiting(_msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn fine(msg: TokenStream) -> TokenStream {
-    format_impl("__log.fine({&_fmt});\n", msg)
+    format_impl("__log.fine({&__fmt});\n", msg)
 }
 
 ///
@@ -176,7 +184,7 @@ pub fn fine(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn finer(msg: TokenStream) -> TokenStream {
-    format_impl("__log.finer({&_fmt});\n", msg)
+    format_impl("__log.finer({&__fmt});\n", msg)
 }
 
 ///
@@ -198,7 +206,7 @@ pub fn finer(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn finest(msg: TokenStream) -> TokenStream {
-    format_impl("__log.finest({&_fmt});\n", msg)
+    format_impl("__log.finest({&__fmt});\n", msg)
 }
 
 ///
@@ -227,7 +235,7 @@ pub fn finest(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn info(msg: TokenStream) -> TokenStream {
-    format_impl("__log.info({&_fmt});\n", msg)
+    format_impl("__log.info({&__fmt});\n", msg)
 }
 
 ///
@@ -284,7 +292,7 @@ pub fn set_level(level: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn severe(msg: TokenStream) -> TokenStream {
-    format_impl("__log.severe({&_fmt});\n", msg)
+    format_impl("__log.severe({&__fmt});\n", msg)
 }
 
 ///
@@ -310,5 +318,5 @@ pub fn severe(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn warning(msg: TokenStream) -> TokenStream {
-    format_impl("__log.warning({&_fmt});\n", msg)
+    format_impl("__log.warning({&__fmt});\n", msg)
 }

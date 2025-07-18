@@ -63,15 +63,79 @@ fn error_prone() -> Result<(), Box<dyn Error>> {
     rtn
 }
 
+#[allow(dead_code)]
+mod my_mod {
+    use flogging::*;
+    use std::cell::{LazyCell, RefCell};
+
+    // Setting up the module level logger.
+    const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
+        RefCell::new({
+            Logger::builder(module_path!())
+                .add_console_handler()
+                .set_level(Level::FINEST)
+                .build()
+        })
+    });
+
+    // #[test]
+    // fn test_my_func() {
+    //     my_func("Some data");
+    // }
+
+    pub(crate) fn my_func(data: &str) -> bool {
+        let binding = LOGGER;
+        let mut log = binding.borrow_mut();
+        log.set_fn_name("my_func");
+
+        log.entering();
+        log.entering_with(&format!("data: \"{data}\""));
+
+        // ...
+
+        let rtn = true;
+
+        log.exiting();
+        log.exiting_with(&format!("rtn: {rtn}"));
+        rtn
+    }
+}
+
 #[logger]
 fn main() {
-    entering!();
-    info!(
-        "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
-    );
-    warning!("Those same macros (info, etc.) MUST have atleast the format string.");
-    config!("This is running on Fedora Linux 42.");
-    do_something();
-    info!("Job's done.");
-    exiting!();
+    // entering!();
+    // info!(
+    //     "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
+    // );
+    // warning!("Those same macros (info, etc.) MUST have atleast the format string.");
+    // config!("This is running on Fedora Linux 42.");
+    // do_something();
+    // info!("Job's done.");
+    // exiting!();
+
+    // let data = "Some data";
+    // my_mod::my_func(data);
+
+    extern crate flogging;
+    use flogging::*;
+
+    let mut log = Logger::string_logger(module_path!());
+    log.set_fn_name("main");
+
+    log.info("It is cloudy today.");
+
+    log.get_handler(StringHandler)
+        .unwrap()
+        .set_formatter(Iso8601);
+
+    log.warning("Rain is wet!");
+
+    log.get_handler(StringHandler)
+        .unwrap()
+        .set_formatter(UnixTimestamp);
+
+    log.severe("Hurricanes are windy!");
+
+    let log_str = log.get_handler(StringHandler).unwrap().get_log();
+    println!("log_str:\n{log_str}");
 }

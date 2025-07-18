@@ -31,13 +31,91 @@ use std::fmt;
 
 #[derive(Debug, Clone)]
 pub enum Formatter {
+    /// ISO 8601 / RFC 3339 date & time format.
+    ///
+    /// Example:
+    /// ```
+    /// 2001-07-08T00:34:60.026490+09:30
+    /// ```
+    /// Template:
+    ///
+    /// `dt` in the template would be the datetime
+    /// string, similar to the above.
+    ///
+    /// ```no_run
+    /// format!(
+    ///     "{dt:35} |{}->{}| [{:7}] {}",
+    ///     log_entry.mod_path(),
+    ///     log_entry.fn_name(),
+    ///     log_entry.level(),
+    ///     log_entry.message()
+    /// )
+    /// ```
+    /// Sample output:
+    /// ```text
+    /// 2025-07-18T14:01:01.051532664+08:00 |flogging->main| [WARNING] Rain is wet!
+    /// ```
+    ///
     Iso8601,
+
+    /// Simple format.
+    ///
+    /// Template:
+    /// ```no_run
+    /// format!(
+    ///     "|{}->{}| [{:7}] {}",
+    ///     log_entry.mod_path(),
+    ///     log_entry.fn_name(),
+    ///     log_entry.level(),
+    ///     log_entry.message()
+    /// )
+    /// ```
+    /// Sample output:
+    /// ```text
+    /// |flogging->main| [INFO   ] It is cloudy today.
+    /// ```
+    ///
     Simple,
+
+    /// Unix Timestamp format.
+    ///
+    /// The first part (before the decimal point) is
+    /// the number of seconds since 1970-01-01 00:00 UTC.
+    ///
+    /// The second part is the number of nanoseconds since
+    /// the last whole second.
+    ///
+    /// Example:
+    /// ```
+    /// 1752817859.157970496
+    /// ```
+    /// Template:
+    ///
+    /// `dt` in the template would be the datetime
+    /// string, similar to the above.
+    ///
+    /// ```no_run
+    /// format!(
+    ///     "{dt} |{}->{}| [{:7}] {}",
+    ///     log_entry.mod_path(),
+    ///     log_entry.fn_name(),
+    ///     log_entry.level(),
+    ///     log_entry.message()
+    /// )
+    /// ```
+    /// Sample output:
+    /// ```text
+    /// 1752818461.051538870 |flogging->main| [SEVERE ] Hurricanes are windy!
+    /// ```
+    ///
     UnixTimestamp,
 }
 
 impl Formatter {
-    pub(crate) fn format(&self, log_entry: &LogEntry) -> String {
+    /// Format the text of the `log_entry`, in accordance with the formatting
+    /// for this [formatter](enum.Formatter.html).
+    #[allow(private_interfaces)]
+    pub fn format(&self, log_entry: &LogEntry) -> String {
         let fmt = match self {
             Formatter::Iso8601 => "%+".to_string(),
             Formatter::Simple => "".to_string(), //"%c".to_string()

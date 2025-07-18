@@ -106,6 +106,7 @@ impl HandlerTrait for FileHandler {
         self.file.is_some()
     }
 
+    #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {
         if self.is_open() {
             let mut buf = self.format.format(log_entry);

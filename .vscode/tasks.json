@@ -7,7 +7,8 @@
 			"type": "cargo",
 			"command": "doc",
 			"args": [
-				"--no-deps"
+				"--no-deps",
+				"--workspace"
 			],
 			"problemMatcher": [
 				"$rustc"
@@ -20,6 +21,7 @@
 			"command": "doc",
 			"args": [
 				"--no-deps",
+				"--workspace",
 				"--document-private-items"
 			],
 			"problemMatcher": [

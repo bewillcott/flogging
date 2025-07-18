@@ -89,6 +89,7 @@ impl HandlerTrait for StringHandler {
         true
     }
 
+    #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {
         self.log.push(self.formatter.format(log_entry));
     }

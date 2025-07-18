@@ -47,9 +47,9 @@
 //!
 //! 1. At the module level:
 //!     - `use flogging::*;`
-//!     - `static_logger!({...});`[->][static_logger]
+//!     - `static_logger!({...});`[=>][static_logger]
 //! 2. On each function/method you want to add logging to:
-//!     - `#[logger]`[->][logger]
+//!     - `#[logger]`[=>][logger]
 //! 3. Inside each such attributed function/method:
 //!     - Any of the logging [macros]
 //!
@@ -150,7 +150,13 @@ mod logger;
 mod macros;
 
 pub use flogging_macros::*;
-pub use handlers::{formatter::Formatter, handler::Handler};
+pub use handlers::{
+    console_handler::ConsoleHandler,
+    file_handler::FileHandler,
+    formatter::{Formatter::{self, *},},
+    handler::{Handler::*, HandlerTrait},
+    string_handler::StringHandler,
+};
 use logger::LogEntry;
 pub use logger::*;
 pub use macros::*;

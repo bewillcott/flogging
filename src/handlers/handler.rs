@@ -55,12 +55,13 @@ impl Handler {
     }
 }
 
-#[allow(private_interfaces)]
+
 pub trait HandlerTrait: Display + Send + Sync {
     ///
     /// Create a new handler instance.
     ///
-    /// **name**: Used to identify handler.
+    /// ## Parameters
+    /// `name` - Used to identify handler.
     ///
     fn create(name: &str) -> Result<Self, Error>
     where
@@ -70,8 +71,8 @@ pub trait HandlerTrait: Display + Send + Sync {
     /// Close the Handler and free all associated resources.
     ///
     /// The close method will perform a flush and then close the Handler.
-    /// After close has been called this Handler should no longer be used.
-    /// Method calls may either be silently ignored or may return `Error`s.
+    /// After `close` has been called, this Handler should no longer be used.
+    /// Method calls will be silently ignored.
     ///
     fn close(&mut self);
 
@@ -86,7 +87,7 @@ pub trait HandlerTrait: Display + Send + Sync {
     fn get_log(&self) -> String;
 
     ///
-    /// Return the format String for this Handler.
+    /// Return the Formatter for this Handler.
     ///
     fn get_formatter(&self) -> &Formatter;
 
@@ -103,10 +104,11 @@ pub trait HandlerTrait: Display + Send + Sync {
     ///
     /// The Handler is responsible for formatting the message, when and if necessary.
     ///
+    #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry);
 
     ///
-    /// Set a Format.
+    /// Set a Formatter.
     ///
     fn set_formatter(&mut self, format: Formatter);
 }

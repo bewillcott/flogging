@@ -75,6 +75,7 @@ impl HandlerTrait for ConsoleHandler {
         true
     }
 
+    #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {
         eprintln!("{}", self.formatter.format(log_entry));
     }
