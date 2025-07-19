@@ -31,7 +31,7 @@ use std::{fmt, hash::Hash, io::Error};
 use crate::{
     handlers::{
         console_handler::ConsoleHandler, file_handler::FileHandler, formatter::Formatter,
-        string_handler::StringHandler,
+        mock_handler::MockHandler, string_handler::StringHandler,
     },
     logger::{Level, LogEntry},
 };
@@ -54,6 +54,23 @@ impl fmt::Display for Handler {
         };
 
         write!(f, "Handler::{text}")
+    }
+}
+
+impl Handler {
+    pub fn create(&self) -> Box<dyn HandlerTrait> {
+        match &self {
+            Handler::Console => Box::new(ConsoleHandler::default()),
+            Handler::File => Box::new(FileHandler::default()),
+            Handler::String => Box::new(StringHandler::default()),
+            Handler::Custom(label) => Box::new(MockHandler::default()),
+        }
+    }
+}
+
+impl Default for Handler {
+    fn default() -> Self {
+        Handler::Custom(String::default())
     }
 }
 
@@ -90,7 +107,7 @@ pub trait HandlerTrait: fmt::Display + Send + Sync {
     ///
     /// Return the Formatter for this Handler.
     ///
-    fn get_formatter(&self) -> &Formatter;
+    fn get_formatter(&self) -> Formatter;
 
     ///
     /// Check status of this handler.

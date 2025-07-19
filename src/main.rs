@@ -34,7 +34,8 @@ const_logger!({
     Logger::builder(module_path!())
         .add_console_handler()
         .add_file_handler("test.log")
-        .set_level(Level::FINEST)
+        .add_string_handler()
+        .set_level(Level::ALL)
         .build()
 });
 
@@ -94,7 +95,7 @@ mod my_mod {
         log.entering();
         log.entering_with(&format!("data: \"{data}\""));
 
-        log.info(&format!("For your info: {}",module_path!()));
+        log.info(&format!("For your info: {}", module_path!()));
         // ...
 
         let rtn = true;
@@ -105,33 +106,35 @@ mod my_mod {
     }
 }
 
-use chrono::Local;
-
 #[logger]
-pub fn my_func(data: &str) {
-    config!("Some text to store.");
+pub fn my_func() {
+    info!("Some text to store.");
+    warning!("Rain is wet!");
+    severe!("Hurricanes are windy!");
 
-    let time = Local::now();
-
-    config!(time);
-    config!(time, data);
-    config!("The configuration as at: {}", time);
-    config!("The configuration as at: {time}: {}", data);
-    config!("The configuration as at: {time:?}: {data}");
+    if let Some(h) = get_handler!(Handler::String) {
+        println!(
+            "\n(h.get_log())\n======v======\n{}\n======^======",
+            h.get_log()
+        );
+    } else {
+        let h = Handler::default().create();
+        println!("{h}");
+    }
 }
 
 #[logger]
 fn main() {
-    entering!();
-    info!(
-        "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
-    );
-    warning!("Those same macros (info, etc.) MUST have atleast the format string.");
-    config!("This is running on Fedora Linux 42.");
-    do_something();
+    // entering!();
+    // info!(
+    //     "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
+    // );
+    // warning!("Those same macros (info, etc.) MUST have atleast the format string.");
+    // config!("This is running on Fedora Linux 42.");
+    // do_something();
 
-    let data = "Some data";
-    my_mod::my_func(data);
+    // let _data = "Some data";
+    my_func();
 
     // extern crate flogging;
     // use flogging::*;
@@ -156,6 +159,6 @@ fn main() {
     // let log_str = log.get_handler(StringHandler).unwrap().get_log();
     // println!("log_str:\n{log_str}");
 
-    info!("Job's done.");
-    exiting!();
+    // info!("Job's done.");
+    // exiting!();
 }

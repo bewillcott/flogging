@@ -29,7 +29,7 @@
 use crate::logger::LogEntry;
 use std::fmt;
 
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum Formatter {
     /// ISO 8601 / RFC 3339 date & time format.
     ///
@@ -75,6 +75,7 @@ pub enum Formatter {
     /// |flogging->main| [INFO   ] It is cloudy today.
     /// ```
     ///
+    #[default]
     Simple,
 
     /// Unix Timestamp format.

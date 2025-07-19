@@ -57,14 +57,32 @@ impl StringHandler {
     }
 }
 
+impl Default for StringHandler {
+    fn default() -> Self
+    where
+        Self: Sized,
+    {
+        Self {
+            name: Default::default(),
+            formatter: Default::default(),
+            log: Default::default(),
+        }
+    }
+}
+
 impl fmt::Display for StringHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut len = self.name.len()
-        + self.formatter.to_string().len();
+        let mut len = self.name.len() + self.formatter.to_string().len();
 
         let line = "-".repeat(len + 3);
 
-        write!(f, "{} : {}\n{line}\n{}", self.name, self.formatter, self.log())
+        write!(
+            f,
+            "{} : {}\n{line}\n{}",
+            self.name,
+            self.formatter,
+            self.log()
+        )
     }
 }
 
@@ -82,8 +100,8 @@ impl HandlerTrait for StringHandler {
         self.log.clear();
     }
 
-    fn get_formatter(&self) -> &Formatter {
-        &self.formatter
+    fn get_formatter(&self) -> Formatter {
+        self.formatter.clone()
     }
 
     fn get_log(&self) -> String {

@@ -264,6 +264,56 @@ pub fn info(msg: TokenStream) -> TokenStream {
 }
 
 ///
+/// Get required `Handler`.
+///
+/// ## Examples
+/// ```no_run
+/// extern crate flogging;
+/// use flogging::*;
+///
+/// // Setting up the module level logger.
+/// const_logger!({
+///     Logger::builder(module_path!())
+///         .add_string_handler()
+///         .set_level(Level::ALL)
+///         .build()
+/// });
+///
+/// #[logger]
+/// fn my_func(){
+///     info!("Some text to store.");
+///     warning!("Rain is wet!");
+///     severe!("Hurricanes are windy!");
+///
+///     if let Some(h) = get_handler!(Handler::String) {
+///         println!(
+///             "\n(h.get_log())\n======v======\n{}\n======^======",
+///             h.get_log()
+///         );
+///     } else {
+///         println!("Sorry. Not there!");
+///     }
+/// }
+/// ```
+/// Output:
+/// ```text
+/// (h.get_log())
+/// ======v======
+/// |flogging->my_func| [INFO   ] Some text to store.
+/// |flogging->my_func| [WARNING] Rain is wet!
+/// |flogging->my_func| [SEVERE ] Hurricanes are windy!
+///
+/// ======^======
+/// ```
+///
+#[proc_macro]
+pub fn get_handler(handler: TokenStream) -> TokenStream {
+    format!("__log.get_handler({handler})")
+        .parse()
+        .unwrap_or_default()
+}
+
+///
 /// Provides for logging within the attributed function/method.
 ///
 /// This is required to be able to use the [macros](index.html#macros)

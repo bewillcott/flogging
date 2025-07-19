@@ -151,8 +151,9 @@ pub use flogging_macros::*;
 pub use handlers::{
     console_handler::ConsoleHandler,
     file_handler::FileHandler,
-    formatter::{Formatter::{self, *},},
+    formatter::Formatter::{self, *},
     handler::{Handler, HandlerTrait},
+    mock_handler::MockHandler,
     string_handler::StringHandler,
 };
 pub use logger::*;

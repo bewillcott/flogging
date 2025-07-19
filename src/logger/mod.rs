@@ -466,9 +466,9 @@ impl Logger {
     /// let h = log.get_handler(Handler::String).unwrap();
     /// println!("{h}");
     /// ```
-    pub fn get_handler(&mut self, handler: Handler) -> Option<&mut dyn HandlerTrait> {
+    pub fn get_handler(&mut self, handler: Handler) -> Option<Box<&mut dyn HandlerTrait>> {
         match self.handlers.get_mut().get_mut(&handler) {
-            Some(val) => Some(&mut **val),
+            Some(val) => Some(Box::new(&mut **val)),
             None => None,
         }
     }
@@ -650,29 +650,6 @@ impl Logger {
     ///
     /// ## Parameters
     /// `mod_path`- The module path. Suggest using [`module_path`].
-    ///
-    /// ## Examples
-    /// ```
-    /// extern crate flogging;
-    /// use flogging::*;
-    ///
-    /// let mut log = Logger::string_logger(module_path!());
-    /// log.set_fn_name("main");
-    ///
-    /// log.info("Some text to store.");
-    /// log.warning("Rain is wet!");
-    /// log.severe("Hurricanes are windy!");
-    ///
-    /// let log_str = log.get_handler(Handler::String).unwrap().get_log();
-    /// println!("log_str:\n{log_str}");
-    /// ```
-    /// Output:
-    /// ```text
-    /// log_str:
-    /// |flogging->main| [INFO   ] Some text to store.
-    /// |flogging->main| [WARNING] Rain is wet!
-    /// |flogging->main| [SEVERE ] Hurricanes are windy!
-    /// ```
     ///
     pub fn string_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_string_handler().build()

@@ -31,3 +31,4 @@ pub(crate) mod file_handler;
 pub mod formatter;
 pub(crate) mod handler;
 pub(crate) mod string_handler;
+pub(crate) mod mock_handler;

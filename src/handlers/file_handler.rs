@@ -43,7 +43,7 @@ use crate::{
 #[derive(Debug)]
 pub struct FileHandler {
     name: String,
-    format: Formatter,
+    formatter: Formatter,
     file: Option<File>,
 }
 
@@ -55,7 +55,7 @@ impl FileHandler {
 
         let fh = FileHandler {
             name: filename.to_string(),
-            format: Iso8601,
+            formatter: Iso8601,
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
 
@@ -66,6 +66,16 @@ impl FileHandler {
         Ok(fh)
     }
 }
+
+impl Default for FileHandler {
+    fn default() -> Self
+    where
+        Self: Sized,
+    {
+        Self { name: Default::default(), formatter: Default::default(), file: Default::default() }
+    }
+}
+
 impl fmt::Display for FileHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let name = if self.name.is_empty() {
@@ -74,7 +84,7 @@ impl fmt::Display for FileHandler {
             self.name.clone()
         };
 
-        write!(f, "{} : {}", name, self.format)
+        write!(f, "{} : {}", name, self.formatter)
     }
 }
 
@@ -94,8 +104,8 @@ impl HandlerTrait for FileHandler {
         }
     }
 
-    fn get_formatter(&self) -> &Formatter {
-        &self.format
+    fn get_formatter(&self) -> Formatter {
+        self.formatter.clone()
     }
 
     fn get_log(&self) -> String {
@@ -109,7 +119,7 @@ impl HandlerTrait for FileHandler {
     #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {
         if self.is_open() {
-            let mut buf = self.format.format(log_entry);
+            let mut buf = self.formatter.format(log_entry);
             buf.push('\n');
 
             self.file.as_mut().unwrap().write_all(buf.as_bytes());
@@ -117,6 +127,6 @@ impl HandlerTrait for FileHandler {
     }
 
     fn set_formatter(&mut self, format: Formatter) {
-        self.format = format;
+        self.formatter = format;
     }
 }

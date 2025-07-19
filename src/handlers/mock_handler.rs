@@ -1,5 +1,5 @@
 //
-// File Name:    console_handler.rs
+// File Name:    mock_handler.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,55 +21,38 @@
 //
 
 //!
-//! # ConsoleHandler
+//! # Mock Handler
+//!
+//! Returned as Default for Custom handler that is missing.
 //!
 
 use std::{fmt, io::Error};
 
-use crate::{
-    handlers::{formatter::Formatter, handler::HandlerTrait},
-    logger::{Level, LogEntry},
-};
+use crate::{Formatter, HandlerTrait, LogEntry};
 
-#[derive(Debug)]
-pub struct ConsoleHandler {
-    name: String,
-    formatter: Formatter,
-}
+pub struct MockHandler {}
 
-impl ConsoleHandler {
-    fn create(name: &str) -> Self {
-        ConsoleHandler {
-            name: name.to_string(),
-            formatter: Formatter::Simple,
-        }
-    }
-}
-
-impl Default for ConsoleHandler {
+impl Default for MockHandler {
     fn default() -> Self
     where
         Self: Sized,
     {
-        Self {
-            name: Default::default(),
-            formatter: Default::default(),
-        }
+        Self {}
     }
 }
 
-impl fmt::Display for ConsoleHandler {
+impl fmt::Display for MockHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} : {}", self.name, self.formatter)
+        write!(f, "MockHandler!!")
     }
 }
 
-impl HandlerTrait for ConsoleHandler {
+impl HandlerTrait for MockHandler {
     fn create(name: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        Ok(ConsoleHandler::create(name))
+        Ok(Default::default())
     }
 
     fn close(&mut self) {}
@@ -77,23 +60,19 @@ impl HandlerTrait for ConsoleHandler {
     fn flush(&mut self) {}
 
     fn get_formatter(&self) -> Formatter {
-        self.formatter.clone()
+        Default::default()
     }
 
     fn get_log(&self) -> String {
-        String::new()
+        Default::default()
     }
 
     fn is_open(&self) -> bool {
-        true
+        false
     }
 
     #[allow(private_interfaces)]
-    fn publish(&mut self, log_entry: &LogEntry) {
-        eprintln!("{}", self.formatter.format(log_entry));
-    }
+    fn publish(&mut self, log_entry: &LogEntry) {}
 
-    fn set_formatter(&mut self, format: Formatter) {
-        self.formatter = format;
-    }
+    fn set_formatter(&mut self, format: Formatter) {}
 }
