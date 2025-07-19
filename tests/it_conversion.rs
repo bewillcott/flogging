@@ -29,7 +29,7 @@ mod tests {
     use chrono::Local;
     use flogging::*;
 
-    static_logger!({
+    const_logger!({
         Logger::builder("flogging")
             .add_console_handler()
             .add_file_handler("test.log")

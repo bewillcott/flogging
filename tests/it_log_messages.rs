@@ -33,7 +33,7 @@ mod tests {
     use flogging_macros::*;
     use regex::{Regex, RegexBuilder};
 
-    static_logger!({
+    const_logger!({
         Logger::builder(module_path!())
             .add_console_handler()
             .add_file_handler("test.log")
@@ -200,7 +200,7 @@ mod temp {
     use std::{error::Error, result::Result};
 
     // Setting up the module level logger.
-    static_logger!({
+    const_logger!({
         Logger::builder(module_path!())
             .add_console_handler()
             .add_file_handler("test.log")
@@ -212,7 +212,7 @@ mod temp {
     /// ~~~
     /// use flogging::*;
     ///
-    /// static_logger!({
+    /// const_logger!({
     ///     Logger::console_logger(module_path!())
     /// });
     ///
@@ -260,7 +260,7 @@ mod my_mod {
     use flogging::*;
 
     // Setting up the module level logger.
-    static_logger!({
+    const_logger!({
         Logger::builder(module_path!())
             .add_console_handler()
             .add_file_handler("test.log")

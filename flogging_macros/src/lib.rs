@@ -81,7 +81,7 @@ use proc_macro_error::proc_macro_error;
 /// use flogging::*;
 /// use chrono::Local;
 ///
-/// static_logger!({
+/// const_logger!({
 ///     Logger::console_logger(module_path!())
 /// });
 ///

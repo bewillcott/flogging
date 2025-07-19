@@ -47,7 +47,7 @@
 //!
 //! 1. At the module level:
 //!     - `use flogging::*;`
-//!     - `static_logger!({...});`[=>][static_logger]
+//!     - `const_logger!({...});`[=>]const_logger]
 //! 2. On each function/method you want to add logging to:
 //!     - `#[logger]`[=>][logger]
 //! 3. Inside each such attributed function/method:
@@ -59,7 +59,7 @@
 //! use std::{error::Error, result::Result};
 //!
 //! // Setting up the module level logger.
-//! static_logger!({
+//! const_logger!({
 //!     Logger::builder(module_path!())
 //!         .add_console_handler()
 //!         .add_file_handler("test.log")
@@ -152,7 +152,7 @@ pub use handlers::{
     console_handler::ConsoleHandler,
     file_handler::FileHandler,
     formatter::{Formatter::{self, *},},
-    handler::{Handler::*, HandlerTrait},
+    handler::{Handler, HandlerTrait},
     string_handler::StringHandler,
 };
 use logger::LogEntry;

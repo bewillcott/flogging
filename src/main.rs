@@ -28,7 +28,7 @@ use flogging::*;
 use std::{error::Error, result::Result};
 
 // Setting up the module level logger.
-static_logger!({
+const_logger!({
     Logger::builder(module_path!())
         .add_console_handler()
         .add_file_handler("test.log")

@@ -32,7 +32,7 @@ use crate::Logger;
 /// The basic macro syntax is:
 ///
 /// ```text
-/// static_logger!({/* the block of Rust code to build a Logger goes here */});
+/// const_logger!({/* the block of Rust code to build a Logger goes here */});
 /// ```
 /// Notice there are curly braces "`{}`" wrapping the inner Rust code.
 /// **They are required.**
@@ -45,7 +45,7 @@ use crate::Logger;
 /// extern crate flogging;
 /// use flogging::*;
 ///
-/// static_logger!({
+/// const_logger!({
 ///     Logger::builder(module_path!())
 ///         .set_level(Level::FINEST)
 ///         .add_console_handler()
@@ -54,7 +54,7 @@ use crate::Logger;
 /// });
 /// ```
 #[macro_export]
-macro_rules! static_logger {
+macro_rules! const_logger {
     ($block:block) => {
         use flogging::Logger as FLogger;
         use std::cell::{LazyCell as FLazyCell, RefCell as FRefCell};
