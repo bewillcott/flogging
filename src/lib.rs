@@ -155,6 +155,5 @@ pub use handlers::{
     handler::{Handler, HandlerTrait},
     string_handler::StringHandler,
 };
-use logger::LogEntry;
 pub use logger::*;
 pub use macros::*;

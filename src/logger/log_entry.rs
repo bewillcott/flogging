@@ -29,7 +29,7 @@ use super::level::Level;
 use std::{fmt, time::Instant};
 
 #[derive(Debug)]
-pub(crate) struct LogEntry {
+pub struct LogEntry {
     timestamp: DateTime<Local>,
     mod_path: String,
     ///

@@ -49,7 +49,7 @@ use std::thread;
 use crate::handlers::handler::{self, Handler, HandlerTrait};
 pub use crate::logger::builder::*;
 pub use crate::logger::level::Level;
-pub(crate) use crate::logger::log_entry::LogEntry;
+pub use crate::logger::log_entry::LogEntry;
 
 pub struct Logger {
     ///

@@ -44,7 +44,11 @@ pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
     // rtn
     buf.parse().unwrap_or_default()
 }
-
+///
+/// Check for `object` only `msg`.
+///
+/// If found, provide default format string.
+///
 fn process_msg(msg: TokenStream) -> Option<String> {
     let text = msg.to_string();
 
