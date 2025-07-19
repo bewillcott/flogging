@@ -269,8 +269,11 @@ mod my_mod {
     });
 
     #[test]
+    #[logger]
     fn test_my_func() {
+        entering!();
         my_func("Some data");
+        exiting!();
     }
 
     #[logger]

@@ -39,11 +39,10 @@ pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
     buf.push_str(&fmt);
     buf.push_str(fmt_str);
 
-    let rtn = buf.parse().unwrap_or_default();
-
+    // let rtn = buf.parse().unwrap_or_default();
     // println!("{rtn}");
-
-    rtn
+    // rtn
+    buf.parse().unwrap_or_default()
 }
 
 fn process_msg(msg: TokenStream) -> Option<String> {

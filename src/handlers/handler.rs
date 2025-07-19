@@ -26,7 +26,11 @@
 
 // #![allow(unused)]
 
-use std::{fmt::Display, io::Error};
+use std::{
+    fmt::{Debug, Display},
+    hash::Hash,
+    io::Error,
+};
 
 use crate::{
     handlers::{
@@ -38,23 +42,22 @@ use crate::{
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
-    ConsoleHandler,
-    FileHandler,
-    StringHandler,
+    Console,
+    File,
+    String,
 }
 
 impl Handler {
     pub(crate) fn create(&self, name: &str) -> Result<Box<dyn HandlerTrait>, Error> {
         let r: Box<dyn HandlerTrait> = match self {
-            Handler::ConsoleHandler => Box::new(ConsoleHandler::create(name)?),
-            Handler::FileHandler => Box::new(FileHandler::create(name)?),
-            Handler::StringHandler => Box::new(StringHandler::create(name)?),
+            Handler::Console => Box::new(ConsoleHandler::create(name)?),
+            Handler::File => Box::new(FileHandler::create(name)?),
+            Handler::String => Box::new(StringHandler::create(name)?),
         };
 
         Ok(r)
     }
 }
-
 
 pub trait HandlerTrait: Display + Send + Sync {
     ///
@@ -120,7 +123,7 @@ mod test {
     #[test]
     fn file_handler() {
         let name = "temp.txt";
-        let h = Handler::FileHandler;
+        let h = Handler::File;
         let fh = h.create(name);
 
         println!("\n{}\n", fh.unwrap());
@@ -129,7 +132,7 @@ mod test {
     #[test]
     fn file_handler_error() {
         let name = "";
-        let h = Handler::FileHandler;
+        let h = Handler::File;
         let fh = h.create(name);
 
         assert!(fh.is_err());

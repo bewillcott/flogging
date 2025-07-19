@@ -37,12 +37,12 @@
 //!     - In this case, a default format string will be used: "{}, {}, {}"
 //!     - The number of "{}" will depend on the number of parameters
 //!     - Ideal for logging concrete instances that have very good Display implementations,
-//!         or you just need their data without further explanation
+//!       or you just need their data without further explanation
 //! - Special Cases
 //!     - [entering!] and [exiting!]
 //!     - These two macros have the same features as the others,
-//!         but they may also be used _without_ any parameters. In such
-//!         a case their defaults will be used.
+//!       but they may also be used _without_ any parameters. In such
+//!       a case their defaults will be used.
 //!
 
 mod format;

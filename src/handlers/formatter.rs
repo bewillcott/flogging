@@ -29,7 +29,7 @@
 use crate::logger::LogEntry;
 use std::fmt;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Formatter {
     /// ISO 8601 / RFC 3339 date & time format.
     ///

@@ -24,9 +24,9 @@
 //! # LoggerBuilder
 //!
 
-use std::{cell::RefCell, collections::HashMap};
-use crate::handlers::{formatter::Formatter, string_handler::StringHandler};
 use super::{Handler, HandlerTrait, Level, Logger};
+use crate::handlers::{formatter::Formatter, string_handler::StringHandler};
+use std::{cell::RefCell, collections::HashMap};
 
 pub struct LoggerBuilder {
     name: String,
@@ -44,22 +44,22 @@ impl LoggerBuilder {
     }
 
     pub fn add_console_handler(mut self) -> Self {
-        self.add_handler_with(Handler::ConsoleHandler, None, None)
+        self.add_handler_with(Handler::Console, None, None)
     }
 
     pub fn add_console_handler_with(mut self, formatter: Formatter) -> Self {
-        self.add_handler_with(Handler::ConsoleHandler, None, Some(formatter))
+        self.add_handler_with(Handler::Console, None, Some(formatter))
     }
 
     pub fn add_file_handler(mut self, filename: &str) -> Self {
-        self.add_handler_with(Handler::FileHandler, Some(filename), None)
+        self.add_handler_with(Handler::File, Some(filename), None)
     }
 
     pub fn add_file_handler_with(mut self, filename: &str, formatter: Formatter) -> Self {
-        self.add_handler_with(Handler::FileHandler, Some(filename), Some(formatter))
+        self.add_handler_with(Handler::File, Some(filename), Some(formatter))
     }
 
-    fn add_handler_with(
+    pub fn add_handler_with(
         mut self,
         handler: Handler,
         filename: Option<&str>,
@@ -79,11 +79,11 @@ impl LoggerBuilder {
     }
 
     pub fn add_string_handler(mut self) -> Self {
-        self.add_handler_with(Handler::StringHandler, None, None)
+        self.add_handler_with(Handler::String, None, None)
     }
 
     pub fn add_string_handler_with(mut self, formatter: Formatter) -> Self {
-        self.add_handler_with(Handler::StringHandler, None, Some(formatter))
+        self.add_handler_with(Handler::String, None, Some(formatter))
     }
 
     pub fn build(self) -> Logger {
