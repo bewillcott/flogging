@@ -26,11 +26,7 @@
 
 // #![allow(unused)]
 
-use std::{
-    fmt::{Debug, Display},
-    hash::Hash,
-    io::Error,
-};
+use std::{fmt, hash::Hash, io::Error};
 
 use crate::{
     handlers::{
@@ -45,21 +41,23 @@ pub enum Handler {
     Console,
     File,
     String,
+    Custom(String),
 }
 
-impl Handler {
-    pub(crate) fn create(&self, name: &str) -> Result<Box<dyn HandlerTrait>, Error> {
-        let r: Box<dyn HandlerTrait> = match self {
-            Handler::Console => Box::new(ConsoleHandler::create(name)?),
-            Handler::File => Box::new(FileHandler::create(name)?),
-            Handler::String => Box::new(StringHandler::create(name)?),
+impl fmt::Display for Handler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let text = match &self {
+            Handler::Console => "Console",
+            Handler::File => "File",
+            Handler::String => "String",
+            Handler::Custom(label) => &format!("Custom({label})"),
         };
 
-        Ok(r)
+        write!(f, "Handler::{text}")
     }
 }
 
-pub trait HandlerTrait: Display + Send + Sync {
+pub trait HandlerTrait: fmt::Display + Send + Sync {
     ///
     /// Create a new handler instance.
     ///
@@ -118,23 +116,18 @@ pub trait HandlerTrait: Display + Send + Sync {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::Handler;
 
     #[test]
-    fn file_handler() {
-        let name = "temp.txt";
-        let h = Handler::File;
-        let fh = h.create(name);
+    fn handlers() {
+        let console = Handler::Console;
+        let file = Handler::File;
+        let string = Handler::String;
+        let custom = Handler::Custom("MyCustom".to_string());
 
-        println!("\n{}\n", fh.unwrap());
-    }
-
-    #[test]
-    fn file_handler_error() {
-        let name = "";
-        let h = Handler::File;
-        let fh = h.create(name);
-
-        assert!(fh.is_err());
+        println!("console: {console}");
+        println!("file: {file}");
+        println!("string: {string}");
+        println!("custom: {custom}");
     }
 }

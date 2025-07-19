@@ -59,7 +59,12 @@ impl StringHandler {
 
 impl fmt::Display for StringHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} : {}\n\n{}", self.name, self.formatter, self.log())
+        let mut len = self.name.len()
+        + self.formatter.to_string().len();
+
+        let line = "-".repeat(len + 3);
+
+        write!(f, "{} : {}\n{line}\n{}", self.name, self.formatter, self.log())
     }
 }
 

@@ -24,7 +24,7 @@
 //! # Logger
 //!
 
-#![allow(unused)]
+#![allow(clippy::needless_doctest_main)]
 
 mod builder;
 mod level;
@@ -459,9 +459,12 @@ impl Logger {
     /// use flogging::*;
     ///
     /// let mut log = Logger::string_logger(module_path!());
+    /// log.set_fn_name("get_handler");
+    ///
     /// log.info("Some text to store.");
     ///
-    /// let h = log.get_handler(StringHandler);
+    /// let h = log.get_handler(Handler::String).unwrap();
+    /// println!("{h}");
     /// ```
     pub fn get_handler(&mut self, handler: Handler) -> Option<&mut dyn HandlerTrait> {
         match self.handlers.get_mut().get_mut(&handler) {
@@ -470,6 +473,22 @@ impl Logger {
         }
     }
 
+    ///
+    /// Check if the required `Handler` has been added to this `Logger`.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::string_logger(module_path!());
+    /// log.info("Some text to store.");
+    ///
+    /// println!("This logger has a 'StringHandler': {}", log.has_handler(Handler::String));
+    /// ```
+    pub fn has_handler(&self, handler: Handler) -> bool {
+        self.handlers.borrow().contains_key(&handler)
+    }
     ///
     /// Log a INFO message.
     ///
@@ -526,7 +545,7 @@ impl Logger {
     fn _log(&mut self, entry: &mut LogEntry) {
         entry.set_mod_path(self.mod_path.clone());
 
-        for mut handler in self.handlers.get_mut() {
+        for handler in self.handlers.get_mut() {
             handler.1.publish(entry);
         }
     }
@@ -644,7 +663,7 @@ impl Logger {
     /// log.warning("Rain is wet!");
     /// log.severe("Hurricanes are windy!");
     ///
-    /// let log_str = log.get_handler(StringHandler).unwrap().get_log();
+    /// let log_str = log.get_handler(Handler::String).unwrap().get_log();
     /// println!("log_str:\n{log_str}");
     /// ```
     /// Output:
@@ -695,7 +714,7 @@ impl fmt::Display for Logger {
         let mut buf = String::new();
 
         for elem in self.handlers.borrow().iter() {
-            let s = format!("{:?}: {}\n", elem.0, elem.1);
+            let s = format!("{}: {}\n", elem.0, elem.1);
             buf.push_str(&s);
         }
 

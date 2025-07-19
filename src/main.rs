@@ -24,6 +24,8 @@
 //! # Main
 //!
 
+#![allow(clippy::declare_interior_mutable_const)]
+
 use flogging::*;
 use std::{error::Error, result::Result};
 
@@ -73,7 +75,8 @@ mod my_mod {
         RefCell::new({
             Logger::builder(module_path!())
                 .add_console_handler()
-                .set_level(Level::FINEST)
+                .add_file_handler("test.log")
+                .set_level(Level::INFO)
                 .build()
         })
     });
@@ -91,6 +94,7 @@ mod my_mod {
         log.entering();
         log.entering_with(&format!("data: \"{data}\""));
 
+        log.info(&format!("For your info: {}",module_path!()));
         // ...
 
         let rtn = true;
@@ -118,18 +122,16 @@ pub fn my_func(data: &str) {
 
 #[logger]
 fn main() {
-    // entering!();
-    // info!(
-    //     "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
-    // );
-    // warning!("Those same macros (info, etc.) MUST have atleast the format string.");
-    // config!("This is running on Fedora Linux 42.");
-    // do_something();
-    // info!("Job's done.");
-    // exiting!();
+    entering!();
+    info!(
+        "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
+    );
+    warning!("Those same macros (info, etc.) MUST have atleast the format string.");
+    config!("This is running on Fedora Linux 42.");
+    do_something();
 
     let data = "Some data";
-    my_func(data);
+    my_mod::my_func(data);
 
     // extern crate flogging;
     // use flogging::*;
@@ -153,4 +155,7 @@ fn main() {
 
     // let log_str = log.get_handler(StringHandler).unwrap().get_log();
     // println!("log_str:\n{log_str}");
+
+    info!("Job's done.");
+    exiting!();
 }

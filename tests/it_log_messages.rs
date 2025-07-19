@@ -146,6 +146,7 @@ fn add_a_log_message(fmt: &str, msg: &str)
     }
 
     #[test]
+    #[ignore = "for manual testing ONLY!"]
     fn regex_params() {
         let t = "\"{}\", arg";
         let t2 = "\"Some text{:?}\n\", arg";

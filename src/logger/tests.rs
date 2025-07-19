@@ -40,3 +40,29 @@ fn config() {
 
     helper::help();
 }
+
+#[test]
+fn has_handler() {
+    use super::*;
+
+    let mut log = Logger::string_logger(module_path!());
+    log.info("Some text to store.");
+
+    println!(
+        "This logger has a 'StringHandler': {}",
+        log.has_handler(Handler::String)
+    );
+}
+
+#[test]
+fn get_handler() {
+    use super::*;
+
+    let mut log = Logger::string_logger(module_path!());
+    log.set_fn_name("get_handler");
+
+    log.info("Some text to store.");
+
+    let h = log.get_handler(Handler::String).unwrap();
+    println!("{h}");
+}

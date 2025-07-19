@@ -25,7 +25,6 @@
 //!
 
 use chrono::{DateTime, Local};
-
 use super::level::Level;
 use std::{fmt, time::Instant};
 
@@ -52,6 +51,7 @@ impl fmt::Display for LogEntry {
     }
 }
 
+#[allow(unused)]
 impl LogEntry {
     pub(crate) fn create(level: Level, fn_name: String, message: String) -> LogEntry {
         LogEntry {
