@@ -14,5 +14,5 @@
         "serde",
         "strfmt"
     ],
-    // "editor.quickSuggestionsDelay": 4000,
+    "rust-analyzer.cargo.features": ["proc-macro"],
 }

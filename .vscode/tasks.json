@@ -53,6 +53,15 @@
 			]
 		},
 		{
+			"label": "rust: cargo clean",
+			"group": "build",
+			"type": "cargo",
+			"command": "clean",
+			"problemMatcher": [
+				"$rustc"
+			]
+		},
+		{
 			"label": "rust: cargo clippy",
 			"group": "test",
 			"type": "process",
