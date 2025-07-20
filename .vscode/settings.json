@@ -14,5 +14,4 @@
         "serde",
         "strfmt"
     ],
-    "rust-analyzer.cargo.features": ["proc-macro"],
 }
