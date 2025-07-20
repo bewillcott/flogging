@@ -31,7 +31,7 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct ConsoleHandler {
     name: String,
     formatter: Formatter,
@@ -42,18 +42,6 @@ impl ConsoleHandler {
         ConsoleHandler {
             name: name.to_string(),
             formatter: Formatter::Simple,
-        }
-    }
-}
-
-impl Default for ConsoleHandler {
-    fn default() -> Self
-    where
-        Self: Sized,
-    {
-        Self {
-            name: Default::default(),
-            formatter: Default::default(),
         }
     }
 }

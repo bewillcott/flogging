@@ -40,7 +40,7 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct FileHandler {
     name: String,
     formatter: Formatter,
@@ -64,15 +64,6 @@ impl FileHandler {
         };
 
         Ok(fh)
-    }
-}
-
-impl Default for FileHandler {
-    fn default() -> Self
-    where
-        Self: Sized,
-    {
-        Self { name: Default::default(), formatter: Default::default(), file: Default::default() }
     }
 }
 

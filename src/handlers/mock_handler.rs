@@ -30,16 +30,8 @@ use std::{fmt, io::Error};
 
 use crate::{Formatter, HandlerTrait, LogEntry};
 
+#[derive(Debug, Default)]
 pub struct MockHandler {}
-
-impl Default for MockHandler {
-    fn default() -> Self
-    where
-        Self: Sized,
-    {
-        Self {}
-    }
-}
 
 impl fmt::Display for MockHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

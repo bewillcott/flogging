@@ -30,6 +30,7 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
+#[derive(Debug, Default)]
 pub struct StringHandler {
     name: String,
     formatter: Formatter,
@@ -54,19 +55,6 @@ impl StringHandler {
         }
 
         buf
-    }
-}
-
-impl Default for StringHandler {
-    fn default() -> Self
-    where
-        Self: Sized,
-    {
-        Self {
-            name: Default::default(),
-            formatter: Default::default(),
-            log: Default::default(),
-        }
     }
 }
 
