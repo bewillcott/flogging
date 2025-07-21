@@ -54,7 +54,7 @@ extern crate proc_macro_error;
 
 use crate::{format::format_impl, logger::logger_impl};
 use proc_macro::TokenStream;
-use proc_macro_error::proc_macro_error;
+// use proc_macro_error::proc_macro_error;
 
 ///
 /// Log a CONFIG message.
@@ -114,7 +114,7 @@ use proc_macro_error::proc_macro_error;
 /// ```
 /// [format]: https://doc.rust-lang.org/std/macro.format.html
 ///
-#[proc_macro_error]
+// #[proc_macro_error]
 #[proc_macro]
 pub fn config(msg: TokenStream) -> TokenStream {
     format_impl("__log.config({&__fmt});\n", msg)

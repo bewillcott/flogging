@@ -12,6 +12,7 @@
         "nanos",
         "PCDATA",
         "serde",
-        "strfmt"
+        "strfmt",
+        "trybuild"
     ],
 }
