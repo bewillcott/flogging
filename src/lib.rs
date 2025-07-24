@@ -151,7 +151,10 @@ pub use flogging_macros::*;
 pub use handlers::{
     console_handler::ConsoleHandler,
     file_handler::FileHandler,
-    formatter::FormatType::{self, *},
+    formatter::{
+        FormatType, Formatter, format_trait, iso8601_formatter, mock_formatter, simple_formatter,
+        unixtimestamp_formatter,
+    },
     handler::{Handler, HandlerTrait},
     mock_handler::MockHandler,
     string_handler::StringHandler,

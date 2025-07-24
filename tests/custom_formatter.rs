@@ -1,5 +1,5 @@
 //
-// File Name:    unixtimestamp_formatter.rs
+// File Name:    custom_formatter.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,23 +21,23 @@
 //
 
 //!
-//! # <TITLE FOR: "src/handlers/formatter/unixtimestamp_formatter.rs">
+//! # CustomFormatter for Testing
 //!
 
 use std::fmt;
-use super::format_trait::FormatTrait;
+use flogging::{format_trait::FormatTrait, LogEntry};
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
-pub struct UnixTimestampFormatter {
+pub struct CustomFormatter {
     dt_fmt: String,
     fmt_string: String,
 }
 
-impl UnixTimestampFormatter {
+impl CustomFormatter {
     pub fn new() -> Self {
         Self {
-            dt_fmt: "%s.%f".to_string(),
-            fmt_string: "{dt} |{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
+            dt_fmt: "".to_string(),
+            fmt_string: "CustomFormatter [{level:7}] {message}".to_string(),
         }
     }
 
@@ -50,13 +50,13 @@ impl UnixTimestampFormatter {
     }
 }
 
-impl Default for UnixTimestampFormatter {
+impl Default for CustomFormatter {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl fmt::Display for UnixTimestampFormatter {
+impl fmt::Display for CustomFormatter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
@@ -66,8 +66,8 @@ impl fmt::Display for UnixTimestampFormatter {
     }
 }
 
-impl FormatTrait for UnixTimestampFormatter {
-    fn format(&self, log_entry: &crate::LogEntry) -> String {
+impl FormatTrait for CustomFormatter {
+    fn format(&self, log_entry: &LogEntry) -> String {
         self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

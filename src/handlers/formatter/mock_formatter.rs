@@ -1,5 +1,5 @@
 //
-// File Name:    unixtimestamp_formatter.rs
+// File Name:    mock_formatter.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,53 +21,49 @@
 //
 
 //!
-//! # <TITLE FOR: "src/handlers/formatter/unixtimestamp_formatter.rs">
+//! # Mock Formatter
 //!
 
-use std::fmt;
 use super::format_trait::FormatTrait;
+use std::fmt;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
-pub struct UnixTimestampFormatter {
+pub struct MockFormatter {
     dt_fmt: String,
     fmt_string: String,
 }
 
-impl UnixTimestampFormatter {
+impl MockFormatter {
     pub fn new() -> Self {
         Self {
-            dt_fmt: "%s.%f".to_string(),
-            fmt_string: "{dt} |{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
+            dt_fmt: "".to_string(),
+            fmt_string: "MockFormatter".to_string(),
         }
     }
 
-    pub fn dt_fmt(&self)-> String{
+    pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
-    pub fn fmt_string(&self)-> String{
+    pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }
 }
 
-impl Default for UnixTimestampFormatter {
+impl Default for MockFormatter {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl fmt::Display for UnixTimestampFormatter {
+impl fmt::Display for MockFormatter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "dt_fmt: \"{}\" - fmt_string: \"{}\"",
-            self.dt_fmt, self.fmt_string
-        )
+        "MockFormatter".fmt(f)
     }
 }
 
-impl FormatTrait for UnixTimestampFormatter {
+impl FormatTrait for MockFormatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
-        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        "MockFormatter".to_string()
     }
 }

@@ -68,6 +68,6 @@ impl fmt::Display for Iso8601Formatter {
 
 impl FormatTrait for Iso8601Formatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
-        Iso8601Formatter::fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

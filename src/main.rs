@@ -23,6 +23,8 @@
 //!
 //! # Main
 //!
+//! This is used for testing purposes ONLY!
+//!
 
 #![allow(clippy::declare_interior_mutable_const)]
 

@@ -95,7 +95,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -121,6 +121,20 @@ impl Logger {
     ///
     pub fn console_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_console_handler().build()
+    }
+
+    ///
+    /// Create new Logger instance, with a custom handler.
+    ///
+    /// ## Parameters
+    /// - `mod_path`- The module path. Suggest using [`module_path`].
+    /// - `label` - Unique label for this custom handler.
+    /// - `custom` - The custom handler, boxed.
+    ///
+    pub fn custom_logger(mod_path: &str, label: &str, custom: Box<dyn HandlerTrait>) -> Logger {
+        Logger::builder(mod_path)
+            .add_custom_handler(label, custom)
+            .build()
     }
 
     ///
@@ -176,7 +190,7 @@ impl Logger {
     /// A `LogEntry` with message "Entry" and log level FINER, is logged.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -275,7 +289,7 @@ impl Logger {
     /// A `LogEntry` with message "Return" and log level FINER, is logged.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -329,9 +343,9 @@ impl Logger {
     /// Logging level is set to it's default setting (INFO).
     ///
     /// ## Parameters
-    /// `mod_path`- The module path. Suggest using [`std::module_path`][mp].\
-    /// `filename` - The name of the log file to use. Will be created
-    /// if it doesn't exist.
+    /// - `mod_path`- The module path. Suggest using [`std::module_path`][mp].
+    /// - `filename` - The name of the log file to use. Will be created
+    ///   if it doesn't exist.
     ///
     /// ## Examples
     /// ```
@@ -361,7 +375,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -391,7 +405,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -421,7 +435,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -497,7 +511,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -540,7 +554,7 @@ impl Logger {
     /// perform any logging.
     ///
     /// ## Parameters
-    /// `entry` - The `LogEntry` to be published.
+    /// - `entry` - The `LogEntry` to be published.
     ///
     fn _log(&mut self, entry: &mut LogEntry) {
         entry.set_mod_path(self.mod_path.clone());
@@ -557,10 +571,10 @@ impl Logger {
     /// message is forwarded to all the registered output `Handler` objects.
     ///
     /// ## Parameters
-    /// `level` - One of the message level identifiers, e.g., SEVERE.\
-    /// `fn_name` - The name of the function/method from-which this method
-    /// was called.\
-    /// `msg` - The string message.
+    /// - `level` - One of the message level identifiers, e.g., SEVERE.
+    /// - `fn_name` - The name of the function/method from-which this method
+    ///    was called.
+    /// - `msg` - The string message.
     ///
     fn log(&mut self, level: Level, fn_name: &str, msg: &str) {
         if !self.is_loggable(&level) {
@@ -617,7 +631,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```
@@ -649,7 +663,7 @@ impl Logger {
     /// perhaps for further processing, would also be a valid use case.
     ///
     /// ## Parameters
-    /// `mod_path`- The module path. Suggest using [`module_path`].
+    /// - `mod_path`- The module path. Suggest using [`module_path`].
     ///
     pub fn string_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_string_handler().build()
@@ -663,7 +677,7 @@ impl Logger {
     /// Handler objects.
     ///
     /// ## Parameters
-    /// `msg` - The string message.
+    /// - `msg` - The string message.
     ///
     /// ## Examples
     /// ```

@@ -55,7 +55,7 @@ impl FileHandler {
 
         let fh = FileHandler {
             name: filename.to_string(),
-            formatter: FormatType::Iso8601.create(),
+            formatter: FormatType::Iso8601.create(None),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
 

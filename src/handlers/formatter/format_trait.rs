@@ -29,21 +29,12 @@ use dyn_fmt::AsStrFormatExt;
 use regex::Regex;
 use std::{fmt, hash};
 use strfmt::strfmt;
+use dyn_clone::DynClone;
 
-pub trait FormatTrait: fmt::Display + hash::Hash + Clone + PartialEq + Eq + Send + Sync {
+pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
     fn format(&self, log_entry: &LogEntry) -> String;
 
-    fn fmt(dt_fmt: String, fmt: String, log_entry: &LogEntry) -> String {
-        // let LogEntry {
-        //     timestamp,
-        //     mod_path,
-        //     fn_name,
-        //     level,
-        //     message,
-        // } = log_entry;
-
-        // let a = mod_path;
-
+    fn _fmt(&self, dt_fmt: String, fmt: String, log_entry: &LogEntry) -> String {
         let dt = log_entry.timestamp.format(&dt_fmt).to_string();
 
         let output = format!(
@@ -60,6 +51,14 @@ pub trait FormatTrait: fmt::Display + hash::Hash + Clone + PartialEq + Eq + Send
         );
 
         output
+    }
+}
+
+dyn_clone::clone_trait_object!(FormatTrait);
+
+impl fmt::Debug for dyn FormatTrait {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.fmt(f)
     }
 }
 

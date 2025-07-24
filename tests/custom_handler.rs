@@ -1,5 +1,5 @@
 //
-// File Name:    string_handler.rs
+// File Name:    custom_handler.rs
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -21,25 +21,23 @@
 //
 
 //!
-//! # StringHandler
+//! # CustomHandler for Testing
 //!
+
 use std::{fmt, io::Error};
 
-use crate::{
-    handlers::{formatter::{FormatType, Formatter}, handler::HandlerTrait},
-    logger::{Level, LogEntry},
-};
+use flogging::*;
 
 #[derive(Debug, Default)]
-pub struct StringHandler {
+pub(crate) struct CustomHandler {
     name: String,
     formatter: Formatter,
     log: Vec<String>,
 }
 
-impl StringHandler {
+impl CustomHandler {
     fn create(name: &str) -> Self {
-        StringHandler {
+        CustomHandler {
             name: name.to_string(),
             formatter: FormatType::Simple.create(None),
             log: Vec::new(),
@@ -58,7 +56,7 @@ impl StringHandler {
     }
 }
 
-impl fmt::Display for StringHandler {
+impl fmt::Display for CustomHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let len = self.name.len() + self.formatter.to_string().len();
         let line = "-".repeat(len + 3);
@@ -73,12 +71,12 @@ impl fmt::Display for StringHandler {
     }
 }
 
-impl HandlerTrait for StringHandler {
+impl HandlerTrait for CustomHandler {
     fn create(name: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        Ok(StringHandler::create(name))
+        Ok(CustomHandler::create(name))
     }
 
     fn close(&mut self) {}
@@ -99,24 +97,12 @@ impl HandlerTrait for StringHandler {
         true
     }
 
-    #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {
+        println!("{}", self.formatter.format(log_entry));
         self.log.push(self.formatter.format(log_entry));
     }
 
     fn set_formatter(&mut self, format: Formatter) {
         self.formatter = format;
-    }
-}
-
-
-#[cfg(test)]
-mod tests{
-    use super::*;
-
-
-    #[test]
-    fn logs(){
-
     }
 }

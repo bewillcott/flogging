@@ -16,3 +16,4 @@ flogging_macros = {path = "flogging_macros"}
 regex = "1.11.1"
 dyn-fmt = "0.4.3"
 strfmt = "0.2.5"
+dyn-clone = "1.0.19"

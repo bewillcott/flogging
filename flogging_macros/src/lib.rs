@@ -73,7 +73,7 @@ use proc_macro::TokenStream;
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - See [Special Note](index.html#special-note)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
@@ -175,7 +175,7 @@ pub fn exiting(_msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
 ///
 /// ## Examples
 ///
@@ -200,7 +200,7 @@ pub fn fine(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
 ///
 /// ## Examples
 ///
@@ -222,7 +222,7 @@ pub fn finer(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
 ///
 /// ## Examples
 ///
@@ -251,7 +251,7 @@ pub fn finest(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
 ///
 /// ## Examples
 ///
@@ -358,7 +358,7 @@ pub fn set_level(level: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
 ///
 /// ## Examples
 ///
@@ -384,7 +384,7 @@ pub fn severe(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
 ///
 /// ## Examples
 ///

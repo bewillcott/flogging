@@ -124,6 +124,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "dyn-clone"
+version = "1.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1c7a8fb8a9fbf66c1f703fe16184d10ca0ee9d23be5b4436400408ba54a95005"
+
+[[package]]
 name = "dyn-fmt"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -144,6 +150,7 @@ version = "0.4.0"
 dependencies = [
  "anyhow",
  "chrono",
+ "dyn-clone",
  "dyn-fmt",
  "flogging_macros",
  "regex",

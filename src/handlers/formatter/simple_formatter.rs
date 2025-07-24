@@ -68,6 +68,6 @@ impl fmt::Display for SimpleFormatter {
 
 impl FormatTrait for SimpleFormatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
-        SimpleFormatter::fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

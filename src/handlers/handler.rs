@@ -79,7 +79,7 @@ pub trait HandlerTrait: fmt::Display + Send + Sync {
     /// Create a new handler instance.
     ///
     /// ## Parameters
-    /// `name` - Used to identify handler.
+    /// - `name` - Used to identify handler.
     ///
     fn create(name: &str) -> Result<Self, Error>
     where
@@ -122,7 +122,9 @@ pub trait HandlerTrait: fmt::Display + Send + Sync {
     ///
     /// The Handler is responsible for formatting the message, when and if necessary.
     ///
-    #[allow(private_interfaces)]
+    /// ## Parameters
+    /// - `log_entry` - The `LogEntry` to be published.
+    ///
     fn publish(&mut self, log_entry: &LogEntry);
 
     ///
