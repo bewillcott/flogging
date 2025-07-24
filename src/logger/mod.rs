@@ -573,7 +573,7 @@ impl Logger {
     /// ## Parameters
     /// - `level` - One of the message level identifiers, e.g., SEVERE.
     /// - `fn_name` - The name of the function/method from-which this method
-    ///    was called.
+    ///   was called.
     /// - `msg` - The string message.
     ///
     fn log(&mut self, level: Level, fn_name: &str, msg: &str) {

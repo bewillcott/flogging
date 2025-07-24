@@ -30,14 +30,18 @@ use std::{fmt, hash::Hash, io::Error};
 
 use crate::{
     handlers::{
-        console_handler::ConsoleHandler, file_handler::FileHandler, formatter::{FormatType, Formatter},
-        mock_handler::MockHandler, string_handler::StringHandler,
+        console_handler::ConsoleHandler,
+        file_handler::FileHandler,
+        formatter::{FormatType, Formatter},
+        mock_handler::MockHandler,
+        string_handler::StringHandler,
     },
     logger::{Level, LogEntry},
 };
 
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
+    #[default]
     Console,
     File,
     String,
@@ -65,12 +69,6 @@ impl Handler {
             Handler::String => Box::new(StringHandler::default()),
             Handler::Custom(label) => Box::new(MockHandler::default()),
         }
-    }
-}
-
-impl Default for Handler {
-    fn default() -> Self {
-        Handler::Console
     }
 }
 

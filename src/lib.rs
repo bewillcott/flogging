@@ -31,12 +31,12 @@
 //!
 //! You need to add this crate to your project:
 //! ```text
-//! cargo add flogging
+//! $ cargo add flogging
 //! ```
 //! or add this text to the projects `Cargo.toml` file:
 //! ```text
 //! [dependencies]
-//! flogging = "0.3.0"
+//! flogging = "0.4.0"
 //! ```
 //!
 //! ## Examples
@@ -47,7 +47,7 @@
 //!
 //! 1. At the module level:
 //!     - `use flogging::*;`
-//!     - `const_logger!({...});`[=>]const_logger]
+//!     - `const_logger!({...});`[=>][const_logger]
 //! 2. On each function/method you want to add logging to:
 //!     - `#[logger]`[=>][logger]
 //! 3. Inside each such attributed function/method:

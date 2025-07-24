@@ -24,11 +24,13 @@
 //! # CustomHandler for Testing
 //!
 
+#![allow(dead_code)]
+
 use std::{fmt, io::Error};
 
 use flogging::*;
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub(crate) struct CustomHandler {
     name: String,
     formatter: Formatter,
@@ -36,7 +38,7 @@ pub(crate) struct CustomHandler {
 }
 
 impl CustomHandler {
-    fn create(name: &str) -> Self {
+    fn new(name: &str) -> Self {
         CustomHandler {
             name: name.to_string(),
             formatter: FormatType::Simple.create(None),
@@ -53,6 +55,16 @@ impl CustomHandler {
         }
 
         buf
+    }
+}
+
+impl Default for CustomHandler {
+    fn default() -> Self {
+        Self {
+            name: Default::default(),
+            formatter: Default::default(),
+            log: Default::default(),
+        }
     }
 }
 
@@ -76,7 +88,7 @@ impl HandlerTrait for CustomHandler {
     where
         Self: Sized,
     {
-        Ok(CustomHandler::create(name))
+        Ok(Self::new(name))
     }
 
     fn close(&mut self) {}

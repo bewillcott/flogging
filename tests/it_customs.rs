@@ -32,14 +32,14 @@ mod custom_handler;
 #[cfg(test)]
 mod test {
     use crate::{custom_formatter::CustomFormatter, custom_handler::CustomHandler};
-    use flogging::{FormatType, Handler, Logger};
+    use flogging::{FormatType, Handler, HandlerTrait, Logger};
 
     #[test]
     fn custom_handler() {
         let mut log = Logger::custom_logger(
             module_path!(),
             "CustomHandler",
-            Box::new(CustomHandler::default()),
+            Box::new(CustomHandler::create("custom_handler").unwrap()),
         );
 
         log.info("Just testing");

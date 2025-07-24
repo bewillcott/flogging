@@ -25,11 +25,11 @@
 //!
 
 use crate::LogEntry;
+use dyn_clone::DynClone;
 use dyn_fmt::AsStrFormatExt;
 use regex::Regex;
 use std::{fmt, hash};
 use strfmt::strfmt;
-use dyn_clone::DynClone;
 
 pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
     fn format(&self, log_entry: &LogEntry) -> String;
@@ -37,20 +37,15 @@ pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
     fn _fmt(&self, dt_fmt: String, fmt: String, log_entry: &LogEntry) -> String {
         let dt = log_entry.timestamp.format(&dt_fmt).to_string();
 
-        let output = format!(
-            "{}",
-            strfmt!(
-                &fmt,
-                dt,
-                message => log_entry.message.clone(),
-                mod_path =>  log_entry.mod_path.clone(),
-                fn_name => log_entry.fn_name.clone(),
-                level => log_entry.level.as_str()
-            )
-            .unwrap()
-        );
-
-        output
+        strfmt!(
+            &fmt,
+            dt,
+            message => log_entry.message.clone(),
+            mod_path =>  log_entry.mod_path.clone(),
+            fn_name => log_entry.fn_name.clone(),
+            level => log_entry.level.as_str()
+        )
+        .unwrap()
     }
 }
 

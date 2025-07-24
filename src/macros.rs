@@ -49,7 +49,7 @@ use crate::Logger;
 ///     Logger::builder(module_path!())
 ///         .set_level(Level::FINEST)
 ///         .add_console_handler()
-///         .add_file_handler_with("rdb.log", Formatter::Iso8601)
+///         .add_file_handler_with("rdb.log", FormatType::Iso8601, None)
 ///         .build()
 /// });
 /// ```

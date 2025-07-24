@@ -21,7 +21,7 @@
 //
 
 //!
-//! # <TITLE FOR: "src/handlers/formatter/unixtimestamp_formatter.rs">
+//! # UnixTimeStamp Formatter
 //!
 
 use std::fmt;
