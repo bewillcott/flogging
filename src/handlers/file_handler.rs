@@ -34,7 +34,7 @@ use std::{
 
 use crate::{
     handlers::{
-        formatter::Formatter::{self, Iso8601},
+        formatter::{FormatType, Formatter},
         handler::HandlerTrait,
     },
     logger::{Level, LogEntry},
@@ -55,7 +55,7 @@ impl FileHandler {
 
         let fh = FileHandler {
             name: filename.to_string(),
-            formatter: Iso8601,
+            formatter: FormatType::Iso8601.create(),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
 

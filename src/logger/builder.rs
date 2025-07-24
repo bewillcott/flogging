@@ -27,7 +27,7 @@
 use super::{Handler, HandlerTrait, Level, Logger};
 use crate::{
     ConsoleHandler, FileHandler,
-    handlers::{formatter::Formatter, string_handler::StringHandler},
+    handlers::{formatter::FormatType, string_handler::StringHandler},
 };
 use std::{cell::RefCell, collections::HashMap};
 
@@ -51,7 +51,7 @@ impl LoggerBuilder {
         self.add_handler_with(Handler::Console, None, None, None)
     }
 
-    pub fn add_console_handler_with(self, formatter: Formatter) -> Self {
+    pub fn add_console_handler_with(self, formatter: FormatType) -> Self {
         self.add_handler_with(Handler::Console, None, None, Some(formatter))
     }
 
@@ -63,7 +63,7 @@ impl LoggerBuilder {
         self,
         name: &str,
         custom: Box<dyn HandlerTrait>,
-        formatter: Formatter,
+        formatter: FormatType,
     ) -> Self {
         self.add_handler_with(
             Handler::Custom(name.to_string()),
@@ -77,7 +77,7 @@ impl LoggerBuilder {
         self.add_handler_with(Handler::File, None, Some(filename), None)
     }
 
-    pub fn add_file_handler_with(self, filename: &str, formatter: Formatter) -> Self {
+    pub fn add_file_handler_with(self, filename: &str, formatter: FormatType) -> Self {
         self.add_handler_with(Handler::File, None, Some(filename), Some(formatter))
     }
 
@@ -86,7 +86,7 @@ impl LoggerBuilder {
         handler: Handler,
         custom: Option<Box<dyn HandlerTrait>>,
         filename: Option<&str>,
-        formatter: Option<Formatter>,
+        formatter: Option<FormatType>,
     ) -> Self {
         let name = filename.unwrap_or(&self.name);
         let mut h: Box<dyn HandlerTrait> = match handler {
@@ -97,7 +97,7 @@ impl LoggerBuilder {
         };
 
         if let Some(f) = formatter {
-            h.set_formatter(f);
+            h.set_formatter(f.create());
         }
 
         let map = self.handlers.get_mut();
@@ -110,7 +110,7 @@ impl LoggerBuilder {
         self.add_handler_with(Handler::String, None, None, None)
     }
 
-    pub fn add_string_handler_with(self, formatter: Formatter) -> Self {
+    pub fn add_string_handler_with(self, formatter: FormatType) -> Self {
         self.add_handler_with(Handler::String, None, None, Some(formatter))
     }
 

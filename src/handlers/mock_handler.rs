@@ -28,7 +28,7 @@
 
 use std::{fmt, io::Error};
 
-use crate::{Formatter, HandlerTrait, LogEntry};
+use crate::{handlers::formatter::Formatter, FormatType, HandlerTrait, LogEntry};
 
 #[derive(Debug, Default)]
 pub struct MockHandler {}

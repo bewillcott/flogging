@@ -30,7 +30,7 @@ use std::{fmt, hash::Hash, io::Error};
 
 use crate::{
     handlers::{
-        console_handler::ConsoleHandler, file_handler::FileHandler, formatter::Formatter,
+        console_handler::ConsoleHandler, file_handler::FileHandler, formatter::{FormatType, Formatter},
         mock_handler::MockHandler, string_handler::StringHandler,
     },
     logger::{Level, LogEntry},
@@ -70,7 +70,7 @@ impl Handler {
 
 impl Default for Handler {
     fn default() -> Self {
-        Handler::Custom(String::default())
+        Handler::Console
     }
 }
 

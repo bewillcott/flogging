@@ -39,7 +39,7 @@
 //!
 //! In addition there is a level **OFF** that can be used to turn off logging.
 
-use std::fmt;
+use std::{fmt, str::FromStr};
 
 ///
 /// Log entry level setting.
@@ -138,9 +138,9 @@ pub enum Level {
     OFF,
 }
 
-impl fmt::Display for Level {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let label = match self {
+impl Level {
+    pub const fn as_str(&self) -> &'static str {
+        match self {
             Level::ALL => "ALL",
             Level::FINEST => "FINEST",
             Level::FINER => "FINER",
@@ -150,9 +150,40 @@ impl fmt::Display for Level {
             Level::WARNING => "WARNING",
             Level::SEVERE => "SEVERE",
             Level::OFF => "OFF",
-        };
+        }
+    }
+}
 
-        label.fmt(f)
+impl fmt::Display for Level {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.as_str().fmt(f)
+    }
+}
+
+#[allow(dead_code)]
+#[derive(Debug)]
+pub struct LevelError {
+    msg: String,
+}
+
+impl FromStr for Level {
+    type Err = LevelError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ALL" => Ok(Level::ALL),
+            "FINEST" => Ok(Level::FINEST),
+            "FINER" => Ok(Level::FINER),
+            "FINE" => Ok(Level::FINE),
+            "CONFIG" => Ok(Level::CONFIG),
+            "INFO" => Ok(Level::INFO),
+            "WARNING" => Ok(Level::WARNING),
+            "SEVERE" => Ok(Level::SEVERE),
+            "OFF" => Ok(Level::OFF),
+            _ => Err(LevelError {
+                msg: format!("Unknown Level: {s}"),
+            }),
+        }
     }
 }
 

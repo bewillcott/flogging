@@ -14,3 +14,5 @@ anyhow = "1.0.98"
 chrono = { version = "0.4.41", features = ["std","alloc"] }
 flogging_macros = {path = "flogging_macros"}
 regex = "1.11.1"
+dyn-fmt = "0.4.3"
+strfmt = "0.2.5"

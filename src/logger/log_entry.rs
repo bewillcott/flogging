@@ -24,21 +24,21 @@
 //! # Log Entry
 //!
 
-use chrono::{DateTime, Local};
 use super::level::Level;
+use chrono::{DateTime, Local};
 use std::{fmt, time::Instant};
 
 #[derive(Debug)]
 pub struct LogEntry {
-    timestamp: DateTime<Local>,
-    mod_path: String,
+    pub(crate) timestamp: DateTime<Local>,
+    pub(crate) mod_path: String,
     ///
     /// This is the name of the function/method inside which this
     /// log message was generated.
     ///
-    fn_name: String,
-    level: Level,
-    message: String,
+    pub(crate) fn_name: String,
+    pub(crate) level: Level,
+    pub(crate) message: String,
 }
 
 impl fmt::Display for LogEntry {

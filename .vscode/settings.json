@@ -13,6 +13,7 @@
         "PCDATA",
         "serde",
         "strfmt",
-        "trybuild"
+        "trybuild",
+        "unixtimestamp"
     ],
 }

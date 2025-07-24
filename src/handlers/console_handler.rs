@@ -27,7 +27,7 @@
 use std::{fmt, io::Error};
 
 use crate::{
-    handlers::{formatter::Formatter, handler::HandlerTrait},
+    handlers::{formatter::{FormatType, Formatter}, handler::HandlerTrait},
     logger::{Level, LogEntry},
 };
 
@@ -41,7 +41,7 @@ impl ConsoleHandler {
     fn create(name: &str) -> Self {
         ConsoleHandler {
             name: name.to_string(),
-            formatter: Formatter::Simple,
+            formatter: FormatType::Simple.create(),
         }
     }
 }

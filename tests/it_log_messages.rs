@@ -91,7 +91,6 @@ mod tests {
     }
 
     #[test]
-
     fn string_handler() {
         let mut log = Logger::string_logger(module_path!());
         log.set_level(FINEST).set_fn_name("string_handler");

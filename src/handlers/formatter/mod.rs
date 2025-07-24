@@ -26,10 +26,30 @@
 
 #![allow(unused)]
 
-use crate::logger::LogEntry;
+pub mod format_trait;
+pub mod iso8601_formatter;
+pub mod simple_formatter;
+pub mod unixtimestamp_formatter;
+
+use crate::{
+    handlers::formatter::{
+        format_trait::FormatTrait, iso8601_formatter::Iso8601Formatter,
+        simple_formatter::SimpleFormatter, unixtimestamp_formatter::UnixTimestampFormatter,
+    },
+    logger::LogEntry,
+};
 use std::fmt;
 
 #[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
+
+pub enum FormatType {
+    Iso8601,
+    #[default]
+    Simple,
+    UnixTimestamp,
+}
+
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Formatter {
     /// ISO 8601 / RFC 3339 date & time format.
     ///
@@ -56,7 +76,7 @@ pub enum Formatter {
     /// 2025-07-18T14:01:01.051532664+08:00 |flogging->main| [WARNING] Rain is wet!
     /// ```
     ///
-    Iso8601,
+    Iso8601(Iso8601Formatter),
 
     /// Simple format.
     ///
@@ -75,8 +95,7 @@ pub enum Formatter {
     /// |flogging->main| [INFO   ] It is cloudy today.
     /// ```
     ///
-    #[default]
-    Simple,
+    Simple(SimpleFormatter),
 
     /// Unix Timestamp format.
     ///
@@ -109,48 +128,28 @@ pub enum Formatter {
     /// 1752818461.051538870 |flogging->main| [SEVERE ] Hurricanes are windy!
     /// ```
     ///
-    UnixTimestamp,
+    UnixTimestamp(UnixTimestampFormatter),
+}
+
+impl FormatType {
+    pub fn create(&self) -> Formatter {
+        match &self {
+            FormatType::Iso8601 => Formatter::Iso8601(Default::default()),
+            FormatType::Simple => Formatter::Simple(Default::default()),
+            FormatType::UnixTimestamp => Formatter::UnixTimestamp(Default::default()),
+            // Formatter::Custom(label) => Box::new(MockHandler::default()),
+        }
+    }
 }
 
 impl Formatter {
     /// Format the text of the `log_entry`, in accordance with the formatting
     /// for this [formatter](enum.Formatter.html).
-    #[allow(private_interfaces)]
     pub fn format(&self, log_entry: &LogEntry) -> String {
-        let fmt = match self {
-            Formatter::Iso8601 => "%+".to_string(),
-            Formatter::Simple => "".to_string(), //"%c".to_string()
-            Formatter::UnixTimestamp => "%s.%f".to_string(),
-        };
-
-        let dt = log_entry.timestamp().format(&fmt);
-
         match self {
-            Formatter::Iso8601 => format!(
-                "{dt:35} |{}->{}| [{:7}] {}",
-                log_entry.mod_path(),
-                log_entry.fn_name(),
-                log_entry.level(),
-                log_entry.message()
-            ),
-            Formatter::Simple => {
-                format!(
-                    "|{}->{}| [{:7}] {}",
-                    log_entry.mod_path(),
-                    log_entry.fn_name(),
-                    log_entry.level(),
-                    log_entry.message()
-                )
-            }
-            Formatter::UnixTimestamp => {
-                format!(
-                    "{dt} |{}->{}| [{:7}] {}",
-                    log_entry.mod_path(),
-                    log_entry.fn_name(),
-                    log_entry.level(),
-                    log_entry.message()
-                )
-            }
+            Formatter::Iso8601(f) => f.format(log_entry),
+            Formatter::Simple(f) => f.format(log_entry),
+            Formatter::UnixTimestamp(f) => f.format(log_entry),
         }
     }
 
@@ -159,15 +158,31 @@ impl Formatter {
     }
 }
 
-impl fmt::Display for Formatter {
+impl fmt::Display for FormatType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let label = match self {
-            Formatter::Iso8601 => "Iso8601",
-            Formatter::Simple => "SimpleFormatter",
-            Formatter::UnixTimestamp => "UnixTimestamp",
+            FormatType::Iso8601 => "Iso8601",
+            FormatType::Simple => "SimpleFormatter",
+            FormatType::UnixTimestamp => "UnixTimestamp",
         };
 
         label.fmt(f)
+    }
+}
+
+impl Default for Formatter {
+    fn default() -> Self {
+        FormatType::default().create()
+    }
+}
+
+impl fmt::Display for Formatter {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Formatter::Iso8601(formatter) => formatter.fmt(f),
+            Formatter::Simple(formatter) => formatter.fmt(f),
+            Formatter::UnixTimestamp(formatter) => formatter.fmt(f),
+        }
     }
 }
 
@@ -183,7 +198,7 @@ mod test {
             "iso8601".to_string(),
             "This is a test message".to_string(),
         );
-        let f = Formatter::Iso8601;
+        let f = FormatType::Iso8601.create();
         let fs = f.format(&le);
         println!("\n{f:width$} {fs}\n", width = f.width());
     }
@@ -194,7 +209,7 @@ mod test {
             "simple_formatter".to_string(),
             "This is a test message".to_string(),
         );
-        let f = Formatter::Simple;
+        let f = FormatType::Simple.create();
         let fs = f.format(&le);
         println!("\n{f:width$} {fs}\n", width = f.width());
     }
@@ -206,7 +221,7 @@ mod test {
             "unix_timestamp".to_string(),
             "This is a test message".to_string(),
         );
-        let f = Formatter::UnixTimestamp;
+        let f = FormatType::UnixTimestamp.create();
         let fs = f.format(&le);
         println!("\n{f:width$} {fs}\n", width = f.width());
     }

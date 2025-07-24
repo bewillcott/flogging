@@ -26,7 +26,7 @@
 use std::{fmt, io::Error};
 
 use crate::{
-    handlers::{formatter::Formatter, handler::HandlerTrait},
+    handlers::{formatter::{FormatType, Formatter}, handler::HandlerTrait},
     logger::{Level, LogEntry},
 };
 
@@ -41,7 +41,7 @@ impl StringHandler {
     fn create(name: &str) -> Self {
         StringHandler {
             name: name.to_string(),
-            formatter: Formatter::Simple,
+            formatter: FormatType::Simple.create(),
             log: Vec::new(),
         }
     }
@@ -107,5 +107,17 @@ impl HandlerTrait for StringHandler {
 
     fn set_formatter(&mut self, format: Formatter) {
         self.formatter = format;
+    }
+}
+
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+
+
+    #[test]
+    fn logs(){
+
     }
 }
