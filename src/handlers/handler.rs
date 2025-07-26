@@ -80,7 +80,7 @@ pub trait HandlerTrait: fmt::Display + Send + Sync {
     /// Create a new handler instance.
     ///
     /// ## Parameters
-    /// - `name` - Used to identify handler.
+    /// - `name` - Can be used as needed.
     ///
     fn create(name: &str) -> Result<Self, Error>
     where

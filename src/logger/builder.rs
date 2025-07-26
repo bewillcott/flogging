@@ -292,10 +292,10 @@ impl LoggerBuilder {
 
         if let Some(f) = format_type {
             h.set_formatter(match f {
-                FormatType::Iso8601 => Default::default(),
-                FormatType::Simple => Default::default(),
-                FormatType::UnixTimestamp => Default::default(),
-                FormatType::Custom(_) => Formatter::Custom(custom_formatter.unwrap()),
+                FormatType::Iso8601 => f.create(None),
+                FormatType::Simple => f.create(None),
+                FormatType::UnixTimestamp => f.create(None),
+                FormatType::Custom(_) => f.create(custom_formatter),
             });
         }
 

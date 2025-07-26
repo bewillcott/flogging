@@ -87,6 +87,12 @@ impl fmt::Display for FileHandler {
 }
 
 impl HandlerTrait for FileHandler {
+    ///
+    /// Create a new handler instance.
+    ///
+    /// ## Parameters
+    /// - `name` - This the `filename` of the log file.
+    ///
     fn create(name: &str) -> Result<Self, Error> {
         FileHandler::create(name)
     }

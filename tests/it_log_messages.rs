@@ -35,8 +35,14 @@ mod tests {
 
     const_logger!({
         Logger::builder(module_path!())
-            .add_console_handler()
-            .add_file_handler("test.log")
+            // .add_console_handler()
+            .add_custom_handler_with(
+                "console",
+                Box::new(ConsoleHandler::create("").unwrap()),
+                FormatType::Iso8601,
+                None,
+            )
+            // .add_file_handler("test.log")
             .set_level(FINEST)
             .build()
     });
