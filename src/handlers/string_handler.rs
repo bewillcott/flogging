@@ -30,8 +30,16 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
+///
+/// Publishes log entries to an internal list.
+///
+/// The list can then be accessed via: [get_log()][StringHandler::get_log()].
+///
 #[derive(Debug, Default)]
 pub struct StringHandler {
+    ///
+    /// `name` is the `mod_path`.
+    ///
     name: String,
     formatter: Formatter,
     log: Vec<String>,
@@ -104,8 +112,8 @@ impl HandlerTrait for StringHandler {
         self.log.push(self.formatter.format(log_entry));
     }
 
-    fn set_formatter(&mut self, format: Formatter) {
-        self.formatter = format;
+    fn set_formatter(&mut self, formatter: Formatter) {
+        self.formatter = formatter;
     }
 }
 

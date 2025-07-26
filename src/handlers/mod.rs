@@ -28,7 +28,7 @@
 
 pub(crate) mod console_handler;
 pub(crate) mod file_handler;
-pub mod formatter;
+pub(crate) mod formatter;
 pub(crate) mod handler;
-pub(crate) mod string_handler;
 pub(crate) mod mock_handler;
+pub(crate) mod string_handler;

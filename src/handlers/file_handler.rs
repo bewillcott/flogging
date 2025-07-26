@@ -40,15 +40,22 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
+///
+/// Publishes log entries to the file whose name was provided during
+/// initialization.
+///
 #[derive(Debug, Default)]
 pub struct FileHandler {
+    ///
+    /// `name` is the `filename`.
+    ///
     name: String,
     formatter: Formatter,
     file: Option<File>,
 }
 
 impl FileHandler {
-    pub fn create(filename: &str) -> Result<Self, Error> {
+    fn create(filename: &str) -> Result<Self, Error> {
         if filename.is_empty() {
             return Err(Error::new(InvalidInput, "'filename' must not be empty"));
         }
@@ -117,7 +124,7 @@ impl HandlerTrait for FileHandler {
         }
     }
 
-    fn set_formatter(&mut self, format: Formatter) {
-        self.formatter = format;
+    fn set_formatter(&mut self, formatter: Formatter) {
+        self.formatter = formatter;
     }
 }

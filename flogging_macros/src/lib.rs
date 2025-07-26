@@ -23,26 +23,41 @@
 //!
 //! # Flogging Macros
 //!
+//! This is a **supporting crate** for the `flogging` crate.
+//!
+//! It is _not_ meant to be used on its own. In fact, it would not work without the
+//! other crate. Further, it should not be separately added to your project. Add
+//! `flogging` instead, and this will be included as a dependent to that crate.
+//!
+//! ```text
+//! $ cargo add flogging
+//! ```
+//! Alternatively, add the following to your project's `Cargo.toml` file:
+//! ```text
+//! [dependencies]
+//! flogging = "0.4.0"
+//! ```
+//!
 //! ## Special Note
 //!
 //! For the macros that accept the parameter: `msg`, the following is true:
 //!
 //! - They accept parameters the same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
-//!     - plain text `&str`: "It's your time."
-//!     - format `&str` with interpolated variables: "Var: {var}"
-//!     - format `&str` with supporting parameters: "Var: {}", var
-//!     - Combination of the last two: "Vars {var1} - {}:{}", var2, var3
+//!     - plain text `&str`: `("It's your time.")`
+//!     - format `&str` with interpolated variables: `("Var: {var}")`
+//!     - format `&str` with supporting parameters: `("Var: {}", var)`
+//!     - Combination of the last two: `("Vars {var1} - {}:{}", var2, var3)`
 //! - Additional Feature
-//!     - Just one or more variables: var1, var2, var3
-//!     - In this case, a default format string will be used: "{}, {}, {}"
-//!     - The number of "{}" will depend on the number of parameters
-//!     - Ideal for logging concrete instances that have very good Display implementations,
-//!       or you just need their data without further explanation
+//!     - Just one or more variables: `(var1, var2, var3)`
+//!     - In this case, a default format string will be used: `"{}, {}, {}"`
+//!     - The number of `"{}"` will depend on the number of parameters.
+//!     - Ideal for logging concrete instances that have very good `Display` implementations,
+//!       or you just need their data without further explanation.
 //! - Special Cases
 //!     - [entering!] and [exiting!]
 //!     - These two macros have the same features as the others,
 //!       but they may also be used _without_ any parameters. In such
-//!       a case their defaults will be used.
+//!       a case, their defaults will be used.
 //!
 
 mod format;
@@ -121,10 +136,37 @@ pub fn config(msg: TokenStream) -> TokenStream {
 }
 
 ///
-/// Log a method entry.
+/// Log entry into a function/method.
 ///
-/// This is a convenience method that can be used to log entry to a method.
-/// A `LogEntry` with message "Entry" and log level FINER, is logged.
+/// This is a convenience macro that can be used to log entry into to a function/method. It can be used
+/// without an alternative message. A possible use is to provide the function/method's parameters
+/// to track what is being passed-in.
+///
+/// If no alternative message is provided, then the default message, "Entry", is used.
+///
+/// A `LogEntry` is created with a log level of FINER, that is then logged.
+///
+/// ## Parameters
+/// - `msg` - (Optional) The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///```no_run
+/// #[logger]
+/// pub fn add_student(name: String, age: u8) {
+///     entering!("name: {name}, age: {age}");
+/// }
+///
+/// fn main(){
+///     let name = "Mary Jane Thompson".to_string();
+///     let age = 18;
+///
+///     add_student(name, age);
+/// }
+/// ```
+/// Output:
+/// ```text
+/// |flogging->add_student| [FINER  ] Entry: (name: Mary Jane Thompson, age: 18)
+/// ```
 ///
 #[proc_macro]
 pub fn entering(_msg: TokenStream) -> TokenStream {
@@ -136,10 +178,51 @@ pub fn entering(_msg: TokenStream) -> TokenStream {
 }
 
 ///
-/// Log a method return.
+/// Log return from a function/method.
 ///
-/// This is a convenience method that can be used to log returning from a method.
-/// A `LogEntry` with message "Return" and log level FINER, is logged.
+/// This is a convenience macro that can be used to log exiting from a function/method. It can be used
+/// without an alternative message. A possible use is to provide the function/method's return value
+/// to track what is being passed-out.
+///
+/// If no alternative message is provided, then the default message, "Return", is used.
+///
+/// A `LogEntry` is created with a log level of FINER, that is then logged.
+///
+/// ## Parameters
+/// - `msg` - (Optional) The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///```no_run
+/// #[logger]
+/// pub fn add_student(name: String, age: u8) -> bool {
+///     let mut rtn = false;
+///
+///     entering!("name: {name}, age: {age}");
+///
+///     /* Some processing that provides a result (rtn) */
+///     rtn = true;
+///
+///     exiting!("rtn: {rtn}");
+///     rtn
+/// }
+///
+/// fn main(){
+///     let name = "Mary Jane Thompson".to_string();
+///     let age = 18;
+///
+///     if add_student(name, age) {
+///         println!("Success");
+///     } else {
+///         println!("Failure!");
+///     }
+/// }
+/// ```
+/// Output:
+/// ```text
+/// |flogging->add_student| [FINER  ] Entry: (name: Mary Jane Thompson, age: 18)
+/// |flogging->add_student| [FINER  ] Return: (rtn: true)
+/// Success
+/// ```
 ///
 #[proc_macro]
 pub fn exiting(_msg: TokenStream) -> TokenStream {
@@ -235,36 +318,7 @@ pub fn finest(msg: TokenStream) -> TokenStream {
 }
 
 ///
-/// Log a INFO message.
-///
-/// INFO is a message level for informational messages.
-///
-/// Typically INFO messages will be written to the console or its
-/// equivalent. So the INFO level should only be used for reasonably
-/// significant messages that will make sense to end users and system
-/// administrators.
-///
-/// \[default level]
-///
-/// If the logger is currently enabled for the INFO message level
-/// then the given message is forwarded to all the registered output
-/// Handler objects.
-///
-/// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
-///
-/// ## Examples
-///
-/// See [config](macro.config.html#examples). The syntax/usage is the same.
-/// Just substitute `info!` for `config!`.
-///
-#[proc_macro]
-pub fn info(msg: TokenStream) -> TokenStream {
-    format_impl("__log.info({&__fmt});\n", msg)
-}
-
-///
-/// Get required `Handler`.
+/// Get the required `Handler`.
 ///
 /// ## Examples
 /// ```no_run
@@ -314,6 +368,36 @@ pub fn get_handler(handler: TokenStream) -> TokenStream {
 }
 
 ///
+/// Log an INFO message.
+///
+/// INFO is a message level for informational messages.
+///
+/// Typically INFO messages will be written to the console or its
+/// equivalent. So the INFO level should only be used for reasonably
+/// significant messages that will make sense to end users and system
+/// administrators.
+///
+/// **\[default level]** : This is the default level used when a logger is created.
+/// See [set_level!] for changing this.
+///
+/// If the logger is currently enabled for the INFO message level
+/// then the given message is forwarded to all the registered output
+/// Handler objects.
+///
+/// ## Parameters
+/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+///
+/// ## Examples
+///
+/// See [config](macro.config.html#examples). The syntax/usage is the same.
+/// Just substitute `info!` for `config!`.
+///
+#[proc_macro]
+pub fn info(msg: TokenStream) -> TokenStream {
+    format_impl("__log.info({&__fmt});\n", msg)
+}
+
+///
 /// Provides for logging within the attributed function/method.
 ///
 /// This is required to be able to use the [macros](index.html#macros)
@@ -334,7 +418,37 @@ pub fn logger(attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 
 ///
-/// Set default logging level for this Log instance.
+/// Set the logging level for this `Logger` instance.
+///
+/// The default level is INFO.
+///
+/// ## Parameters
+/// - `level` - The required logging level.
+///
+/// ## Examples
+/// ```
+/// #[logger]
+/// pub fn my_func(msg: &str){
+///     entering!("msg: {msg}");
+///     fine!("Everything is just fine!");
+///
+///     // ...
+/// }
+///
+/// fn main(){
+///     set_level!(Level::FINER);
+///
+///     let msg = "Just some text to work with.";
+///
+///     my_func(msg);
+/// }
+///
+/// ```
+/// Output:
+/// ```text
+/// |flogging->my_func| [FINER  ] Entry: (msg: Just some text to work with.)
+/// |flogging->my_func| [FINE   ] Everything is just fine!
+/// ```
 ///
 #[proc_macro]
 pub fn set_level(level: TokenStream) -> TokenStream {

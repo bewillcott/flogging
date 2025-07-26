@@ -34,7 +34,7 @@ pub struct LogEntry {
     pub(crate) mod_path: String,
     ///
     /// This is the name of the function/method inside which this
-    /// log message was generated.
+    /// log entry was generated.
     ///
     pub(crate) fn_name: String,
     pub(crate) level: Level,

@@ -9,6 +9,7 @@
         "chrono",
         "comin",
         "doctest",
+        "mylog",
         "nanos",
         "PCDATA",
         "serde",

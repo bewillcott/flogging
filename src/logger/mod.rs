@@ -23,6 +23,11 @@
 //!
 //! # Logger
 //!
+//! `Logger` is the work-horse of the crate.
+//!
+//! It contains the primary functions to both create a logger instance, and has
+//! the methods to add log messages at various log levels.
+//!
 
 #![allow(clippy::needless_doctest_main)]
 
@@ -46,7 +51,10 @@ use std::sync::mpsc::Sender;
 use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
 
-use crate::handlers::handler::{self, Handler, HandlerTrait};
+use crate::handlers::{
+    handler::{self, Handler, HandlerTrait},
+    mock_handler::MockHandler,
+};
 pub use crate::logger::builder::*;
 pub use crate::logger::level::Level;
 pub use crate::logger::log_entry::LogEntry;
@@ -78,10 +86,22 @@ pub struct Logger {
 
 impl Logger {
     ///
-    /// Create new Logger instance.
+    /// Create a new Logger instance.
     ///
-    /// Logging level is set to it's default setting (INFO).\
-    /// No `handlers` are set.
+    /// Logging level is set to it's default setting (INFO).
+    ///
+    /// No `handlers` are set. Use the various methods of
+    /// [`LoggerBuilder`] to configure the new `Logger`.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_console_handler()
+    ///     .build();
+    /// ```
     ///
     pub fn builder(mod_path: &str) -> LoggerBuilder {
         LoggerBuilder::create(mod_path.to_string())
@@ -103,9 +123,9 @@ impl Logger {
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::CONFIG);
     /// log.config("Some text to store.");
     /// ```
-    ///
     ///
     pub fn config(&mut self, msg: &str) {
         self.log(Level::CONFIG, &self.fn_name(), msg);
@@ -119,6 +139,21 @@ impl Logger {
     /// ## Parameters
     /// `mod_path`- The module path. Suggest using [`module_path`].
     ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_fn_name("main");
+    ///
+    /// log.warning("Don't over do it.");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [WARNING] Don't over do it.
+    /// ```
+    ///
     pub fn console_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_console_handler().build()
     }
@@ -129,7 +164,26 @@ impl Logger {
     /// ## Parameters
     /// - `mod_path`- The module path. Suggest using [`module_path`].
     /// - `label` - Unique label for this custom handler.
-    /// - `custom` - The custom handler, boxed.
+    /// - `custom` - The boxed custom handler,
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::custom_logger(
+    ///     module_path!(),
+    ///     "MockHandler",
+    ///     Box::new(MockHandler::create("Some text").unwrap()),
+    /// );
+    /// log.set_fn_name("main");
+    ///
+    /// log.warning("Don't over do it.");
+    /// ```
+    /// [`MockHandler`] doesn't publish anything, as [`publish()`][MockHandler::publish()] is a **NoOp** method.
+    /// It is used here to make the example work.
+    ///
+    /// However, it is expected that _your_ custom handler will do a little more.
     ///
     pub fn custom_logger(mod_path: &str, label: &str, custom: Box<dyn HandlerTrait>) -> Logger {
         Logger::builder(mod_path)
@@ -581,14 +635,8 @@ impl Logger {
             return;
         }
 
-        let mut msg = msg.to_string();
-
-        if msg.ends_with('\n') {
-            msg.remove(msg.len() - 1);
-        }
-
         // build LogEntry
-        let mut log_entry = LogEntry::create(level, fn_name.to_string(), msg);
+        let mut log_entry = LogEntry::create(level, fn_name.to_string(), msg.to_string());
         // Send LogEntry
         self._log(&mut log_entry);
     }
@@ -664,6 +712,25 @@ impl Logger {
     ///
     /// ## Parameters
     /// - `mod_path`- The module path. Suggest using [`module_path`].
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::string_logger(module_path!());
+    /// log.set_fn_name("main");
+    ///
+    /// log.warning("Don't over do it.");
+    ///
+    /// let log_str = log.get_handler(Handler::String).unwrap().get_log();
+    ///
+    /// println!("{log_str}");
+    /// ```
+    /// Output:
+    /// ```text
+    /// |flogging->main| [WARNING] Don't over do it.
+    /// ```
     ///
     pub fn string_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_string_handler().build()

@@ -21,7 +21,7 @@
 //
 
 //!
-//! # Logging
+//! # FLogging
 //!
 //! The primary purpose of logging, is to facilitate fault diagnosis through the
 //! provision of specific information as, when, and from where it is needed. This could
@@ -113,7 +113,8 @@
 //! |flogging->main| [WARNING] Those same macros (info, etc.) MUST have atleast the format string.
 //! |flogging->main| [CONFIG ] This is running on Fedora Linux 42.
 //! |flogging->do_something| [FINER  ] Entry
-//! |flogging->do_something| [INFO   ] Did some work here. Just something to log.
+//! |flogging->do_something| [INFO   ] Did some work here.
+//!   Just something to log.
 //! |flogging->do_something| [FINE   ] Bit more detail.
 //! |flogging->error_prone| [FINER  ] Entry
 //! |flogging->error_prone| [FINER  ] Return
@@ -152,8 +153,8 @@ pub use handlers::{
     console_handler::ConsoleHandler,
     file_handler::FileHandler,
     formatter::{
-        FormatType, Formatter, format_trait, iso8601_formatter, mock_formatter, simple_formatter,
-        unixtimestamp_formatter,
+        FormatTrait, FormatType, Formatter, Iso8601Formatter, MockFormatter, SimpleFormatter,
+        UnixTimestampFormatter,
     },
     handler::{Handler, HandlerTrait},
     mock_handler::MockHandler,

@@ -30,6 +30,12 @@ use std::{fmt, io::Error};
 
 use crate::{handlers::formatter::Formatter, FormatType, HandlerTrait, LogEntry};
 
+///
+/// This is used as a _fake_ or _mock_ handler.
+///
+/// It is a filler for `Handler::Custom(label).create()`. It is also used
+/// is examples for custom handlers.
+///
 #[derive(Debug, Default)]
 pub struct MockHandler {}
 
@@ -66,5 +72,5 @@ impl HandlerTrait for MockHandler {
     #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {}
 
-    fn set_formatter(&mut self, format: Formatter) {}
+    fn set_formatter(&mut self, formatter: Formatter) {}
 }

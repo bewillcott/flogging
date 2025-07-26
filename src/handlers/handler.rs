@@ -39,6 +39,9 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
+///
+/// Available handlers.
+///
 #[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
     #[default]
@@ -128,7 +131,10 @@ pub trait HandlerTrait: fmt::Display + Send + Sync {
     ///
     /// Set a Formatter.
     ///
-    fn set_formatter(&mut self, format: Formatter);
+    /// ## Parameters
+    /// - `formatter` The `Formatter` to use.
+    ///
+    fn set_formatter(&mut self, formatter: Formatter);
 }
 
 #[cfg(test)]

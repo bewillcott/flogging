@@ -26,8 +26,7 @@
 //! This is used for testing purposes ONLY!
 //!
 
-#![allow(clippy::declare_interior_mutable_const)]
-
+extern crate flogging;
 use flogging::*;
 use std::{error::Error, result::Result};
 
@@ -36,8 +35,7 @@ const_logger!({
     Logger::builder(module_path!())
         .add_console_handler()
         .add_file_handler("test.log")
-        .add_string_handler()
-        .set_level(Level::ALL)
+        .set_level(Level::FINEST)
         .build()
 });
 
@@ -46,8 +44,8 @@ fn do_something() {
     entering!();
 
     // do some work worth noting
-    let _result = "Just something to log.";
-    info!("Did some work here. {_result}");
+    let result = "Just something to log.";
+    info!("Did some work here.\n  {result}");
 
     // ...
 
@@ -68,99 +66,13 @@ fn error_prone() -> Result<(), Box<dyn Error>> {
     rtn
 }
 
-#[allow(dead_code)]
-mod my_mod {
-    use flogging::*;
-    use std::cell::{LazyCell, RefCell};
-
-    // Setting up the module level logger.
-    const LOGGER: LazyCell<RefCell<Logger>> = LazyCell::new(|| {
-        RefCell::new({
-            Logger::builder(module_path!())
-                .add_console_handler()
-                .add_file_handler("test.log")
-                .set_level(Level::INFO)
-                .build()
-        })
-    });
-
-    // #[test]
-    // fn test_my_func() {
-    //     my_func("Some data");
-    // }
-
-    pub(crate) fn my_func(data: &str) -> bool {
-        let binding = LOGGER;
-        let mut log = binding.borrow_mut();
-        log.set_fn_name("my_func");
-
-        log.entering();
-        log.entering_with(&format!("data: \"{data}\""));
-
-        log.info(&format!("For your info: {}", module_path!()));
-        // ...
-
-        let rtn = true;
-
-        log.exiting();
-        log.exiting_with(&format!("rtn: {rtn}"));
-        rtn
-    }
-}
-
-#[logger]
-pub fn my_func() {
-    info!("Some text to store.");
-    warning!("Rain is wet!");
-    severe!("Hurricanes are windy!");
-
-    if let Some(h) = get_handler!(Handler::String) {
-        println!(
-            "\n(h.get_log())\n======v======\n{}\n======^======",
-            h.get_log()
-        );
-    } else {
-        let h = Handler::default().create();
-        println!("{h}");
-    }
-}
-
 #[logger]
 fn main() {
-    // entering!();
-    // info!(
-    //     "All logging macros, except: `entering` and `exiting`, accept the same parameters as `format!(...)`"
-    // );
-    // warning!("Those same macros (info, etc.) MUST have atleast the format string.");
-    // config!("This is running on Fedora Linux 42.");
-    // do_something();
-
-    // let _data = "Some data";
-    my_func();
-
-    // extern crate flogging;
-    // use flogging::*;
-
-    // let mut log = Logger::string_logger(module_path!());
-    // log.set_fn_name("main");
-
-    // log.info("It is cloudy today.");
-
-    // log.get_handler(StringHandler)
-    //     .unwrap()
-    //     .set_formatter(Iso8601);
-
-    // log.warning("Rain is wet!");
-
-    // log.get_handler(StringHandler)
-    //     .unwrap()
-    //     .set_formatter(UnixTimestamp);
-
-    // log.severe("Hurricanes are windy!");
-
-    // let log_str = log.get_handler(StringHandler).unwrap().get_log();
-    // println!("log_str:\n{log_str}");
-
-    // info!("Job's done.");
-    // exiting!();
+    entering!();
+    info!("All logging macros accept the same parameters as `std::format!(...)`");
+    warning!("Those same macros (info, etc.) MUST have atleast the format string.");
+    config!("This is running on Fedora Linux 42.");
+    do_something();
+    info!("Job's done.");
+    exiting!();
 }

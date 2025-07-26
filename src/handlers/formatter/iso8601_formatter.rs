@@ -27,6 +27,26 @@
 use super::format_trait::FormatTrait;
 use std::fmt;
 
+///
+/// ISO 8601 / RFC 3339 date & time format.
+///
+/// Example:
+/// ```text
+/// 2001-07-08T00:34:60.026490+09:30
+/// ```
+/// Template:
+/// - `dt` in the template would be the datetime string, similar to the above.
+/// - `mod_path`, `fn_name`, `level`, and `message` all come out of the `LogEntry`
+///   provided to the [`format()`][Iso8601Formatter::format] method.
+///
+/// ```ignore
+/// format!("{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}");
+/// ```
+/// Sample output:
+/// ```text
+/// 2025-07-18T14:01:01.051532664+08:00 |flogging->main| [WARNING] Rain is wet!
+/// ```
+///
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct Iso8601Formatter {
     dt_fmt: String,
@@ -68,6 +88,6 @@ impl fmt::Display for Iso8601Formatter {
 
 impl FormatTrait for Iso8601Formatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
-        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

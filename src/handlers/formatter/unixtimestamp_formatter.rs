@@ -24,10 +24,37 @@
 //! # UnixTimeStamp Formatter
 //!
 
-use std::fmt;
 use super::format_trait::FormatTrait;
+use std::fmt;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
+
+///
+/// Unix Timestamp format.
+///
+/// The first part (before the decimal point) is
+/// the number of seconds since 1970-01-01 00:00 UTC.
+///
+/// The second part is the number of nanoseconds since
+/// the last whole second.
+///
+/// Example:
+/// ```text
+/// 1752817859.157970496
+/// ```
+/// Template:
+/// - `dt` in the template would be the datetime string, similar to the above.
+/// - `mod_path`, `fn_name`, `level`, and `message` all come out of the `LogEntry`
+///   provided to the [`format()`][UnixTimestampFormatter::format] method.
+///
+/// ```ignore
+/// format!("{dt} |{mod_path}->{fn_name}| [{level:7}] {message}");
+/// ```
+/// Sample output:
+/// ```text
+/// 1752818461.051538870 |flogging->main| [SEVERE ] Hurricanes are windy!
+/// ```
+///
 pub struct UnixTimestampFormatter {
     dt_fmt: String,
     fmt_string: String,
@@ -41,11 +68,11 @@ impl UnixTimestampFormatter {
         }
     }
 
-    pub fn dt_fmt(&self)-> String{
+    pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
-    pub fn fmt_string(&self)-> String{
+    pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }
 }
@@ -68,6 +95,6 @@ impl fmt::Display for UnixTimestampFormatter {
 
 impl FormatTrait for UnixTimestampFormatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
-        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

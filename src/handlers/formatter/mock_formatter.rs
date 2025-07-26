@@ -27,6 +27,12 @@
 use super::format_trait::FormatTrait;
 use std::fmt;
 
+///
+/// Mock Formatter.
+///
+/// Used as a filler. It does not have a proper format string. It is also used
+/// in examples for custom formatters.
+///
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct MockFormatter {
     dt_fmt: String,

@@ -24,8 +24,23 @@
 //! # Simple Formatter
 //!
 
-use std::fmt;
 use super::format_trait::FormatTrait;
+use std::fmt;
+
+///
+/// Simple format.
+///
+/// Template:
+/// - `mod_path`, `fn_name`, `level`, and `message` all come out of the `LogEntry`
+///   provided to the [`format()`][SimpleFormatter::format] method.
+/// ```ignore
+/// format!("|{mod_path}->{fn_name}| [{level:7}] {message}");
+/// ```
+/// Sample output:
+/// ```text
+/// |flogging->main| [INFO   ] It is cloudy today.
+/// ```
+///
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct SimpleFormatter {
@@ -41,11 +56,11 @@ impl SimpleFormatter {
         }
     }
 
-    pub fn dt_fmt(&self)-> String{
+    pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
-    pub fn fmt_string(&self)-> String{
+    pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }
 }
@@ -68,6 +83,6 @@ impl fmt::Display for SimpleFormatter {
 
 impl FormatTrait for SimpleFormatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
-        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

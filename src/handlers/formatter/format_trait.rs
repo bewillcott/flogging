@@ -25,16 +25,48 @@
 //!
 
 use crate::LogEntry;
+use chrono;
 use dyn_clone::DynClone;
 use dyn_fmt::AsStrFormatExt;
 use regex::Regex;
 use std::{fmt, hash};
 use strfmt::strfmt;
 
+///
+/// Provides methods for formatting [`LogEntry`]s.
+///
 pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
+    ///
+    /// Use this method to setup the parameters for calling [`ft_fmt()`][FormatTrait::ft_fmt()].
+    ///
+    /// ## Parameters
+    /// - `log_entry` A reference to the `LogEntry` to be formatted.
+    ///
+    /// ## Examples
+    /// ```ignore
+    /// impl FormatTrait for SimpleFormatter {
+    ///     fn format(&self, log_entry: &crate::LogEntry) -> String {
+    ///         self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+    ///     }
+    /// }
+    /// ```
+    ///
     fn format(&self, log_entry: &LogEntry) -> String;
 
-    fn _fmt(&self, dt_fmt: String, fmt: String, log_entry: &LogEntry) -> String {
+    ///
+    /// This method does the actual formatting of the `log_entry`.
+    ///
+    /// ## Parameters
+    /// - `dt_fmt` - The [`chrono::DateTime`] format string.
+    /// - `fmt` - The primary format string.\
+    ///   Available variables:
+    ///     - `mod_path` - The module path, possibly supplied via: [`module_path!()`][module_path].
+    ///     - `fn_name` - The name of the  function/method inside which the log entry
+    ///       was generated.
+    ///     - `level` - The log level for which the entry was created.
+    ///     - `message` - The text of the log entry.
+    ///
+    fn ft_fmt(&self, dt_fmt: String, fmt: String, log_entry: &LogEntry) -> String {
         let dt = log_entry.timestamp.format(&dt_fmt).to_string();
 
         strfmt!(

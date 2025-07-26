@@ -25,7 +25,7 @@
 //!
 
 use std::fmt;
-use flogging::{format_trait::FormatTrait, LogEntry};
+use flogging::{FormatTrait, LogEntry};
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct CustomFormatter {
@@ -68,6 +68,6 @@ impl fmt::Display for CustomFormatter {
 
 impl FormatTrait for CustomFormatter {
     fn format(&self, log_entry: &LogEntry) -> String {
-        self._fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+        self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

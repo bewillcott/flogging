@@ -49,6 +49,7 @@ mod test {
             .unwrap()
             .as_ref()
             .get_log();
+
         println!("Log:\n{}", list);
 
         assert_eq!(&list, "|it_customs::test->| [INFO   ] Just testing\n")
@@ -57,11 +58,11 @@ mod test {
     #[test]
     fn custom_formatter() {
         let mut log = Logger::builder(module_path!())
-        .add_console_handler_with(
-            FormatType::Custom("My Custom".to_owned()),
-            Some(Box::new(CustomFormatter::new())),
-        )
-        .build();
+            .add_console_handler_with(
+                FormatType::Custom("My Custom".to_string()),
+                Some(Box::new(CustomFormatter::new())),
+            )
+            .build();
 
         log.info("Testing custom formatter");
     }

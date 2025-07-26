@@ -23,6 +23,8 @@
 //!
 //! # ConsoleHandler
 //!
+//! Publishes log entries to the console: `[std::io::stderr]`.
+//!
 
 use std::{fmt, io::Error};
 
@@ -31,8 +33,14 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
+///
+/// Publishes log entries to the console: [`std::io::stdout`].
+///
 #[derive(Debug, Default)]
 pub struct ConsoleHandler {
+    ///
+    /// `name` is the `mod_path`.
+    ///
     name: String,
     formatter: Formatter,
 }
@@ -77,10 +85,10 @@ impl HandlerTrait for ConsoleHandler {
     }
 
     fn publish(&mut self, log_entry: &LogEntry) {
-        eprintln!("{}", self.formatter.format(log_entry));
+        println!("{}", self.formatter.format(log_entry));
     }
 
-    fn set_formatter(&mut self, format: Formatter) {
-        self.formatter = format;
+    fn set_formatter(&mut self, formatter: Formatter) {
+        self.formatter = formatter;
     }
 }
