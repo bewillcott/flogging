@@ -1,8 +1,12 @@
 # FLogging crate
 
-`Flogging` provides an easy framework for logging to the console and/or a file.
+`Flogging` provides an easy framework for logging.
 
-It has both macros and public functions, with the macros being the simplest method
+Log entries can be sent to the console, file, memory log, or a custom handler. They
+can be formatted in various layouts: ISO8601, Simple, Unix TimeStamp, or a custom
+layout.
+
+Macros and public functions are provided, with the macros being the simplest method
 of operation.
 
 There are several levels for logging at:
@@ -29,7 +33,7 @@ A lot of the functionality has been inspired by, and even copied from (at the AP
 
 ## What's in a name?
 
-`Flogging`, as-in, "Just another f\*ing logger", or "Flogging a dead horse". As I wrote above, there are _many_ other logging crates around. This is just my learning spin on a very well covered tool.
+`Flogging`, as-in, "Flogging a dead horse", or "Just another f\*ing logger". As I wrote above, there are _many_ other logging crates around. This is just my learning spin on a very well covered tool.
 
 ## Final word
 
