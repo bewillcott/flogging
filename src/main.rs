@@ -25,7 +25,6 @@
 //!
 //! This is used for testing purposes ONLY!
 //!
-
 extern crate flogging;
 use flogging::*;
 use std::{error::Error, result::Result};

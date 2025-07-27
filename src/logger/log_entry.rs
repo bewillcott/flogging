@@ -28,6 +28,9 @@ use super::level::Level;
 use chrono::{DateTime, Local};
 use std::{fmt, time::Instant};
 
+///
+/// Used to provide relevant information about each log entry.
+///
 #[derive(Debug)]
 pub struct LogEntry {
     pub(crate) timestamp: DateTime<Local>,

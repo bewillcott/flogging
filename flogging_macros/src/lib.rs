@@ -400,7 +400,9 @@ pub fn info(msg: TokenStream) -> TokenStream {
 ///
 /// Provides for logging within the attributed function/method.
 ///
-/// This is required to be able to use the [macros](index.html#macros)
+/// This is required to be able to use the [macros](index.html#macros-1).
+/// It sets up the local variable used by the other macros, and it also registers the function/method
+/// name used by the log entries (if included in the formatter's `fmt_string`).
 ///
 /// ```no_run
 /// #[logger]

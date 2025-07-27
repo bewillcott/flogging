@@ -25,7 +25,9 @@
 //!
 
 // #![allow(unused)]
+pub mod handler_trait;
 
+pub use handler_trait::HandlerTrait;
 use std::{fmt, hash::Hash, io::Error};
 
 use crate::{
@@ -73,68 +75,6 @@ impl Handler {
             Handler::Custom(label) => Box::new(MockHandler::default()),
         }
     }
-}
-
-pub trait HandlerTrait: fmt::Display + Send + Sync {
-    ///
-    /// Create a new handler instance.
-    ///
-    /// ## Parameters
-    /// - `name` - Can be used as needed.
-    ///
-    fn create(name: &str) -> Result<Self, Error>
-    where
-        Self: Sized;
-
-    ///
-    /// Close the Handler and free all associated resources.
-    ///
-    /// The close method will perform a flush and then close the Handler.
-    /// After `close` has been called, this Handler should no longer be used.
-    /// Method calls will be silently ignored.
-    ///
-    fn close(&mut self);
-
-    ///
-    /// Flush any buffered output.
-    ///
-    fn flush(&mut self);
-
-    ///
-    /// Return a copy of the internal buffer as a `String`.
-    ///
-    fn get_log(&self) -> String;
-
-    ///
-    /// Return the Formatter for this Handler.
-    ///
-    fn get_formatter(&self) -> Formatter;
-
-    ///
-    /// Check status of this handler.
-    ///
-    fn is_open(&self) -> bool;
-
-    ///
-    /// Publish a LogEntry.
-    ///
-    /// The logging request was made initially to a Logger object, which initialized
-    /// the LogEntry and forwarded it here.
-    ///
-    /// The Handler is responsible for formatting the message, when and if necessary.
-    ///
-    /// ## Parameters
-    /// - `log_entry` - The `LogEntry` to be published.
-    ///
-    fn publish(&mut self, log_entry: &LogEntry);
-
-    ///
-    /// Set a Formatter.
-    ///
-    /// ## Parameters
-    /// - `formatter` The `Formatter` to use.
-    ///
-    fn set_formatter(&mut self, formatter: Formatter);
 }
 
 #[cfg(test)]

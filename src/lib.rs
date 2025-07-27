@@ -39,13 +39,189 @@
 //! flogging = "0.4.0"
 //! ```
 //!
+//! ## Features
+//!
+//! - [Levels](enum.Level.html) - There are nine (9) levels of message logging, with two (2) special ones.
+//! - [Choice](index.html#choice) - You can use either macros or methods.
+//! - [Built-in options](index.html#built-in-options) - A range of handlers and formatters.
+//! - [Customization](index.html#customization) - You can create your own handlers and/or formatters.
+//!
+//! ### Choice
+//!
+//! #### Macros
+//!
+//! This crate has very easy to use macros. By using them, you remove a lot of the complexity
+//! from the process. Thus making it both simpler and less code cluttering, to use.
+//!
+//! - There is one macro ([`const_logger!()`]) that is used to setup a single module/file for logging.
+//! - There is one macro ([`#[logger]`][macro@logger]) that is applied as an attribute to each function/method
+//!   that you need to create log entries within.
+//! - There are nine macros that are used to actually log the messages:
+//!     - [`config!()`]
+//!     - [`entering!()`]
+//!     - [`exiting!()`]
+//!     - [`fine!()`]
+//!     - [`finer!()`]
+//!     - [`finest!()`]
+//!     - [`info!()`]
+//!     - [`severe!()`]
+//!     - [`warning!()`]
+//! - There are two helper macros:
+//!     - [`get_handler!()`]
+//!     - [`set_level!()`]
+//!
+//! Check out the [Examples](index.html#examples) below for how easy it is to get started.
+//!
+//! #### Methods
+//!
+//! Now for the coding geeks! Yes I didn't forget you lot.
+//!
+//! Though the macros are the easiest and simplest way to use this crate, those macros are just candy
+//! coating over the real workers, the methods. There are two main mods/structs in this crate, [`Logger`](struct.Logger.html)
+//! and [`LoggerBuilder`](struct.LoggerBuilder.html).
+//!
+//! ##### Logger
+//!
+//! `Logger` is the work-horse of the crate. It has all the methods for initializing each function/method
+//! for logging, and all of the message logging methods.
+//!
+//! Using the "methods" option is more complex, as-in, you have to write a lot more code, and manage it.
+//! To see how much more is involved, check-out the [`Logger`](struct.Logger.html)'s methods. There are
+//! plenty of examples throughout.
+//!
+//! - [`builder()`][Logger::builder]
+//! - [`config()`][Logger::config]
+//! - [`console_logger()`][Logger::console_logger]
+//! - [`custom_logger()`][Logger::custom_logger]
+//! - [`entering()`][Logger::entering]
+//! - [`entering_with()`][Logger::entering_with]
+//! - [`exiting()`][Logger::exiting]
+//! - [`exiting_with()`][Logger::exiting_with]
+//! - [`file_logger()`][Logger::file_logger]
+//! - [`fine()`][Logger::fine]
+//! - [`finer()`][Logger::finer]
+//! - [`finest()`][Logger::finest]
+//! - [`fn_name()`][Logger::fn_name]
+//! - [`get_handler()`][Logger::get_handler]
+//! - [`has_handler()`][Logger::has_handler]
+//! - [`info()`][Logger::info]
+//! - [`level()`][Logger::level]
+//! - [`reset_level()`][Logger::reset_level]
+//! - [`set_fn_name()`][Logger::set_fn_name]
+//! - [`set_level()`][Logger::set_level]
+//! - [`severe()`][Logger::severe]
+//! - [`string_logger()`][Logger::string_logger]
+//! - [`warning()`][Logger::warning]
+//!
+//! ##### LoggerBuilder
+//!
+//! `LoggerBuilder` is used by `Logger` to provide various configuration options for setting up your logger.
+//! The available options/methods are:
+//!
+//! - [`add_console_handler()`][LoggerBuilder::add_console_handler()]
+//! - [`add_console_handler_with()`][LoggerBuilder::add_console_handler_with()]
+//! - [`add_custom_handler()`][LoggerBuilder::add_custom_handler()]
+//! - [`add_custom_handler_with()`][LoggerBuilder::add_custom_handler_with()]
+//! - [`add_file_handler()`][LoggerBuilder::add_file_handler()]
+//! - [`add_file_handler_with()`][LoggerBuilder::add_file_handler_with()]
+//! - [`add_string_handler()`][LoggerBuilder::add_string_handler()]
+//! - [`add_string_handler_with()`][LoggerBuilder::add_string_handler_with()]
+//! - [`set_level()`][LoggerBuilder::set_level()]
+//!
+//! And to finish:
+//! - [`build()`][LoggerBuilder::build()]
+//!
+//! These options/methods allow you a lot of flexibility in how you configure your logger. As you will typically
+//! have a different logger for each mod/file, you have a lot of control over what is logged, how it is formatted,
+//! and where it is stored/viewed. With the [`set_level()`][LoggerBuilder::set_level()] method, you can control
+//! this on a mod/file basis. Logging each file differently, or even turning logging off when you no-longer require it.
+//!
+//! **Note**
+//!
+//! As of this version (0.4.0), you can only set the logging level for the logger. All handlers process every log entry
+//! that the logger accepts, based on the logger's current log level setting. This may change in a future version,
+//! allowing each handler to have its own logging level.
+//!
+//! ### Built-in options
+//!
+//! I have included a number of handlers to get you started:
+//!
+//! - [`ConsoleHandler`]
+//! - [`FileHandler`]
+//! - [`MockHandler`]
+//! - [`StringHandler`]
+//!
+//! There are also a number of formatters as well:
+//!
+//! - [`Iso8601Formatter`]
+//! - [`MockFormatter`]
+//! - [`SimpleFormatter`]
+//! - [`UnixTimestampFormatter`]
+//!
+//! ### Customization
+//!
+//! Now for the fun part - "Doing it _your_ way!!!"
+//!
+//! Though I have provided some "standard" handlers and formatters, not everyone, or every project,
+//! will want to use them. I expect there will be a need for:
+//!
+//! - sending log entries to remote system log servers,
+//! - sending log entries to another program (local or remote) for live analysis, or some other processing,
+//! - storing log entries in a specific file format (xml, json, csv),
+//! - storing log entries in a database.
+//!
+//! And I'm sure you'll come-up with more requirements at some time in the future. So, you have the option
+//! to create your own custom handlers and custom formatters. Mixing them up with the built-in ones as
+//! you need to.
+//!
+//! OK now, how do you do it. Well this is going to require some work on your part.
+//!
+//! #### Custom Handler
+//!
+//! To create a custom handler, I would suggest looking at the source code for the built-in ones, and copying
+//! the code from the one that is closest to your requirements. _Make sure that you rename as appropriate!_
+//! Then make the necessary changes, adding in your own code, to get it doing what you need.
+//!
+//! When you are ready to try-out your new custom handler, check-out these methods:
+//!
+//! - [`Logger::custom_logger()`]
+//! - [`LoggerBuilder::add_custom_handler()`]
+//! - [`LoggerBuilder::add_custom_handler_with()`]
+//!
+//! #### Custom Formatter
+//!
+//! Now for the custom formatter. This may require a bit more investigation on your part, as to the actual
+//! formatting options that are available.
+//!
+//! Firstly, this crate uses [crono](https://crates.io/crates/chrono) for the date/time functionality. Check
+//! it out. You will need to use the formatting options from this crate for the `dt_fmt` string, of your custom
+//! formatter.
+//!
+//! Secondly, the `fmt_string` uses the format options available in accordance with [std::fmt]. Though I am
+//! actually using the [strfmt](https://crates.io/crates/strfmt) crate to do the formatting, because it does
+//! _not_ require a 'static' string like `format!()`.
+//!
+//! Again, check-out the built-in formatters, and copy the code from the one that is closest to your
+//! requirements. _As before, renaming as necessary!_ Also, check-out the trait: [`FormatTrait`](trait.FormatTrait.html).
+//! You will need to implement it for you custom formatter, as you will notice when you look at the built-in formatters.
+//! Also, you will notice that the 'provided method', [`ft_fmt()`][FormatTrait::ft_fmt], provides certain variables
+//! that you can include, via interpolation, in your `fmt_string`.
+//!
+//! Once you have got your custom formatter set up, you can then use it with:
+//!
+//! - [`LoggerBuilder::add_console_handler_with()`]
+//! - [`LoggerBuilder::add_custom_handler_with()`]
+//! - [`LoggerBuilder::add_file_handler_with()`]
+//! - [`LoggerBuilder::add_string_handler_with()`]
+//!
 //! ## Examples
 //!
-//! This example demonstrates using the macros.
+//! This example demonstrates the use of the macros. The reason I am demoing the macros, is that I expect most
+//! people will want to use them, instead of the methods, for ease of use.
 //!
 //! Let's see what is required:
 //!
-//! 1. At the module level:
+//! 1. At the module/file level:
 //!     - `use flogging::*;`
 //!     - `const_logger!({...});`[=>][const_logger]
 //! 2. On each function/method you want to add logging to:
@@ -123,21 +299,6 @@
 //! |flogging->main| [INFO   ] Job's done.
 //! |flogging->main| [FINER  ] Return
 //! ```
-//!
-//! ## Key Elements
-//!
-//! - [`Logger`]: The main entity on which applications make logging calls. A `Logger` instance
-//!   is used to log messages for a specific system or application component.
-//! - [`LoggerBuilder`]: Used by `Logger::builder(mod_path)` to build a logger with greater control
-//!   over its final configuration.
-//! - [`Level`]: Defines a set of standard logging levels that can be used to control logging
-//!   output. Programs can be configured to output logging for some levels while ignoring
-//!   output for others.
-//!
-//! ## Macros
-//!
-//! Though this crate has all the methods a developer with time and patience would be happy
-//! with, I believe the most efficient way is to use the supplied macros.
 //!
 //! [macros]: index.html#macros-1
 //!

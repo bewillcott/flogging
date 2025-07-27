@@ -62,8 +62,9 @@ pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
     ///   Available variables:
     ///     - `mod_path` - The module path, possibly supplied via: [`module_path!()`][module_path].
     ///     - `fn_name` - The name of the  function/method inside which the log entry
-    ///       was generated.
-    ///     - `level` - The log level for which the entry was created.
+    ///       was generated. Supplied by the [`#[logger]`][crate::logger] macro, or manually with the
+    ///       [`set_fn_name()`][crate::Logger::set_fn_name] method instead.
+    ///     - `level` - The log [level][crate::Level] for which the entry was created.
     ///     - `message` - The text of the log entry.
     ///
     fn ft_fmt(&self, dt_fmt: String, fmt: String, log_entry: &LogEntry) -> String {

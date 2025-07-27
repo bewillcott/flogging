@@ -26,6 +26,9 @@
 
 use super::*;
 
+///
+/// Provides wrappers for holding each type of formatter.
+///
 #[derive(Debug, Clone)]
 pub enum Formatter {
 

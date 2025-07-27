@@ -59,6 +59,9 @@ pub use crate::logger::builder::*;
 pub use crate::logger::level::Level;
 pub use crate::logger::log_entry::LogEntry;
 
+///
+/// This is the work-horse, providing the primary methods of the crate.
+///
 pub struct Logger {
     ///
     /// Identify the source of log messages passed to this logger.
