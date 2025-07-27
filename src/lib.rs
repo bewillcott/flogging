@@ -72,6 +72,27 @@
 //!
 //! Check out the [Examples](index.html#examples) below for how easy it is to get started.
 //!
+//! ##### Special Note
+//!
+//! For the macros that accept the parameter: `msg`, the following is true:
+//!
+//! - They accept parameters the same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+//!     - plain text `&str`: `("It's your time.")`
+//!     - format `&str` with interpolated variables: `("Var: {var}")`
+//!     - format `&str` with supporting parameters: `("Var: {}", var)`
+//!     - Combination of the last two: `("Vars {var1} - {}:{}", var2, var3)`
+//! - Additional Feature
+//!     - Just one or more variables: `(var1, var2, var3)`
+//!     - In this case, a default format string will be used: `"{}, {}, {}"`
+//!     - The number of `"{}"` will depend on the number of parameters.
+//!     - Ideal for logging concrete instances that have very good `Display` implementations,
+//!       or you just need their data without further explanation.
+//! - Special Cases
+//!     - [entering!] and [exiting!]
+//!     - These two macros have the same features as the others,
+//!       but they may also be used _without_ any parameters. In such
+//!       a case, their defaults will be used.
+//!
 //! #### Methods
 //!
 //! Now for the coding geeks! Yes I didn't forget you lot.
