@@ -21,7 +21,7 @@ maintenance = { status = "actively-developed" }
 [dependencies]
 anyhow = "1.0.98"
 chrono = { version = "0.4.41", features = ["std", "alloc"] }
-flogging_macros = { version = "0.2.0", path = "flogging_macros" }
+flogging_macros = { version = "0.4.0", path = "flogging_macros" }
 regex = "1.11.1"
 dyn-fmt = "0.4.3"
 strfmt = "0.2.5"
