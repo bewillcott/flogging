@@ -1,6 +1,5 @@
 [workspace]
 members = ["flogging_macros"]
-# default-members = ["flogging_macros"]
 
 [package]
 name = "flogging"
