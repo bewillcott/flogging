@@ -1,18 +1,26 @@
-workspace = { members = ["flogging_macros"]}
+[workspace]
+members = ["flogging_macros"]
 
 [package]
 name = "flogging"
 version = "0.4.0"
 edition = "2024"
 description = "Just another [...] logger. This one loosely based on the Java logging package: java.util.logging."
+authors = ["Bradley Willcott <bw.opensource@yahoo.com>"]
 license = "GPL-3.0-or-later"
 resolver = "2"
+repository = "https://github.com/bewillcott/flogging"
+keywords = ["log", "logger", "logging", "tracing", "debug"]
+categories = ["development-tools::debugging"]
+exclude = ["/.vscode", "logger.dtd", "/src/main.rs", "licenseheader.txt"]
 
+[badges]
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 anyhow = "1.0.98"
-chrono = { version = "0.4.41", features = ["std","alloc"] }
-flogging_macros = {path = "flogging_macros"}
+chrono = { version = "0.4.41", features = ["std", "alloc"] }
+flogging_macros = { version = "0.2.0", path = "flogging_macros" }
 regex = "1.11.1"
 dyn-fmt = "0.4.3"
 strfmt = "0.2.5"

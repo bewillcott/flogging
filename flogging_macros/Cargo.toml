@@ -4,6 +4,11 @@ version = "0.2.0"
 edition = "2024"
 description = "Macro support package for the 'flogging' crate."
 license = "GPL-3.0-or-later"
+authors = ["Bradley Willcott <bw.opensource@yahoo.com>"]
+repository = "https://github.com/bewillcott/flogging"
+
+[badges]
+maintenance = { status = "actively-developed" }
 
 [lib]
 proc-macro = true
