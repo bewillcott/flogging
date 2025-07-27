@@ -34,7 +34,7 @@ use crate::{handlers::formatter::Formatter, FormatType, HandlerTrait, LogEntry};
 /// This is used as a _fake_ or _mock_ handler.
 ///
 /// It is a filler for `Handler::Custom(label).create()`. It is also used
-/// is examples for custom handlers.
+/// in examples for custom handlers.
 ///
 #[derive(Debug, Default)]
 pub struct MockHandler {}

@@ -139,6 +139,9 @@ pub enum Level {
 }
 
 impl Level {
+    ///
+    /// Converts a level to its string version.
+    ///
     pub const fn as_str(&self) -> &'static str {
         match self {
             Level::ALL => "ALL",

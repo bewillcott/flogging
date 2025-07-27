@@ -96,6 +96,11 @@ impl Logger {
     /// No `handlers` are set. Use the various methods of
     /// [`LoggerBuilder`] to configure the new `Logger`.
     ///
+    /// ## Parameters
+    /// - `mod_path` - The module path. Can be set with: [`module_path!()`]
+    ///
+    /// Returns a `LoggerBuilder` for further configuring.
+    ///
     /// ## Examples
     /// ```
     /// extern crate flogging;
@@ -140,7 +145,9 @@ impl Logger {
     /// Logging level is set to it's default setting (INFO).
     ///
     /// ## Parameters
-    /// `mod_path`- The module path. Suggest using [`module_path`].
+    /// - `mod_path`- The module path. Suggest using [`module_path!()`].
+    ///
+    /// Returns a configured `Logger`.
     ///
     /// ## Examples
     /// ```
@@ -165,9 +172,11 @@ impl Logger {
     /// Create new Logger instance, with a custom handler.
     ///
     /// ## Parameters
-    /// - `mod_path`- The module path. Suggest using [`module_path`].
+    /// - `mod_path`- The module path. Suggest using [`module_path!()`].
     /// - `label` - Unique label for this custom handler.
-    /// - `custom` - The boxed custom handler,
+    /// - `custom` - The boxed custom handler.
+    ///
+    /// Returns a configured `Logger`.
     ///
     /// ## Examples
     /// ```
@@ -404,6 +413,8 @@ impl Logger {
     /// - `filename` - The name of the log file to use. Will be created
     ///   if it doesn't exist.
     ///
+    /// Returns a configured `Logger`.
+    ///
     /// ## Examples
     /// ```
     /// extern crate flogging;
@@ -524,6 +535,11 @@ impl Logger {
     ///
     /// Get required `Handler`.
     ///
+    /// ## Parameters
+    /// - `handler` - The enum of the required handler.
+    ///
+    /// Returns Some boxed handler, or None.
+    ///
     /// ## Examples
     /// ```
     /// extern crate flogging;
@@ -546,6 +562,11 @@ impl Logger {
 
     ///
     /// Check if the required `Handler` has been added to this `Logger`.
+    ///
+    /// ## Parameters
+    /// - `handler` - The enum of the required handler.
+    ///
+    /// Returns `true` if it exists, `false` otherwise.
     ///
     /// ## Examples
     /// ```
@@ -592,6 +613,11 @@ impl Logger {
 
     ///
     /// Check if a message of the given level would actually be logged by this logger.
+    ///
+    /// ## Parameters
+    /// - `level` - The level to compare with.
+    ///
+    /// Returns `true` if it is loggable, `false` otherwise.
     ///
     fn is_loggable(&self, level: &Level) -> bool {
         *level >= self.level
@@ -659,6 +685,12 @@ impl Logger {
     ///
     /// Set the current function/method name.
     ///
+    /// ## Parameters
+    /// - `fn_name` - The name of the function/method in which you are
+    ///   logging.
+    ///
+    /// Returns itself for chaining purposes.
+    ///
     pub fn set_fn_name(&mut self, fn_name: &str) -> &mut Self {
         self.fn_name = fn_name.to_string();
         self
@@ -666,6 +698,9 @@ impl Logger {
 
     ///
     /// Set default logging level for this Log instance.
+    ///
+    /// ## Parameters
+    /// - `level` - The new logging level to set.
     ///
     /// Returns itself for chaining purposes.
     ///
@@ -714,7 +749,9 @@ impl Logger {
     /// perhaps for further processing, would also be a valid use case.
     ///
     /// ## Parameters
-    /// - `mod_path`- The module path. Suggest using [`module_path`].
+    /// - `mod_path`- The module path. Suggest using [`module_path!()`].
+    ///
+    /// Returns a configured `Logger`.
     ///
     /// ## Examples
     /// ```

@@ -147,7 +147,7 @@ pub fn config(msg: TokenStream) -> TokenStream {
 /// A `LogEntry` is created with a log level of FINER, that is then logged.
 ///
 /// ## Parameters
-/// - `msg` - (Optional) The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - (Optional) See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///```no_run
@@ -189,7 +189,7 @@ pub fn entering(_msg: TokenStream) -> TokenStream {
 /// A `LogEntry` is created with a log level of FINER, that is then logged.
 ///
 /// ## Parameters
-/// - `msg` - (Optional) The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - (Optional) See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///```no_run
@@ -258,7 +258,7 @@ pub fn exiting(_msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
@@ -283,7 +283,7 @@ pub fn fine(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
@@ -305,7 +305,7 @@ pub fn finer(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
@@ -385,7 +385,7 @@ pub fn get_handler(handler: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
@@ -474,7 +474,7 @@ pub fn set_level(level: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
@@ -500,7 +500,7 @@ pub fn severe(msg: TokenStream) -> TokenStream {
 /// Handler objects.
 ///
 /// ## Parameters
-/// - `msg` - The same as for [`std::format!`](https://doc.rust-lang.org/std/macro.format.html)
+/// - `msg` - See [Special Note](index.html#special-note)
 ///
 /// ## Examples
 ///
