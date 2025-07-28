@@ -24,7 +24,7 @@
 //! # FLogging
 //!
 //! The primary purpose of logging, is to facilitate fault diagnosis through the
-//! provision of specific information as, when, and from where it is needed. This could
+//! provision of specific information as, when, and from where, it is needed. This could
 //! be during development, testing, or even during production runs.
 //!
 //! ## Setting up
@@ -36,7 +36,7 @@
 //! or add this text to the projects `Cargo.toml` file:
 //! ```text
 //! [dependencies]
-//! flogging = "0.4.0"
+//! flogging = "0.4.1"
 //! ```
 //!
 //! ## Features
@@ -48,7 +48,12 @@
 //!
 //! ### Choice
 //!
+//! - [Macros](index.html#macros)
+//! - [Methods](index.html#methods)
+//!
 //! #### Macros
+//!
+//! - [Special Note](index.html#special-note)
 //!
 //! This crate has very easy to use macros. By using them, you remove a lot of the complexity
 //! from the process. Thus making it both simpler and less code cluttering, to use.
@@ -82,7 +87,7 @@
 //!     - format `&str` with supporting parameters: `("Var: {}", var)`
 //!     - Combination of the last two: `("Vars {var1} - {}:{}", var2, var3)`
 //! - Additional Feature
-//!     - Just one or more variables: `(var1, var2, var3)`
+//!     - Just one or more variables without a supplied format string: `(var1, var2, var3)`
 //!     - In this case, a default format string will be used: `"{}, {}, {}"`
 //!     - The number of `"{}"` will depend on the number of parameters.
 //!     - Ideal for logging concrete instances that have very good `Display` implementations,
@@ -94,6 +99,9 @@
 //!       a case, their defaults will be used.
 //!
 //! #### Methods
+//!
+//! - [Logger](index.html#logger)
+//! - [LoggerBuilder](index.html#loggerbuilder)
 //!
 //! Now for the coding geeks! Yes I didn't forget you lot.
 //!
@@ -159,7 +167,7 @@
 //!
 //! **Note**
 //!
-//! As of this version (0.4.0), you can only set the logging level for the logger. All handlers process every log entry
+//! As of version (0.4.0), you can only set the logging level for the logger. All handlers process every log entry
 //! that the logger accepts, based on the logger's current log level setting. This may change in a future version,
 //! allowing each handler to have its own logging level.
 //!
@@ -180,6 +188,9 @@
 //! - [`UnixTimestampFormatter`]
 //!
 //! ### Customization
+//!
+//! - [Custom Handler](index.html#custom-handler)
+//! - [Custom Formatter](index.html#custom-formatter)
 //!
 //! Now for the fun part - "Doing it _your_ way!!!"
 //!
@@ -224,8 +235,8 @@
 //!
 //! Again, check-out the built-in formatters, and copy the code from the one that is closest to your
 //! requirements. _As before, renaming as necessary!_ Also, check-out the trait: [`FormatTrait`](trait.FormatTrait.html).
-//! You will need to implement it for you custom formatter, as you will notice when you look at the built-in formatters.
-//! Also, you will notice that the 'provided method', [`ft_fmt()`][FormatTrait::ft_fmt], provides certain variables
+//! You will need to implement it for your custom formatter, as you will notice when you look at the built-in formatters.
+//! Also, you will find that the 'provided method', [`ft_fmt()`][FormatTrait::ft_fmt], provides certain variables
 //! that you can include, via interpolation, in your `fmt_string`.
 //!
 //! Once you have got your custom formatter set up, you can then use it with:
@@ -320,6 +331,25 @@
 //! |flogging->main| [INFO   ] Job's done.
 //! |flogging->main| [FINER  ] Return
 //! ```
+//!
+//! ## Release Notes
+//!
+//! I am using Semantic Versioning is accordance with the specifications on this site:
+//! <https://semver.org/>.
+//!
+//! #### Version 0.4.1
+//!
+//! This is primarily a documentation update. After the release of (0.4.0), I realized that some
+//! of the links were no-longer pointing to where they were supposed to. Further, I found some
+//! documentation comments that needed improving/expanding.
+//!
+//! One additional thing that I've done, is to set a minimum Rust version: "1.85.1". This is in alinement
+//! with the edition = "2024".
+//!
+//! #### Version 0.4.0
+//!
+//! This is the initial release. It's not (0.1.0) because of the way I progress a project, whilst it
+//! is still only internal. However, now that it is public, the numbering will progress as expected.
 //!
 //! [macros]: index.html#macros-1
 //!

@@ -35,11 +35,19 @@ A lot of the functionality has been inspired by, and even copied from (at the AP
 
 `Flogging`, as-in, "Flogging a dead horse", or "Just another f\*ing logger". As I wrote above, there are _many_ other logging crates around. This is just my learning spin on a very well covered tool.
 
+## What's in a number?
+
+As per the requirements of the crate site (<https://crates.io/>), I am using
+Semantic Versioning in accordance with the specifications documented
+on this site: <https://semver.org/>.
+
+Therefore, once I am certain that the API is stable, I'll release v1.0.0.
+
 ## Final word
 
 Having said all that, with jokes aside, this is a fully working project. One that I
 hope others will benefit from. If not just using it, then perhaps learning from
-the source code, the various solutions to the problems involved in providing the
+the source code displaying the various solutions to the problems involved in providing the
 functionality.
 
 Anyway, have fun.\

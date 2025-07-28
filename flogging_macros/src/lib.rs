@@ -35,7 +35,7 @@
 //! Alternatively, add the following to your project's `Cargo.toml` file:
 //! ```text
 //! [dependencies]
-//! flogging = "0.4.0"
+//! flogging = "0.4.1"
 //! ```
 //!
 //! ## Special Note
