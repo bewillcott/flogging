@@ -624,7 +624,7 @@ impl Logger {
     }
 
     ///
-    /// Obtain the current default logging level for this Log instance.
+    /// Obtain the current logging level for this Log instance.
     ///
     pub fn level(&self) -> &Level {
         &self.level
@@ -671,7 +671,7 @@ impl Logger {
     }
 
     ///
-    /// Reset this `Logger` instance's default logging level.
+    /// Reset this `Logger` instance's logging level.
     ///
     /// Returns itself for chaining purposes.
     ///
@@ -697,7 +697,7 @@ impl Logger {
     }
 
     ///
-    /// Set default logging level for this Log instance.
+    /// Set logging level for this Log instance.
     ///
     /// ## Parameters
     /// - `level` - The new logging level to set.

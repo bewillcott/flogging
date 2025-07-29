@@ -308,7 +308,7 @@
 //! fn main() {
 //!     entering!();
 //!     info!("All logging macros accept the same parameters as `std::format!(...)`");
-//!     warning!("Those same macros (info, etc.) MUST have atleast the format string.");
+//!     warning!("Those same macros (info, etc.) MUST have atleast one parameter.");
 //!     config!("This is running on Fedora Linux 42.");
 //!     do_something();
 //!     info!("Job's done.");
@@ -320,7 +320,7 @@
 //! ```code
 //! |flogging->main| [FINER  ] Entry
 //! |flogging->main| [INFO   ] All logging macros accept the same parameters as `std::format!(...)`
-//! |flogging->main| [WARNING] Those same macros (info, etc.) MUST have atleast the format string.
+//! |flogging->main| [WARNING] Those same macros (info, etc.) MUST have atleast one parameter.
 //! |flogging->main| [CONFIG ] This is running on Fedora Linux 42.
 //! |flogging->do_something| [FINER  ] Entry
 //! |flogging->do_something| [INFO   ] Did some work here.
@@ -336,8 +336,12 @@
 //!
 //! ## Release Notes
 //!
-//! I am using Semantic Versioning is accordance with the specifications on this site:
+//! I am using Semantic Versioning in accordance with the specifications on this site:
 //! <https://semver.org/>.
+//!
+//! #### Version 0.4.2
+//!
+//! **{Under Development}**
 //!
 //! #### Version 0.4.1
 //!

@@ -1,6 +1,6 @@
 [package]
 name = "flogging_macros"
-version = "0.4.1"
+version = "0.4.2"
 description = "Macro support package for the 'flogging' crate."
 license = "GPL-3.0-or-later"
 authors = ["Bradley Willcott <bw.opensource@yahoo.com>"]
