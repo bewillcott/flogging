@@ -6,10 +6,14 @@ license = "GPL-3.0-or-later"
 authors = ["Bradley Willcott <bw.opensource@yahoo.com>"]
 edition = "2024"
 rust-version = "1.85.1"
+documentation = "https://docs.rs/flogging_macros"
 repository = "https://github.com/bewillcott/flogging"
 
 [lib]
 proc-macro = true
+
+[badges]
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 syn = {version = "2.0.104", features = ["full", "visit", "extra-traits"]}

@@ -63,6 +63,29 @@ fn get_handler() {
 
     log.info("Some text to store.");
 
-    let h = log.get_handler(Handler::String).unwrap();
-    println!("{h}");
+    assert!(log.get_handler(Handler::String).is_some());
+    assert!(log.get_handler(Handler::Console).is_none());
+}
+
+#[test]
+fn file_logger() {
+    use super::*;
+    use std::fs;
+
+    let filename = "test.log";
+    let path = Path::new(filename);
+
+    if path.try_exists().unwrap() {
+        fs::remove_file(path).unwrap();
+    }
+
+    let mut log = Logger::file_logger(module_path!(), path.to_str().unwrap());
+    log.set_fn_name("file_logger").set_level(Level::ALL);
+
+    log.config("Running on Fedora Linux v42");
+    log.fine("This is some fine work!");
+
+    assert_eq!(log.level(), &Level::ALL);
+    log.reset_level();
+    assert_eq!(log.level(), &Level::default());
 }

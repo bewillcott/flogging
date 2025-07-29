@@ -31,7 +31,6 @@ use super::*;
 ///
 #[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum FormatType {
-
     ///
     ///  ISO 8601 / RFC 3339 date & time format.
     ///
@@ -91,5 +90,21 @@ impl fmt::Display for FormatType {
         };
 
         label.fmt(f)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn display() {
+        let ft = FormatType::Custom("Mock".to_string());
+        let fmt = ft.create(None);
+
+        println!("ft: {ft}");
+        println!("Iso8601: {}", FormatType::Iso8601);
+        println!("Simple: {}", FormatType::Simple);
+        println!("UnixTimestamp: {}", FormatType::UnixTimestamp);
     }
 }

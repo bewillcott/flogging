@@ -20,6 +20,8 @@
 // along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#![warn(missing_docs)]
+
 //!
 //! # Flogging Macros
 //!

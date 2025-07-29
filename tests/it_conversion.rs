@@ -33,6 +33,7 @@ mod tests {
         Logger::builder("flogging")
             .add_console_handler()
             .add_file_handler("test.log")
+            .add_string_handler()
             .set_level(Level::FINEST)
             .build()
     });
@@ -79,6 +80,30 @@ mod tests {
         let temp = Temp::new("Freddy".to_string());
 
         info!(temp);
+    }
+
+    #[logger]
+    #[test]
+    fn string_log() {
+        info!("Some text to store.");
+        warning!("Rain is wet!");
+        severe!("Hurricanes are windy!");
+
+        if let Some(h) = get_handler!(Handler::String) {
+            println!(
+                "\n(h.get_log())\n======v======\n{}\n======^======",
+                h.get_log()
+            );
+        } else {
+            println!("Sorry. Not there!");
+        }
+    }
+
+    #[logger]
+    #[test]
+    fn empty_msg(){
+        info!();
+
     }
 }
 

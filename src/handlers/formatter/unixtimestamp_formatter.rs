@@ -61,6 +61,9 @@ pub struct UnixTimestampFormatter {
 }
 
 impl UnixTimestampFormatter {
+    ///
+    /// Creates a new instance of `UnixTimestampFormatter`.
+    ///
     pub fn new() -> Self {
         Self {
             dt_fmt: "%s.%f".to_string(),
@@ -68,10 +71,16 @@ impl UnixTimestampFormatter {
         }
     }
 
+    ///
+    /// Returns the date/time format string.
+    ///
     pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
+    ///
+    /// Returns the primary format string.
+    ///
     pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }

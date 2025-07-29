@@ -46,10 +46,7 @@ use crate::{
 ///
 #[derive(Debug, Default)]
 pub struct FileHandler {
-    ///
-    /// `name` is the `filename`.
-    ///
-    name: String,
+    filename: String,
     formatter: Formatter,
     file: Option<File>,
 }
@@ -61,7 +58,7 @@ impl FileHandler {
         }
 
         let fh = FileHandler {
-            name: filename.to_string(),
+            filename: filename.to_string(),
             formatter: FormatType::Iso8601.create(None),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
@@ -76,13 +73,7 @@ impl FileHandler {
 
 impl fmt::Display for FileHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let name = if self.name.is_empty() {
-            "<name>".to_string()
-        } else {
-            self.name.clone()
-        };
-
-        write!(f, "{} : {}", name, self.formatter)
+        write!(f, "{} : {}", self.filename, self.formatter)
     }
 }
 
@@ -133,4 +124,33 @@ impl HandlerTrait for FileHandler {
     fn set_formatter(&mut self, formatter: Formatter) {
         self.formatter = formatter;
     }
+}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+
+    use crate::{logger, Logger};
+
+    #[test]
+    fn handler_trait(){
+        let mut log = Logger::file_logger(module_path!(), "test.log");
+
+        log.info("trait methods");
+
+        let handler = log.get_handler(crate::Handler::File).unwrap();
+        assert!(handler.is_open());
+        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}\"".to_string());
+        assert_eq!(handler.get_log(),"".to_string());
+        handler.flush();
+        handler.close();
+    }
+
+    #[test]
+    #[should_panic(expected = "'filename' must not be empty")]
+    fn filename_empty(){
+        let mut log = Logger::file_logger(module_path!(), "");
+    }
+
+
 }

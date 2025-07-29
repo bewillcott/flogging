@@ -20,6 +20,8 @@
 // along with this library (crate).  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#![warn(missing_docs)]
+
 //!
 //! # FLogging
 //!
@@ -343,13 +345,17 @@
 //! of the links were no-longer pointing to where they were supposed to. Further, I found some
 //! documentation comments that needed improving/expanding.
 //!
-//! One additional thing that I've done, is to set a minimum Rust version: "1.85.1". This is in alinement
-//! with the edition = "2024".
+//! Additionally, I've set a minimum Rust version: "1.85.1". This is in alinement with the
+//! edition = "2024".
+//!
+//! Further investigation, showed a need to improve the test coverage. So that has also been done.
 //!
 //! #### Version 0.4.0
 //!
 //! This is the initial release. It's not (0.1.0) because of the way I progress a project, whilst it
 //! is still only internal. However, now that it is public, the numbering will progress as expected.
+//!
+//! This is my first foray into Rust development, and **crates.io** publishing.
 //!
 //! [macros]: index.html#macros-1
 //!
@@ -360,6 +366,7 @@ mod handlers;
 mod logger;
 mod macros;
 
+#[doc(inline)]
 pub use flogging_macros::*;
 pub use handlers::{
     console_handler::ConsoleHandler,

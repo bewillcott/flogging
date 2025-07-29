@@ -46,10 +46,22 @@ use crate::{
 ///
 #[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
+    ///
+    /// Refers to the `ConsoleHandler`.
+    ///
     #[default]
     Console,
+    ///
+    /// Refers to the `FileHandler`.
+    ///
     File,
+    ///
+    /// Refers to the `StringHandler`.
+    ///
     String,
+    ///
+    /// Refers to a custom handler; by default: `MockHandler`.
+    ///
     Custom(String),
 }
 
@@ -67,12 +79,26 @@ impl fmt::Display for Handler {
 }
 
 impl Handler {
-    pub fn create(&self) -> Box<dyn HandlerTrait> {
+    ///
+    /// Creates default instances of the selected handler.
+    ///
+    pub fn new(&self) -> Box<dyn HandlerTrait> {
         match &self {
             Handler::Console => Box::new(ConsoleHandler::default()),
             Handler::File => Box::new(FileHandler::default()),
             Handler::String => Box::new(StringHandler::default()),
             Handler::Custom(label) => Box::new(MockHandler::default()),
+        }
+    }
+    ///
+    /// Creates default instances of the selected handler.
+    ///
+    pub fn create(&self, name: &str) -> Box<dyn HandlerTrait> {
+        match &self {
+            Handler::Console => Box::new(ConsoleHandler::create(name).unwrap()),
+            Handler::File => Box::new(FileHandler::create(name).unwrap()),
+            Handler::String => Box::new(StringHandler::create(name).unwrap()),
+            Handler::Custom(label) => Box::new(MockHandler::create(name).unwrap()),
         }
     }
 }
@@ -88,9 +114,29 @@ mod test {
         let string = Handler::String;
         let custom = Handler::Custom("MyCustom".to_string());
 
-        println!("console: {console}");
-        println!("file: {file}");
-        println!("string: {string}");
-        println!("custom: {custom}");
+        assert_eq!(console.to_string(), "Handler::Console".to_string());
+        assert_eq!(file.to_string(), "Handler::File".to_string());
+        assert_eq!(string.to_string(), "Handler::String".to_string());
+        assert_eq!(custom.to_string(), "Handler::Custom(MyCustom)".to_string());
+
+        let mod_path = module_path!();
+
+        let ch = console.new();
+        let ch2 = console.create(mod_path);
+        let fh = file.new();
+        let fh2 = file.create("test.log");
+        let sh = string.new();
+        let sh2 = string.create(mod_path);
+        let cuh = custom.new();
+        let cuh2 = custom.create(mod_path);
+
+        println!("ch: {ch}");
+        println!("ch2: {ch2}");
+        println!("fh: {fh}");
+        println!("fh2: {fh2}");
+        println!("sh: {sh}");
+        println!("sh2: {sh2}");
+        println!("cuh: {cuh}");
+        println!("cuh2: {cuh2}");
     }
 }

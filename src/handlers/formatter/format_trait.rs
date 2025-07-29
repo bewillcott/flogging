@@ -43,9 +43,9 @@ pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
     /// - `log_entry` A reference to the `LogEntry` to be formatted.
     ///
     /// ## Examples
-    /// ```ignore
+    /// ```text
     /// impl FormatTrait for SimpleFormatter {
-    ///     fn format(&self, log_entry: &crate::LogEntry) -> String {
+    ///     fn format(&self, log_entry: &LogEntry) -> String {
     ///         self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     ///     }
     /// }
@@ -92,11 +92,9 @@ impl fmt::Debug for dyn FormatTrait {
 
 #[cfg(test)]
 mod tests {
-    use chrono::Local;
-
-    use crate::handlers::formatter::iso8601_formatter::Iso8601Formatter;
-
     use super::*;
+    use chrono::Local;
+    use crate::*;
 
     #[test]
     fn strfmt() {
@@ -123,5 +121,14 @@ mod tests {
 
         // let formatter =
         // let text =
+    }
+
+    #[test]
+    fn debug() {
+        let mut fmt = FormatType::Custom("Simple".to_string()).create(Some(Box::new(SimpleFormatter::new())));
+
+        let sf: Box<dyn FormatTrait> = Box::new(SimpleFormatter::new());
+
+        println!("sf: {sf:?}");
     }
 }

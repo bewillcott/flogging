@@ -38,17 +38,14 @@ use crate::{
 ///
 #[derive(Debug, Default)]
 pub struct ConsoleHandler {
-    ///
-    /// `name` is the `mod_path`.
-    ///
-    name: String,
+    mod_path: String,
     formatter: Formatter,
 }
 
 impl ConsoleHandler {
-    fn create(name: &str) -> Self {
+    fn create(mod_path: &str) -> Self {
         ConsoleHandler {
-            name: name.to_string(),
+            mod_path: mod_path.to_string(),
             formatter: FormatType::Simple.create(None),
         }
     }
@@ -56,7 +53,7 @@ impl ConsoleHandler {
 
 impl fmt::Display for ConsoleHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} : {}", self.name, self.formatter)
+        write!(f, "{} : {}", self.mod_path, self.formatter)
     }
 }
 
@@ -90,5 +87,26 @@ impl HandlerTrait for ConsoleHandler {
 
     fn set_formatter(&mut self, formatter: Formatter) {
         self.formatter = formatter;
+    }
+}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+
+    use crate::{logger, Logger};
+
+    #[test]
+    fn handler_trait(){
+        let mut log = Logger::console_logger(module_path!());
+
+        log.info("trait methods");
+
+        let handler = log.get_handler(crate::Handler::Console).unwrap();
+        assert!(handler.is_open());
+        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"\" - fmt_string: \"|{mod_path}->{fn_name}| [{level:7}] {message}\"".to_string());
+        assert_eq!(handler.get_log(),"".to_string());
+        handler.flush();
+        handler.close();
     }
 }

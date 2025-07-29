@@ -420,9 +420,27 @@ mod tests {
     use super::LoggerBuilder;
 
     #[test]
-    fn builder() {
+    fn add_custom_handler() {
         let mut log = Logger::builder(module_path!())
             .add_custom_handler("Console", Box::new(ConsoleHandler::create("test").unwrap()))
+            .build();
+
+        log.info("We begin!");
+    }
+
+    #[test]
+    fn add_file_handler_with() {
+        let mut log = Logger::builder(module_path!())
+            .add_file_handler_with("test.log", crate::FormatType::UnixTimestamp, None)
+            .build();
+
+        log.info("We begin!");
+    }
+
+    #[test]
+    fn add_string_handler_with() {
+        let mut log = Logger::builder(module_path!())
+            .add_string_handler_with(crate::FormatType::Simple, None)
             .build();
 
         log.info("We begin!");

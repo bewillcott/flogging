@@ -40,6 +40,7 @@
 //! In addition there is a level **OFF** that can be used to turn off logging.
 
 use std::{fmt, str::FromStr};
+use strum::{EnumIter, IntoEnumIterator};
 
 ///
 /// Log entry level setting.
@@ -47,7 +48,7 @@ use std::{fmt, str::FromStr};
 /// Default level: INFO.
 ///
 // #[allow(unused)]
-#[derive(Debug, Clone, Default, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, Default, PartialEq, PartialOrd, EnumIter)]
 pub enum Level {
     ///
     /// ALL is a special level that can be used to turn on logging
@@ -202,5 +203,16 @@ mod tests {
         println!("\n|{log_level}|\n");
 
         assert!(b < log_level);
+    }
+
+    #[test]
+    fn check_conversions() {
+        for level in Level::iter() {
+            let lstr = level.as_str();
+            let l = Level::from_str(lstr).unwrap();
+            assert_eq!(level, l);
+        }
+
+        assert!(Level::from_str("DEBUG").is_err());
     }
 }

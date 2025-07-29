@@ -33,7 +33,12 @@ use regex::RegexBuilder;
 pub(crate) fn format_impl(fmt_str: &str, msg: TokenStream) -> TokenStream {
     // println!("msg: {}", &msg);
 
-    let fmt = "let __fmt = format!({});\n".format(&[&process_msg(msg).unwrap()]);
+    let fmt = "let __fmt = format!({});\n".format(&[
+        match process_msg(msg){
+            Some(r_msg) => r_msg,
+            None => return TokenStream::new(),
+        }
+        ]);
 
     let mut buf = String::new();
     buf.push_str(&fmt);

@@ -54,6 +54,9 @@ pub struct Iso8601Formatter {
 }
 
 impl Iso8601Formatter {
+    ///
+    /// Creates a new instance of `Iso8601Formatter`.
+    ///
     pub fn new() -> Self {
         Self {
             dt_fmt: "%+".to_string(),
@@ -61,10 +64,16 @@ impl Iso8601Formatter {
         }
     }
 
+    ///
+    /// Returns the date/time format string.
+    ///
     pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
+    ///
+    /// Returns the primary format string.
+    ///
     pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }

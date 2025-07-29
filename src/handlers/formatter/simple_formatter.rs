@@ -49,6 +49,9 @@ pub struct SimpleFormatter {
 }
 
 impl SimpleFormatter {
+    ///
+    /// Creates a new instance of `SimpleFormatter`.
+    ///
     pub fn new() -> Self {
         Self {
             dt_fmt: "".to_string(),
@@ -56,10 +59,16 @@ impl SimpleFormatter {
         }
     }
 
+    ///
+    /// Returns the date/time format string.
+    ///
     pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
+    ///
+    /// Returns the primary format string.
+    ///
     pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }

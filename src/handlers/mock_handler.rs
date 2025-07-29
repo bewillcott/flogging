@@ -28,7 +28,7 @@
 
 use std::{fmt, io::Error};
 
-use crate::{handlers::formatter::Formatter, FormatType, HandlerTrait, LogEntry};
+use crate::{FormatType, HandlerTrait, LogEntry, handlers::formatter::Formatter};
 
 ///
 /// This is used as a _fake_ or _mock_ handler.
@@ -73,4 +73,42 @@ impl HandlerTrait for MockHandler {
     fn publish(&mut self, log_entry: &LogEntry) {}
 
     fn set_formatter(&mut self, formatter: Formatter) {}
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use crate::{Handler, Logger, logger};
+
+    #[test]
+    fn handler_trait() {
+        let mut log = Logger::custom_logger(
+            module_path!(),
+            "Mock",
+            Box::new(MockHandler::create(module_path!()).unwrap()),
+        );
+
+        log.info("trait methods");
+
+        let handler = log
+            .get_handler(crate::Handler::Custom("Mock".to_string()))
+            .unwrap();
+
+        assert!(!handler.is_open());
+
+        handler.set_formatter(FormatType::Simple.create(None));
+
+        assert_eq!(
+            handler.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"|{mod_path}->{fn_name}| [{level:7}] {message}\""
+                .to_string()
+        );
+
+        assert_eq!(handler.get_log(), "".to_string());
+
+        handler.flush();
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.close();
+    }
 }

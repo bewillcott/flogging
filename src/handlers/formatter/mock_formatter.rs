@@ -40,6 +40,9 @@ pub struct MockFormatter {
 }
 
 impl MockFormatter {
+    ///
+    /// Creates a new instance of `MockFormatter`.
+    ///
     pub fn new() -> Self {
         Self {
             dt_fmt: "".to_string(),
@@ -47,10 +50,16 @@ impl MockFormatter {
         }
     }
 
+    ///
+    /// Returns the date/time format string.
+    ///
     pub fn dt_fmt(&self) -> String {
         self.dt_fmt.clone()
     }
 
+    ///
+    /// Returns the primary format string.
+    ///
     pub fn fmt_string(&self) -> String {
         self.fmt_string.clone()
     }
@@ -64,7 +73,7 @@ impl Default for MockFormatter {
 
 impl fmt::Display for MockFormatter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        "MockFormatter".fmt(f)
+        write!(f, "{} : {}", self.dt_fmt(), self.fmt_string())
     }
 }
 

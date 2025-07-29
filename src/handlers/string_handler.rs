@@ -26,7 +26,10 @@
 use std::{fmt, io::Error};
 
 use crate::{
-    handlers::{formatter::{FormatType, Formatter}, handler::HandlerTrait},
+    handlers::{
+        formatter::{FormatType, Formatter},
+        handler::HandlerTrait,
+    },
     logger::{Level, LogEntry},
 };
 
@@ -117,14 +120,28 @@ impl HandlerTrait for StringHandler {
     }
 }
 
-
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
+    use crate::{Logger, logger};
 
     #[test]
-    fn logs(){
+    fn handler_trait() {
+        let mut log = Logger::string_logger(module_path!());
 
+        log.info("trait methods");
+
+        let handler = log.get_handler(crate::Handler::String).unwrap();
+        assert!(handler.is_open());
+        assert_eq!(
+            handler.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"|{mod_path}->{fn_name}| [{level:7}] {message}\""
+                .to_string()
+        );
+        assert_eq!(handler.get_log(), "|flogging::handlers::string_handler::tests->| [INFO   ] trait methods\n".to_string());
+        handler.flush();
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.close();
     }
 }

@@ -91,6 +91,33 @@
 			"problemMatcher": [
 				"$rustc"
 			]
+		},
+		{
+			"label": "bacon llvm-cov",
+			"type": "process",
+			"command": "bacon",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"args": [
+				"llvm-cov"
+			]
+		},
+		{
+			// cargo llvm-cov nextest --open
+			"label": "cargo llvm-cov open",
+			"type": "process",
+			"command": "cargo",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"args": [
+				"llvm-cov",
+				"nextest",
+				"--open"
+			]
 		}
 	]
 }

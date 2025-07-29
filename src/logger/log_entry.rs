@@ -66,16 +66,16 @@ impl LogEntry {
         }
     }
 
+    pub(crate) fn fn_name(&self) -> String {
+        self.fn_name.clone()
+    }
+
     pub(crate) fn level(&self) -> Level {
         self.level.clone()
     }
 
     pub(crate) fn message(&self) -> String {
         self.message.clone()
-    }
-
-    pub(crate) fn fn_name(&self) -> String {
-        self.fn_name.clone()
     }
 
     pub(crate) fn mod_path(&self) -> String {
@@ -101,10 +101,19 @@ mod tests {
 
     #[test]
     fn to_string() {
-        let log_entry =
+        let mut log_entry =
             LogEntry::create(Level::INFO, "to_string".to_string(), "message".to_string());
 
-        let output = log_entry.to_string();
-        println!("\noutput: {output}\n");
+        log_entry.set_mod_path(module_path!().to_owned());
+        println!("\nlog_entry: {log_entry}\n");
+
+        assert_eq!(log_entry.level(), Level::INFO);
+        assert_eq!(log_entry.message(), "message".to_string());
+        assert_eq!(log_entry.fn_name(), "to_string".to_string());
+        assert_eq!(log_entry.mod_path(), module_path!());
+        assert!(log_entry.timestamp().timestamp() > 0);
+
+        log_entry.set_fn_name("fn_name".to_owned());
+        assert_eq!(log_entry.fn_name(), "fn_name".to_string());
     }
 }

@@ -47,7 +47,7 @@ use std::{fmt, sync::Arc};
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::Level::*;
+    use crate::{const_logger, Level::*, Logger};
 
     #[test]
     fn iso8601() {
@@ -80,6 +80,18 @@ mod test {
             "This is a test message".to_string(),
         );
         let f = FormatType::UnixTimestamp.create(None);
+        let fs = f.format(&le);
+        println!("\n{f:width$} {fs}\n", width = f.width());
+    }
+
+    #[test]
+    fn custom() {
+        let le = LogEntry::create(
+            INFO,
+            "custom".to_string(),
+            "Testing MockFormatter".to_string(),
+        );
+        let f = FormatType::Custom("Mock".to_string()).create(Some(Box::new(MockFormatter::new())));
         let fs = f.format(&le);
         println!("\n{f:width$} {fs}\n", width = f.width());
     }
