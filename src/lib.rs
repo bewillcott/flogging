@@ -227,12 +227,12 @@
 //! Now for the custom formatter. This may require a bit more investigation on your part, as to the actual
 //! formatting options that are available.
 //!
-//! Firstly, this crate uses [crono](https://crates.io/crates/chrono) for the date/time functionality. Check
-//! it out. You will need to use the formatting options from this crate for the `dt_fmt` string, of your custom
+//! Firstly, this crate uses [crono] for the date/time functionality. Check
+//! out the available [specifiers]. You will need to use the formatting options from this crate for the `dt_fmt` string, of your custom
 //! formatter.
 //!
 //! Secondly, the `fmt_string` uses the format options available in accordance with [std::fmt]. Though I am
-//! actually using the [strfmt](https://crates.io/crates/strfmt) crate to do the formatting, because it does
+//! actually using the [strfmt] crate to do the formatting, because it does
 //! _not_ require a 'static' string like `format!()`.
 //!
 //! Again, check-out the built-in formatters, and copy the code from the one that is closest to your
@@ -364,7 +364,10 @@
 //!
 //! This is my first foray into Rust development, and **crates.io** publishing.
 //!
+//! [crono]: https://crates.io/crates/chrono
 //! [macros]: index.html#macros-1
+//! [specifiers]: https://docs.rs/chrono/latest/chrono/format/strftime
+//! [strfmt]: https://crates.io/crates/strfmt
 //!
 
 #![allow(unused_imports)]
