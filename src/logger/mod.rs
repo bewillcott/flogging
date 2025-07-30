@@ -617,10 +617,40 @@ impl Logger {
     /// ## Parameters
     /// - `level` - The level to compare with.
     ///
-    /// Returns `true` if it is loggable, `false` otherwise.
+    /// Returns `true` if it is loggable, `false` if not.
     ///
     fn is_loggable(&self, level: &Level) -> bool {
         *level >= self.level
+    }
+
+    ///
+    /// Checks whether or not this logger is processing log requests.
+    ///
+    /// Returns `true` if it is, `false` if not.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::console_logger(module_path!());
+    /// log.set_level(Level::OFF);
+    /// log.set_fn_name("main");
+    ///
+    /// let msg = "The program might become unstable.";
+    /// log.warning(msg);
+    ///
+    /// if !log.is_logging() {
+    ///     eprintln!{"{msg}"};
+    /// }
+    /// ```
+    /// Output to [`std::io::stderr`]:
+    /// ```text
+    /// The program might become unstable.
+    /// ```
+    ///
+    pub fn is_logging(&self) -> bool {
+        self.level() != &Level::OFF
     }
 
     ///

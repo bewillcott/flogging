@@ -339,9 +339,12 @@
 //! I am using Semantic Versioning in accordance with the specifications on this site:
 //! <https://semver.org/>.
 //!
-//! #### Version 0.4.2
+//! #### Version 0.5.0
 //!
 //! **{Under Development}**
+//!
+//! Added new macro and method: `is_logging`. Checks to see if the logger is accepting log
+//! requests.
 //!
 //! #### Version 0.4.1
 //!

@@ -3,7 +3,7 @@ members = ["flogging_macros"]
 
 [package]
 name = "flogging"
-version = "0.4.2"
+version = "0.5.0"
 description = "This is a fast, flexible logging crate, loosely based on the Java logging package: java.util.logging."
 authors = ["Bradley Willcott <bw.opensource@yahoo.com>"]
 edition = "2024"
@@ -22,7 +22,7 @@ maintenance = { status = "actively-developed" }
 [dependencies]
 anyhow = "1.0.98"
 chrono = { version = "0.4.41", features = ["std", "alloc"] }
-flogging_macros = { version = "=0.4.2", path = "flogging_macros" }
+flogging_macros = { version = "=0.5.0", path = "flogging_macros" }
 regex = "1.11.1"
 dyn-fmt = "0.4.3"
 strfmt = "0.2.5"

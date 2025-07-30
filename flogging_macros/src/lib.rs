@@ -400,6 +400,48 @@ pub fn info(msg: TokenStream) -> TokenStream {
 }
 
 ///
+/// Checks whether or not this logger is processing log requests.
+///
+/// Returns `true` if it is, `false` if not.
+///
+/// ## Examples
+/// ```no_run
+/// extern crate flogging;
+/// use flogging::*;
+///
+/// // Setting up the module level logger.
+/// const_logger!({
+///     Logger::builder(module_path!())
+///         .add_console_handler()
+///         .add_file_handler("test.log")
+///         .set_level(Level::FINEST)
+///         .build()
+/// });
+///
+/// #[logger]
+/// fn main() {
+///     set_level!(Level::OFF);
+///
+///     let msg = "The program might become unstable.";
+///     warning!(msg);
+///
+///     if !is_logging!() {
+///         eprintln! {"{msg}"};
+///     }
+/// }
+///
+/// ```
+/// Output to [`std::io::stderr`]:
+/// ```text
+/// The program might become unstable.
+/// ```
+///
+#[proc_macro]
+pub fn is_logging(_msg: TokenStream) -> TokenStream {
+    format!("__log.is_logging()").parse().unwrap_or_default()
+}
+
+///
 /// Provides for logging within the attributed function/method.
 ///
 /// This is required to be able to use the [macros](index.html#macros-1).

@@ -1,5 +1,6 @@
 /target
-LICENSE.html
+**/LICENSE.html
 **/README.html
+**/CHANGELOG.html
 *.txt
 *.log
