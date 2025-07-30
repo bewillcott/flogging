@@ -125,7 +125,7 @@ mod tests {
 
     #[test]
     fn debug() {
-        let mut fmt = FormatType::Custom("Simple".to_string()).create(Some(Box::new(SimpleFormatter::new())));
+        let mut fmt = FormatType::Custom.create(Some(Box::new(SimpleFormatter::new())));
 
         let sf: Box<dyn FormatTrait> = Box::new(SimpleFormatter::new());
 

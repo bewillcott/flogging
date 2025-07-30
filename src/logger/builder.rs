@@ -295,7 +295,7 @@ impl LoggerBuilder {
                 FormatType::Iso8601 => f.create(None),
                 FormatType::Simple => f.create(None),
                 FormatType::UnixTimestamp => f.create(None),
-                FormatType::Custom(_) => f.create(custom_formatter),
+                FormatType::Custom => f.create(custom_formatter),
             });
         }
 

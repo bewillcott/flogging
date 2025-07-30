@@ -59,7 +59,7 @@ mod test {
     fn custom_formatter() {
         let mut log = Logger::builder(module_path!())
             .add_console_handler_with(
-                FormatType::Custom("My Custom".to_string()),
+                FormatType::Custom,
                 Some(Box::new(CustomFormatter::new())),
             )
             .build();

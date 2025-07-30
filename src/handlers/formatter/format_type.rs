@@ -52,11 +52,7 @@ pub enum FormatType {
     ///
     /// Used to hold user provided formatter.
     ///
-    /// ## Parameter
-    /// - `String` - Used to hold a unique identifier for each `Custom`
-    ///   instance.
-    ///
-    Custom(String),
+    Custom,
 }
 
 impl FormatType {
@@ -72,7 +68,7 @@ impl FormatType {
             FormatType::Iso8601 => Formatter::Iso8601(Default::default()),
             FormatType::Simple => Formatter::Simple(Default::default()),
             FormatType::UnixTimestamp => Formatter::UnixTimestamp(Default::default()),
-            FormatType::Custom(label) => match custom {
+            FormatType::Custom => match custom {
                 Some(f) => Formatter::Custom(f),
                 None => Formatter::Custom(Box::new(MockFormatter::default())),
             },
@@ -86,7 +82,7 @@ impl fmt::Display for FormatType {
             FormatType::Iso8601 => "Iso8601",
             FormatType::Simple => "SimpleFormatter",
             FormatType::UnixTimestamp => "UnixTimestamp",
-            FormatType::Custom(label) => &format!("Custom({label})"),
+            FormatType::Custom => "Custom",
         };
 
         label.fmt(f)
@@ -99,10 +95,11 @@ mod tests {
 
     #[test]
     fn display() {
-        let ft = FormatType::Custom("Mock".to_string());
+        let ft = FormatType::Custom;
         let fmt = ft.create(None);
 
         println!("ft: {ft}");
+        println!("fmt: {fmt}");
         println!("Iso8601: {}", FormatType::Iso8601);
         println!("Simple: {}", FormatType::Simple);
         println!("UnixTimestamp: {}", FormatType::UnixTimestamp);

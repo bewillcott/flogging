@@ -91,7 +91,7 @@ mod test {
             "custom".to_string(),
             "Testing MockFormatter".to_string(),
         );
-        let f = FormatType::Custom("Mock".to_string()).create(Some(Box::new(MockFormatter::new())));
+        let f = FormatType::Custom.create(Some(Box::new(MockFormatter::new())));
         let fs = f.format(&le);
         println!("\n{f:width$} {fs}\n", width = f.width());
     }
