@@ -89,3 +89,16 @@ fn file_logger() {
     log.reset_level();
     assert_eq!(log.level(), &Level::default());
 }
+
+#[test]
+fn is_logging() {
+    let mut log = Logger::console_logger(module_path!());
+    log.set_fn_name("is_logging");
+
+    assert!(log.is_logging());
+    assert!(log.is_loggable(&Level::WARNING));
+
+    log.set_level(Level::OFF);
+    assert!(!log.is_logging());
+    assert!(!log.is_loggable(&Level::WARNING));
+}

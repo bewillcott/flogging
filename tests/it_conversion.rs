@@ -101,9 +101,16 @@ mod tests {
 
     #[logger]
     #[test]
-    fn empty_msg(){
+    fn empty_msg() {
         info!();
+    }
 
+    #[test]
+    #[logger]
+    fn is_logging() {
+        assert!(is_logging!());
+        set_level!(Level::OFF);
+        assert!(!is_logging!());
     }
 }
 

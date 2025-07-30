@@ -67,15 +67,15 @@ fn error_prone() -> Result<(), Box<dyn Error>> {
 
 #[logger]
 fn main() {
-    set_level!(Level::OFF);
+//     set_level!(Level::OFF);
 
-    let msg = "The program might become unstable.";
-    warning!(msg);
+//     let msg = "The program might become unstable.";
+//     warning!(msg);
 
-    if !is_logging!() {
-        eprintln! {"{msg}"};
-    }
-}
+//     if !is_logging!() {
+//         eprintln! {"{msg}"};
+//     }
+// }
     // entering!();
     // info!("All logging macros accept the same parameters as `std::format!(...)`");
     // warning!("Those same macros (info, etc.) MUST have atleast the format string.");
@@ -83,4 +83,4 @@ fn main() {
     // do_something();
     // info!("Job's done.");
     // exiting!();
-// }
+}
