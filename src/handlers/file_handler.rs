@@ -127,13 +127,13 @@ impl HandlerTrait for FileHandler {
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
-    use crate::{logger, Logger};
+    use crate::{Logger, logger};
 
     #[test]
-    fn handler_trait(){
+    fn handler_trait() {
         let mut log = Logger::file_logger(module_path!(), "test.log");
 
         log.info("trait methods");
@@ -141,16 +141,14 @@ mod tests{
         let handler = log.get_handler(crate::Handler::File).unwrap();
         assert!(handler.is_open());
         assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}\"".to_string());
-        assert_eq!(handler.get_log(),"".to_string());
+        assert_eq!(handler.get_log(), "".to_string());
         handler.flush();
         handler.close();
     }
 
     #[test]
     #[should_panic(expected = "'filename' must not be empty")]
-    fn filename_empty(){
+    fn filename_empty() {
         let mut log = Logger::file_logger(module_path!(), "");
     }
-
-
 }

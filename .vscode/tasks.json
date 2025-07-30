@@ -105,8 +105,8 @@
 			]
 		},
 		{
-			// cargo llvm-cov nextest --open
-			"label": "cargo llvm-cov open",
+			// cargo llvm-cov nextest [--open|--html]
+			"label": "cargo llvm-cov html",
 			"type": "process",
 			"command": "cargo",
 			"problemMatcher": [
@@ -116,7 +116,7 @@
 			"args": [
 				"llvm-cov",
 				"nextest",
-				"--open"
+				"--html"
 			]
 		}
 	]

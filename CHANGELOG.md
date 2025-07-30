@@ -1,22 +1,50 @@
+<!-- markdownlint-disable-file MD024 MD042 -->
 
-# Changelog
+# Changelog [![Common Changelog](https://common-changelog.org/badge.svg)][cc]
 
 ## 0.5.0 - Not released yet
 
-- {{Under Development}}
+### Changed
 
-- Added new macro and method: `is_logging`. Checks to see if the logger is accepting log requests.
+- **Breaking:** Modified `FormatType::Custom(String)` to `FormatType::Custom`. ([`88183d3`])
+- Document: Convert inline links to reference links. ([`e5a7bf0`])
 
-## 0.4.1 - 2025-07-29
+### Added
 
-- Broken documentation links fixed.
-- Some documentation comments improved or expanded.
-- Minimum Rust version now set to: "1.85.1".
-- Test coverage improved. Now 100%. See [Coverage Report]
+- Add new macro and method: `is_logging`. ([`ee882f3`])
 
-## 0.4.0 - 2025-07-27
+### Removed
 
-- Initial release.
-- It's not (0.1.0) because of the way I progress a project whilst it is still only internal. However, now that it is public, the numbering will progress as expected.
+### Fixed
 
+## [0.4.1] - 2025-07-29
+
+### Changed
+
+- Document comments improved or expanded. ([`d35d3e5`])
+
+### Added
+
+- Minimum Rust version now set to: "1.85.1". ([`3c6e99a`])
+- Test coverage improved. Now 100%. ([`d35d3e5`])
+- [Coverage Report]
+
+### Fixed
+
+- Fix broken documentation links. ([`3e32c90`]) ([`5ca139a`])
+
+## [0.4.0] - 2025-07-27
+
+_Initial release._
+
+[`e5a7bf0`]: https://github.com/bewillcott/flogging/commit/e5a7bf0027c386ad229ea74cfcc3483274e51580
+[`88183d3`]: https://github.com/bewillcott/flogging/commit/88183d392edda04b7f7f6bc24165c481991818ef
+[`ee882f3`]: https://github.com/bewillcott/flogging/commit/ee882f370a8eb87ef6e152194c869c42a15c19a1
+[0.4.1]: https://github.com/bewillcott/flogging/releases/tag/v0.4.1
+[`d35d3e5`]: https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775
+[`5ca139a`]: https://github.com/bewillcott/flogging/commit/5ca139a11ef961f9b48181b76a142eb703e8b34b
+[`3e32c90`]: https://github.com/bewillcott/flogging/commit/3e32c9095ecef4994ecb0dd44268d5025010c0cf
+[`3c6e99a`]: https://github.com/bewillcott/flogging/commit/3c6e99ae0e38ac5f63540f47176df9fb6667d524
+[0.4.0]: https://github.com/bewillcott/flogging/releases/tag/v-0.4.0
+[cc]: https://common-changelog.org
 [Coverage Report]: https://bewillcott.github.io/flogging/
