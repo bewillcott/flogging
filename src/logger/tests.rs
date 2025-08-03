@@ -27,12 +27,27 @@
 use super::*;
 
 #[test]
-fn config() {
+fn console_logger() {
     mod helper {
         use super::*;
 
         pub(super) fn help() {
             let mut log = Logger::console_logger(module_path!());
+            log.set_fn_name("help");
+            log.info("Some text to store.");
+        }
+    }
+
+    helper::help();
+}
+
+#[test]
+fn econsole_logger() {
+    mod helper {
+        use super::*;
+
+        pub(super) fn help() {
+            let mut log = Logger::econsole_logger(module_path!());
             log.set_fn_name("help");
             log.info("Some text to store.");
         }

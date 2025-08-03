@@ -38,8 +38,11 @@
 //! or add this text to the projects `Cargo.toml` file:
 //! ```text
 //! [dependencies]
-//! flogging = "0.4.1"
+//! flogging = "0.5.0"
 //! ```
+//! ## ** Warning **
+//!
+//! Before proceeding, please read the [README.md] file.
 //!
 //! ## Features
 //!
@@ -123,6 +126,7 @@
 //! - [`builder()`][Logger::builder]
 //! - [`config()`][Logger::config]
 //! - [`console_logger()`][Logger::console_logger]
+//! - [`econsole_logger()`][Logger::econsole_logger]
 //! - [`custom_logger()`][Logger::custom_logger]
 //! - [`entering()`][Logger::entering]
 //! - [`entering_with()`][Logger::entering_with]
@@ -151,6 +155,8 @@
 //!
 //! - [`add_console_handler()`][LoggerBuilder::add_console_handler()]
 //! - [`add_console_handler_with()`][LoggerBuilder::add_console_handler_with()]
+//! - [`add_econsole_handler()`][LoggerBuilder::add_econsole_handler()]
+//! - [`add_econsole_handler_with()`][LoggerBuilder::add_econsole_handler_with()]
 //! - [`add_custom_handler()`][LoggerBuilder::add_custom_handler()]
 //! - [`add_custom_handler_with()`][LoggerBuilder::add_custom_handler_with()]
 //! - [`add_file_handler()`][LoggerBuilder::add_file_handler()]
@@ -244,6 +250,7 @@
 //! Once you have got your custom formatter set up, you can then use it with:
 //!
 //! - [`LoggerBuilder::add_console_handler_with()`]
+//! - [`LoggerBuilder::add_econsole_handler_with()`]
 //! - [`LoggerBuilder::add_custom_handler_with()`]
 //! - [`LoggerBuilder::add_file_handler_with()`]
 //! - [`LoggerBuilder::add_string_handler_with()`]
@@ -334,36 +341,7 @@
 //! |flogging->main| [FINER  ] Return
 //! ```
 //!
-//! ## Release Notes
-//!
-//! I am using Semantic Versioning in accordance with the specifications on this site:
-//! <https://semver.org/>.
-//!
-//! #### Version 0.5.0
-//!
-//! **{Under Development}**
-//!
-//! Added new macro and method: `is_logging`. Checks to see if the logger is accepting log
-//! requests.
-//!
-//! #### Version 0.4.1
-//!
-//! This is primarily a documentation update. After the release of (0.4.0), I realized that some
-//! of the links were no-longer pointing to where they were supposed to. Further, I found some
-//! documentation comments that needed improving/expanding.
-//!
-//! Additionally, I've set a minimum Rust version: "1.85.1". This is in alinement with the
-//! edition = "2024".
-//!
-//! Further investigation, showed a need to improve the test coverage. So that has also been done.
-//!
-//! #### Version 0.4.0
-//!
-//! This is the initial release. It's not (0.1.0) because of the way I progress a project, whilst it
-//! is still only internal. However, now that it is public, the numbering will progress as expected.
-//!
-//! This is my first foray into Rust development, and **crates.io** publishing.
-//!
+//! [README.md]: https://crates.io/crates/flogging
 //! [crono]: https://crates.io/crates/chrono
 //! [macros]: index.html#macros-1
 //! [specifiers]: https://docs.rs/chrono/latest/chrono/format/strftime

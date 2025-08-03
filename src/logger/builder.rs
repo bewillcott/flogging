@@ -91,7 +91,8 @@ impl LoggerBuilder {
     }
 
     ///
-    /// Adds a [`ConsoleHandler`] with the required formatter.
+    /// Adds a [`ConsoleHandler`] with the required formatter,
+    /// with output to: [`std::io::stdout`].
     ///
     /// ## Parameters
     /// - `format_type` - The format type used to produce the required formatter.
@@ -128,6 +129,52 @@ impl LoggerBuilder {
     ) -> Self {
         self.add_handler_with(
             Handler::Console,
+            None,
+            None,
+            Some(format_type),
+            custom_formatter,
+        )
+    }
+
+    ///
+    /// Adds a [`ConsoleHandler`] with the required formatter,
+    /// with output to: [`std::io::stderr`].
+    ///
+    /// ## Parameters
+    /// - `format_type` - The format type used to produce the required formatter.
+    /// - `custom_formatter` - The optional boxed custom formatter.
+    ///   Used by the [`FormatType::Custom`] to produce a [`Formatter::Custom`].
+    ///
+    /// ## Examples
+    /// First, using a provided formatter:
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_econsole_handler_with(FormatType::Iso8601, None)
+    ///     .build();
+    /// ```
+    /// Now using a custom formatter:
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_console_handler_with(
+    ///         FormatType::Custom("MockFormatter".to_string()),
+    ///         Some(Box::new(MockFormatter::new())),
+    ///     )
+    ///     .build();
+    /// ```
+    ///
+    pub fn add_econsole_handler_with(
+        self,
+        format_type: FormatType,
+        custom_formatter: Option<Box<dyn FormatTrait>>,
+    ) -> Self {
+        self.add_handler_with(
+            Handler::EConsole,
             None,
             None,
             Some(format_type),

@@ -56,9 +56,21 @@ mod test {
     }
 
     #[test]
-    fn custom_formatter() {
+    fn add_console_handler_with_custom_formatter() {
         let mut log = Logger::builder(module_path!())
             .add_console_handler_with(
+                FormatType::Custom,
+                Some(Box::new(CustomFormatter::new())),
+            )
+            .build();
+
+        log.info("Testing custom formatter");
+    }
+
+    #[test]
+    fn add_econsole_handler_with_custom_formatter() {
+        let mut log = Logger::builder(module_path!())
+            .add_econsole_handler_with(
                 FormatType::Custom,
                 Some(Box::new(CustomFormatter::new())),
             )

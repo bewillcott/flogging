@@ -38,7 +38,7 @@ mod tests {
             // .add_console_handler()
             .add_custom_handler_with(
                 "console",
-                Box::new(ConsoleHandler::create("").unwrap()),
+                Box::new(ConsoleHandler::create("false").unwrap()),
                 FormatType::Iso8601,
                 None,
             )
@@ -81,7 +81,7 @@ mod tests {
         logger1.set_fn_name("shared_log_file");
 
         let mut logger2 = Logger::builder("logger2")
-            .add_console_handler()
+            .add_econsole_handler()
             .add_file_handler("test.log")
             .set_level(FINE)
             .build();
