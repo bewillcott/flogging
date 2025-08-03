@@ -28,11 +28,11 @@ There are even two special settings:
 
 ## ** WARNING **
 
-Version 0.5.0 **BREAKS** the custom handler layout and custom formatter API.
+Version 0.5.0 **BREAKS** the custom formatter API.
 
-If you have _not_ yet started developing your own versions of the handler and/or formatter, then this will _NOT_ affect you. The Public API is currently backwards compatible to version 0.4.1. Please view the **Change Log**.
+If you have _not_ yet started developing your own versions of the formatter, then this will _NOT_ affect you. The Public API is currently backwards compatible to version (0.4.1).
 
-For the rest of you, please check out the source-code for the provided `ConsoleHandler`, `StringHandler`, and `FormatType::Custom`.
+For the rest of you, please check out `FormatType::Custom` and view the **Change Log**.
 
 ## Acknowledgement
 

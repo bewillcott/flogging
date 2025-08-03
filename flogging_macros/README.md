@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD014 -->
+
 # WARNING
 
 This is a **supporting crate** for the `flogging` crate.
@@ -14,7 +16,7 @@ Alternatively, add the following to your project's `Cargo.toml` file:
 
 ```text
 [dependencies]
-flogging = "0.4.1"
+flogging = "0.5.0"
 ```
 
 Version numbering will be maintained in accordance with the
