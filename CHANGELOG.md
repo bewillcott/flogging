@@ -2,20 +2,20 @@
 
 # Changelog [![Common Changelog](https://common-changelog.org/badge.svg)][cc]
 
-## 0.5.0 - Not released yet
+## [0.5.0] - 2025-08-03
 
 ### Changed
 
 - **Breaking:** Modified `FormatType::Custom(String)` to `FormatType::Custom`. ([`88183d3`])
 - Document: Convert inline links to reference links. ([`e5a7bf0`])
+- Change: `ConsoleHandler` to contain `stderr: bool` instead of `mod_path: String`. Will now output to `std::io::stderr` if true.
+- Change: `StringHandler` removed `name: String` and renamed `StringHandler::create()` to `StringHandler::new()`.
 
 ### Added
 
-- Add new macro and method: `is_logging`. ([`ee882f3`])
-
-### Removed
-
-### Fixed
+- Add: Macro and method: `is_logging`. ([`ee882f3`])
+- Add: `econsole_logger()` and `add_econsole_handler()`.
+- Add: `Handler::EConsole`.
 
 ## [0.4.1] - 2025-07-29
 
@@ -37,6 +37,7 @@
 
 _Initial release._
 
+[0.5.0]: https://github.com/bewillcott/flogging/releases/tag/v0.5.0
 [`e5a7bf0`]: https://github.com/bewillcott/flogging/commit/e5a7bf0027c386ad229ea74cfcc3483274e51580
 [`88183d3`]: https://github.com/bewillcott/flogging/commit/88183d392edda04b7f7f6bc24165c481991818ef
 [`ee882f3`]: https://github.com/bewillcott/flogging/commit/ee882f370a8eb87ef6e152194c869c42a15c19a1

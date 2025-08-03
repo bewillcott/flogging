@@ -1,8 +1,10 @@
+<!-- markdownlint-disable-file MD037 -->
+
 # FLogging crate
 
 `Flogging` provides an easy framework for logging.
 
-Log entries can be sent to the console, file, memory log, or a custom handler. They
+Log entries can be sent to the console (stdout or stderr), file, memory log, or a custom handler. They
 can be formatted in various layouts: ISO8601, Simple, Unix TimeStamp, or a custom
 layout.
 
@@ -23,6 +25,14 @@ There are even two special settings:
 
 - ALL, and
 - OFF
+
+## ** WARNING **
+
+Version 0.5.0 **BREAKS** the custom handler layout and custom formatter API.
+
+If you have _not_ yet started developing your own versions of the handler and/or formatter, then this will _NOT_ affect you. The Public API is currently backwards compatible to version 0.4.1. Please view the **Change Log**.
+
+For the rest of you, please check out the source-code for the provided `ConsoleHandler`, `StringHandler`, and `FormatType::Custom`.
 
 ## Acknowledgement
 
@@ -64,4 +74,4 @@ Anyway, have fun.\
 <mailto:bw.opensource@yahoo.com>
 
 [bw]: https://github.com/bewillcott
-[coverage report]: https://bewillcott.github.io/flogging/
+[coverage report]: https://bewillcott.github.io/flogging/coverage

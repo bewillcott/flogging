@@ -1,6 +1,8 @@
-/target
+.vscode
+target
 **/LICENSE.html
 **/README.html
 **/CHANGELOG.html
 *.txt
 *.log
+logger.dtd
