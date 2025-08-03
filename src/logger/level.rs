@@ -48,7 +48,7 @@ use strum::{EnumIter, IntoEnumIterator};
 /// Default level: INFO.
 ///
 // #[allow(unused)]
-#[derive(Debug, Clone, Default, PartialEq, PartialOrd, EnumIter)]
+#[derive(Debug, Clone, Default, PartialEq, PartialOrd, EnumIter, Copy)]
 pub enum Level {
     ///
     /// ALL is a special level that can be used to turn on logging
