@@ -40,18 +40,13 @@ use crate::{
 ///
 #[derive(Debug, Default)]
 pub struct StringHandler {
-    ///
-    /// `name` is the `mod_path`.
-    ///
-    name: String,
     formatter: Formatter,
     log: Vec<String>,
 }
 
 impl StringHandler {
-    fn create(name: &str) -> Self {
+    fn new() -> Self {
         StringHandler {
-            name: name.to_string(),
             formatter: FormatType::Simple.create(None),
             log: Vec::new(),
         }
@@ -71,13 +66,12 @@ impl StringHandler {
 
 impl fmt::Display for StringHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let len = self.name.len() + self.formatter.to_string().len();
+        let len = self.formatter.to_string().len();
         let line = "-".repeat(len + 3);
 
         write!(
             f,
-            "{} : {}\n{line}\n{}",
-            self.name,
+            "{}\n{line}\n{}",
             self.formatter,
             self.log()
         )
@@ -85,11 +79,11 @@ impl fmt::Display for StringHandler {
 }
 
 impl HandlerTrait for StringHandler {
-    fn create(name: &str) -> Result<Self, Error>
+    fn create(_name: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        Ok(StringHandler::create(name))
+        Ok(StringHandler::new())
     }
 
     fn close(&mut self) {}

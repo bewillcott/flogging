@@ -47,10 +47,14 @@ use crate::{
 #[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
     ///
-    /// Refers to the `ConsoleHandler`.
+    /// Refers to the `ConsoleHandler` => `std::io::stdout`.
     ///
     #[default]
     Console,
+    ///
+    /// Refers to the `ConsoleHandler` => `std::io::stderr`.
+    ///
+    EConsole,
     ///
     /// Refers to the `FileHandler`.
     ///
@@ -69,6 +73,7 @@ impl fmt::Display for Handler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let text = match &self {
             Handler::Console => "Console",
+            Handler::EConsole => "EConsole",
             Handler::File => "File",
             Handler::String => "String",
             Handler::Custom(label) => &format!("Custom({label})"),
@@ -85,6 +90,7 @@ impl Handler {
     pub fn new(&self) -> Box<dyn HandlerTrait> {
         match &self {
             Handler::Console => Box::new(ConsoleHandler::default()),
+            Handler::EConsole => Box::new(ConsoleHandler::create("true").unwrap()),
             Handler::File => Box::new(FileHandler::default()),
             Handler::String => Box::new(StringHandler::default()),
             Handler::Custom(label) => Box::new(MockHandler::default()),
@@ -95,7 +101,8 @@ impl Handler {
     ///
     pub fn create(&self, name: &str) -> Box<dyn HandlerTrait> {
         match &self {
-            Handler::Console => Box::new(ConsoleHandler::create(name).unwrap()),
+            Handler::Console => Box::new(ConsoleHandler::create("false").unwrap()),
+            Handler::EConsole => Box::new(ConsoleHandler::create("true").unwrap()),
             Handler::File => Box::new(FileHandler::create(name).unwrap()),
             Handler::String => Box::new(StringHandler::create(name).unwrap()),
             Handler::Custom(label) => Box::new(MockHandler::create(name).unwrap()),
@@ -110,11 +117,13 @@ mod test {
     #[test]
     fn handlers() {
         let console = Handler::Console;
+        let econsole = Handler::EConsole;
         let file = Handler::File;
         let string = Handler::String;
         let custom = Handler::Custom("MyCustom".to_string());
 
         assert_eq!(console.to_string(), "Handler::Console".to_string());
+        assert_eq!(econsole.to_string(), "Handler::EConsole".to_string());
         assert_eq!(file.to_string(), "Handler::File".to_string());
         assert_eq!(string.to_string(), "Handler::String".to_string());
         assert_eq!(custom.to_string(), "Handler::Custom(MyCustom)".to_string());
@@ -123,6 +132,8 @@ mod test {
 
         let ch = console.new();
         let ch2 = console.create(mod_path);
+        let ech = econsole.new();
+        let ech2 = econsole.create(mod_path);
         let fh = file.new();
         let fh2 = file.create("test.log");
         let sh = string.new();
@@ -132,6 +143,8 @@ mod test {
 
         println!("ch: {ch}");
         println!("ch2: {ch2}");
+        println!("ech: {ech}");
+        println!("ech2: {ech2}");
         println!("fh: {fh}");
         println!("fh2: {fh2}");
         println!("sh: {sh}");

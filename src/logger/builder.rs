@@ -55,7 +55,8 @@ impl LoggerBuilder {
     }
 
     ///
-    /// Adds a [`ConsoleHandler`] with the default formatter.
+    /// Adds a [`ConsoleHandler`] with the default formatter,
+    /// with output to: [`std::io::stdout`].
     ///
     /// ## Examples
     /// ```
@@ -69,6 +70,24 @@ impl LoggerBuilder {
     ///
     pub fn add_console_handler(self) -> Self {
         self.add_handler_with(Handler::Console, None, None, None, None)
+    }
+
+    ///
+    /// Adds a [`ConsoleHandler`] with the default formatter,
+    /// with output to: [`std::io::stderr`].
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_econsole_handler()
+    ///     .build();
+    /// ```
+    ///
+    pub fn add_econsole_handler(self) -> Self {
+        self.add_handler_with(Handler::EConsole, None, None, None, None)
     }
 
     ///
@@ -284,7 +303,8 @@ impl LoggerBuilder {
     ) -> Self {
         let name = filename.unwrap_or(&self.mod_path);
         let mut h: Box<dyn HandlerTrait> = match handler {
-            Handler::Console => Box::new(ConsoleHandler::create(name).unwrap()),
+            Handler::Console => Box::new(ConsoleHandler::create("false").unwrap()),
+            Handler::EConsole => Box::new(ConsoleHandler::create("true").unwrap()),
             Handler::File => Box::new(FileHandler::create(name).unwrap()),
             Handler::String => Box::new(StringHandler::create(name).unwrap()),
             Handler::Custom(_) => custom_handler.unwrap(),

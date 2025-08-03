@@ -60,8 +60,9 @@ impl FormatType {
     /// Provides the requisite [`Formatter`].
     ///
     /// ## Parameters
-    /// - `custom` - Used by [`FormatType::Custom`] to provide a
-    ///   [`Formatter::Custom`] formatter. If not provided, then the default
+    /// - `custom` - Optional boxed implementor of [`FormatTrait`].
+    ///   Used by [`FormatType::Custom`] to provide a
+    ///   [`Formatter::Custom`] formatter. If `None` provided, then the default
     ///   is to use a [`MockFormatter`].
     pub fn create(&self, custom: Option<Box<dyn FormatTrait>>) -> Formatter {
         match &self {

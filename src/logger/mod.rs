@@ -140,7 +140,8 @@ impl Logger {
     }
 
     ///
-    /// Create new Logger instance, with a `ConsoleHandler`.
+    /// Create new Logger instance, with a `ConsoleHandler`, output
+    /// set to: [`std::io::stdout`].
     ///
     /// Logging level is set to it's default setting (INFO).
     ///
@@ -159,13 +160,43 @@ impl Logger {
     ///
     /// log.warning("Don't over do it.");
     /// ```
-    /// Output:
+    /// Output to stdout:
     /// ```text
     /// |flogging->main| [WARNING] Don't over do it.
     /// ```
     ///
     pub fn console_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_console_handler().build()
+    }
+
+    ///
+    /// Create new Logger instance, with a `ConsoleHandler`, output
+    /// set to: [`std::io::stderr`].
+    ///
+    /// Logging level is set to it's default setting (INFO).
+    ///
+    /// ## Parameters
+    /// - `mod_path`- The module path. Suggest using [`module_path!()`].
+    ///
+    /// Returns a configured `Logger`.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::econsole_logger(module_path!());
+    /// log.set_fn_name("main");
+    ///
+    /// log.warning("Don't over do it.");
+    /// ```
+    /// Output to stderr:
+    /// ```text
+    /// |flogging->main| [WARNING] Don't over do it.
+    /// ```
+    ///
+    pub fn econsole_logger(mod_path: &str) -> Logger {
+        Logger::builder(mod_path).add_econsole_handler().build()
     }
 
     ///

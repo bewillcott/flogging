@@ -29,23 +29,32 @@
 use std::{fmt, io::Error};
 
 use crate::{
-    handlers::{formatter::{FormatType, Formatter}, handler::HandlerTrait},
+    handlers::{
+        formatter::{FormatType, Formatter},
+        handler::HandlerTrait,
+    },
     logger::{Level, LogEntry},
 };
 
 ///
-/// Publishes log entries to the console: [`std::io::stdout`].
+/// Publishes log entries to the console.
+///
+/// If parameter `stderr` is `true`, then: \
+/// - [`std::io::stderr`],
+///
+/// else the default is:
+/// - [`std::io::stdout`].
 ///
 #[derive(Debug, Default)]
 pub struct ConsoleHandler {
-    mod_path: String,
+    stderr: bool,
     formatter: Formatter,
 }
 
 impl ConsoleHandler {
-    fn create(mod_path: &str) -> Self {
+    fn create(stderr: bool) -> Self {
         ConsoleHandler {
-            mod_path: mod_path.to_string(),
+            stderr,
             formatter: FormatType::Simple.create(None),
         }
     }
@@ -53,16 +62,17 @@ impl ConsoleHandler {
 
 impl fmt::Display for ConsoleHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} : {}", self.mod_path, self.formatter)
+        self.formatter.fmt(f)
     }
 }
 
 impl HandlerTrait for ConsoleHandler {
-    fn create(name: &str) -> Result<Self, Error>
+    fn create(stderr: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        Ok(ConsoleHandler::create(name))
+        let val = "true".eq_ignore_ascii_case(stderr);
+        Ok(ConsoleHandler::create(val))
     }
 
     fn close(&mut self) {}
@@ -82,7 +92,11 @@ impl HandlerTrait for ConsoleHandler {
     }
 
     fn publish(&mut self, log_entry: &LogEntry) {
-        println!("{}", self.formatter.format(log_entry));
+        if self.stderr {
+            eprintln!("{}", self.formatter.format(log_entry));
+        } else {
+            println!("{}", self.formatter.format(log_entry));
+        }
     }
 
     fn set_formatter(&mut self, formatter: Formatter) {
@@ -91,21 +105,25 @@ impl HandlerTrait for ConsoleHandler {
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
-    use crate::{logger, Logger};
+    use crate::{Logger, logger};
 
     #[test]
-    fn handler_trait(){
+    fn handler_trait() {
         let mut log = Logger::console_logger(module_path!());
 
         log.info("trait methods");
 
         let handler = log.get_handler(crate::Handler::Console).unwrap();
         assert!(handler.is_open());
-        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"\" - fmt_string: \"|{mod_path}->{fn_name}| [{level:7}] {message}\"".to_string());
-        assert_eq!(handler.get_log(),"".to_string());
+        assert_eq!(
+            handler.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"|{mod_path}->{fn_name}| [{level:7}] {message}\""
+                .to_string()
+        );
+        assert_eq!(handler.get_log(), "".to_string());
         handler.flush();
         handler.close();
     }
