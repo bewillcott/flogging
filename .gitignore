@@ -1,4 +1,3 @@
-.vscode
 target
 **/LICENSE.html
 **/README.html
@@ -6,3 +5,4 @@ target
 *.txt
 *.log
 logger.dtd
+!licenseheader.txt

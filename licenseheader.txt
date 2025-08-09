@@ -1,5 +1,6 @@
 //
 // File Name:    $TM_FILENAME
+// Directory:    ${RELATIVE_FILEPATH/(.*)[\\/].*$/$1/}
 // Project Name: $WORKSPACE_NAME
 //
 // Copyright (C) $CURRENT_YEAR Bradley Willcott
