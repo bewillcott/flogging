@@ -74,6 +74,7 @@ mod tests {
     fn shared_log_file() {
         let mut logger1 = Logger::builder("logger1")
             .add_console_handler()
+            .remove_file("test.log")
             .add_file_handler("test.log")
             .set_level(FINE)
             .build();

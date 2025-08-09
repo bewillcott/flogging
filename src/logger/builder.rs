@@ -32,7 +32,7 @@ use crate::{
         string_handler::StringHandler,
     },
 };
-use std::{cell::RefCell, collections::HashMap};
+use std::{cell::RefCell, collections::HashMap, fs};
 
 ///
 /// Used by [`Logger`] to provide more flexibility in the configuration of the
@@ -274,6 +274,7 @@ impl LoggerBuilder {
     /// Adds a [`FileHandler`] with the default formatter.
     ///
     /// ## Parameters
+    ///
     /// - `filename` - The name of the output log file. Must include any relevant
     ///   path (relative or absolute).
     ///
@@ -454,6 +455,38 @@ impl LoggerBuilder {
             level: self.level.clone(),
             handlers: self.handlers,
         }
+    }
+
+    ///
+    /// Remove an existing log file.
+    ///
+    /// The purpose of this, is to allow resetting of the log file, each time
+    /// a test run is done.
+    ///
+    /// ## Note
+    ///
+    /// This **must** be called _before_ adding the corresponding file handler
+    /// that is going to open this file.
+    ///
+    /// ## Parameters
+    ///
+    /// - `filename` - The name of the output log file. Must include any relevant
+    ///   path (relative or absolute).
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .remove_file("mylog.txt")
+    ///     .add_file_handler("mylog.txt")
+    ///     .build();
+    /// ```
+    ///
+    pub fn remove_file(self, filename: &str) -> Self {
+        if fs::remove_file(filename).is_err() {}
+        self
     }
 
     ///
