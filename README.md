@@ -34,6 +34,9 @@ If you have _not_ yet started developing your own versions of the formatter, the
 
 For the rest of you, please check out `FormatType::Custom` and view the **Change Log**.
 
+**Note:**\
+Version (0.6.0) is backwards compatible with version (0.5.0). Therefore it has the same warning as above. It is recommended that any use of version (0.4.X) be bumped to atleast (0.5.0), fixing the minor issue, as this will continue into all subsequent version updates.
+
 ## Acknowledgement
 
 This project was developed as a learning experience. I am fully aware that there

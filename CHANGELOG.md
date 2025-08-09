@@ -2,6 +2,12 @@
 
 # Changelog [![Common Changelog](https://common-changelog.org/badge.svg)][cc]
 
+## [0.6.0] - Dev
+
+### Added
+
+- Add: New method for `FloggingBuilder` - `remove_file()`. ([`f9d5b95`])
+
 ## [0.5.0] - 2025-08-03
 
 ### Changed
@@ -37,6 +43,8 @@
 
 _Initial release._
 
+[0.6.0]: https://github.com/bewillcott/flogging/releases/tag/v0.6.0
+[`f9d5b95`]: https://github.com/bewillcott/flogging/commit/f9d5b9537960dd23af9f76b77ff5a4b996e777bd
 [0.5.0]: https://github.com/bewillcott/flogging/releases/tag/v0.5.0
 [`41f5e9e`]: https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de
 [`e5a7bf0`]: https://github.com/bewillcott/flogging/commit/e5a7bf0027c386ad229ea74cfcc3483274e51580
