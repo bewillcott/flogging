@@ -116,7 +116,7 @@ impl LoggerBuilder {
     ///
     /// let mut log = Logger::builder(module_path!())
     ///     .add_console_handler_with(
-    ///         FormatType::Custom("MockFormatter".to_string()),
+    ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
     ///     .build();
@@ -162,7 +162,7 @@ impl LoggerBuilder {
     ///
     /// let mut log = Logger::builder(module_path!())
     ///     .add_console_handler_with(
-    ///         FormatType::Custom("MockFormatter".to_string()),
+    ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
     ///     .build();
@@ -248,7 +248,7 @@ impl LoggerBuilder {
     ///     .add_custom_handler_with(
     ///         "MockHandler",
     ///         Box::new(MockHandler::create("What ever you need").unwrap()),
-    ///         FormatType::Custom("MockFormatter".to_string()),
+    ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
     ///     .build();
@@ -320,7 +320,7 @@ impl LoggerBuilder {
     /// let mut log = Logger::builder(module_path!())
     ///     .add_file_handler_with(
     ///         "mylog.txt",
-    ///         FormatType::Custom("MockFormatter".to_string()),
+    ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
     ///     .build();
@@ -415,7 +415,7 @@ impl LoggerBuilder {
     ///
     /// let mut log = Logger::builder(module_path!())
     ///     .add_string_handler_with(
-    ///         FormatType::Custom("MockFormatter".to_string()),
+    ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
     ///     .build();
