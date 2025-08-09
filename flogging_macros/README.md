@@ -16,7 +16,7 @@ Alternatively, add the following to your project's `Cargo.toml` file:
 
 ```text
 [dependencies]
-flogging = "0.5.0"
+flogging = "0.6.0"
 ```
 
 Version numbering will be maintained in accordance with the
