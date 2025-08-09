@@ -1,0 +1,26 @@
+{
+    "powerHeader.autoInsert.enable": true,
+    "powerHeader.commentMode": "raw",
+    "powerHeader.newLines": 2,
+    "powerHeader.template": "file://$WORKSPACE_FOLDER/licenseheader.txt",
+    "powerHeader.update.content": [],
+    "powerHeader.variables": [],
+    "cSpell.words": [
+        "chrono",
+        "comin",
+        "crono",
+        "doctest",
+        "econsole",
+        "licenseheader",
+        "loggerbuilder",
+        "lstr",
+        "mylog",
+        "nanos",
+        "PCDATA",
+        "pkill",
+        "serde",
+        "strfmt",
+        "trybuild",
+        "unixtimestamp"
+    ],
+}
