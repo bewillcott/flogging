@@ -325,20 +325,20 @@
 //! ```
 //! Output:
 //! ```code
-//! |flogging->main| [FINER  ] Entry
-//! |flogging->main| [INFO   ] All logging macros accept the same parameters as `std::format!(...)`
-//! |flogging->main| [WARNING] Those same macros (info, etc.) MUST have atleast one parameter.
-//! |flogging->main| [CONFIG ] This is running on Fedora Linux 42.
-//! |flogging->do_something| [FINER  ] Entry
-//! |flogging->do_something| [INFO   ] Did some work here.
+//! flogging->main [FINER  ] Entry
+//! flogging->main [INFO   ] All logging macros accept the same parameters as `std::format!(...)`
+//! flogging->main [WARNING] Those same macros (info, etc.) MUST have atleast one parameter.
+//! flogging->main [CONFIG ] This is running on Fedora Linux 42.
+//! flogging->do_something [FINER  ] Entry
+//! flogging->do_something [INFO   ] Did some work here.
 //!   Just something to log.
-//! |flogging->do_something| [FINE   ] Bit more detail.
-//! |flogging->error_prone| [FINER  ] Entry
-//! |flogging->error_prone| [FINER  ] Return
-//! |flogging->do_something| [WARNING] Error: Bad day!
-//! |flogging->do_something| [FINER  ] Return
-//! |flogging->main| [INFO   ] Job's done.
-//! |flogging->main| [FINER  ] Return
+//! flogging->do_something [FINE   ] Bit more detail.
+//! flogging->error_prone [FINER  ] Entry
+//! flogging->error_prone [FINER  ] Return
+//! flogging->do_something [WARNING] Error: Bad day!
+//! flogging->do_something [FINER  ] Return
+//! flogging->main [INFO   ] Job's done.
+//! flogging->main [FINER  ] Return
 //! ```
 //!
 //! [README.md]: https://crates.io/crates/flogging

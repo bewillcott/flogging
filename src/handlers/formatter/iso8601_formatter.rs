@@ -40,11 +40,11 @@ use std::fmt;
 ///   provided to the [`format()`][Iso8601Formatter::format] method.
 ///
 /// ```ignore
-/// format!("{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}");
+/// format!("{dt:35} {mod_path}->{fn_name} [{level:7}] {message}");
 /// ```
 /// Sample output:
 /// ```text
-/// 2025-07-18T14:01:01.051532664+08:00 |flogging->main| [WARNING] Rain is wet!
+/// 2025-07-18T14:01:01.051532664+08:00 flogging->main [WARNING] Rain is wet!
 /// ```
 ///
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
@@ -60,7 +60,7 @@ impl Iso8601Formatter {
     pub fn new() -> Self {
         Self {
             dt_fmt: "%+".to_string(),
-            fmt_string: "{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
+            fmt_string: "{dt:35} {mod_path}->{fn_name} [{level:7}] {message}".to_string(),
         }
     }
 
