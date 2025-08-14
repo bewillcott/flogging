@@ -38,7 +38,7 @@
 //! or add this text to the projects `Cargo.toml` file:
 //! ```text
 //! [dependencies]
-//! flogging = "0.5.0"
+//! flogging = "0.6.0"
 //! ```
 //! ## ** Warning **
 //!
