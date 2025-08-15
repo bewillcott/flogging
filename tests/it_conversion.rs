@@ -1,5 +1,6 @@
 //
 // File Name:    it_conversion.rs
+// Directory:    tests
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -23,6 +24,30 @@
 //!
 //! # Integration Tests - Conversion
 //!
+
+use std::fmt;
+
+#[allow(dead_code)]
+pub struct Temp {
+    val: String,
+}
+
+#[allow(dead_code)]
+impl Temp {
+    pub fn new(val: String) -> Self {
+        Self { val }
+    }
+
+    pub fn val(&self) -> String {
+        self.val.clone()
+    }
+}
+
+impl fmt::Display for Temp {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.val.fmt(f)
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -111,29 +136,5 @@ mod tests {
         assert!(is_logging!());
         set_level!(Level::OFF);
         assert!(!is_logging!());
-    }
-}
-
-use std::fmt;
-
-#[allow(dead_code)]
-pub struct Temp {
-    val: String,
-}
-
-#[allow(dead_code)]
-impl Temp {
-    pub fn new(val: String) -> Self {
-        Self { val }
-    }
-
-    pub fn val(&self) -> String {
-        self.val.clone()
-    }
-}
-
-impl fmt::Display for Temp {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.val.fmt(f)
     }
 }

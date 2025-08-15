@@ -1,5 +1,6 @@
 //
 // File Name:    custom_handler.rs
+// Directory:    tests
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -30,7 +31,7 @@ use std::{fmt, io::Error};
 
 use flogging::*;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub(crate) struct CustomHandler {
     name: String,
     formatter: Formatter,
@@ -55,16 +56,6 @@ impl CustomHandler {
         }
 
         buf
-    }
-}
-
-impl Default for CustomHandler {
-    fn default() -> Self {
-        Self {
-            name: Default::default(),
-            formatter: Default::default(),
-            log: Default::default(),
-        }
     }
 }
 
