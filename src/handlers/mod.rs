@@ -26,9 +26,16 @@
 
 #![allow(unused)]
 
-pub(crate) mod console_handler;
-pub(crate) mod file_handler;
-pub(crate) mod formatter;
-pub(crate) mod handler;
-pub(crate) mod mock_handler;
-pub(crate) mod string_handler;
+mod console_handler;
+mod file_handler;
+mod formatters;
+mod handler;
+mod mock_handler;
+mod string_handler;
+
+pub use console_handler::{ConsoleHandler, console_type::*};
+pub use file_handler::FileHandler;
+pub use formatters::*;
+pub use handler::{Handler, handler_trait::*};
+pub use mock_handler::MockHandler;
+pub use string_handler::StringHandler;

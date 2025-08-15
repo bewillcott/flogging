@@ -357,16 +357,6 @@ mod macros;
 
 #[doc(inline)]
 pub use flogging_macros::*;
-pub use handlers::{
-    console_handler::{ConsoleHandler, console_type::*},
-    file_handler::FileHandler,
-    formatter::{
-        FormatTrait, FormatType, Formatter, Iso8601Formatter, MockFormatter, SimpleFormatter,
-        UnixTimestampFormatter,
-    },
-    handler::{Handler, HandlerTrait},
-    mock_handler::MockHandler,
-    string_handler::StringHandler,
-};
+pub use handlers::*;
 pub use logger::*;
 pub use macros::*;

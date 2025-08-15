@@ -30,15 +30,7 @@
 pub mod console_type;
 
 use std::{fmt, io::Error};
-
-use crate::{
-    handlers::{
-        formatter::{FormatType, Formatter},
-        handler::HandlerTrait,
-    },
-    logger::{Level, LogEntry},
-};
-
+use crate::*;
 use console_type::ConsoleType;
 
 ///
@@ -49,9 +41,9 @@ use console_type::ConsoleType;
 /// - `ConsoleType::StdOut` - print to `stdout`,
 /// - `ConsoleType::StdErr` - print to `stderr`,
 /// - `ConsoleType::Production`:\
-/// If `log_entry.level` is `LeveL::INFO`, then\
-/// prints unformatted `log_entry.msg` to `stdout`, else\
-/// prints formatted `log_entry.msg` to `stderr`.
+///   If `log_entry.level` is `LeveL::INFO`, then\
+///   prints unformatted `log_entry.msg` to `stdout`, else\
+///   prints formatted `log_entry.msg` to `stderr`.
 ///
 #[derive(Debug, Default)]
 pub struct ConsoleHandler {

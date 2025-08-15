@@ -1,5 +1,6 @@
 //
 // File Name:    custom_formatter.rs
+// Directory:    tests
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -24,11 +25,13 @@
 //! # CustomFormatter for Testing
 //!
 
+#![allow(dead_code)]
+
 use std::fmt;
-use flogging::{FormatTrait, LogEntry};
+use flogging::*;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
-pub struct CustomFormatter {
+pub(crate) struct CustomFormatter {
     dt_fmt: String,
     fmt_string: String,
 }

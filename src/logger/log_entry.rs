@@ -1,5 +1,6 @@
 //
 // File Name:    log_entry.rs
+// Directory:    src/logger
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -24,9 +25,9 @@
 //! # Log Entry
 //!
 
-use super::level::Level;
 use chrono::{DateTime, Local};
 use std::{fmt, time::Instant};
+use super::Level;
 
 ///
 /// Used to provide relevant information about each log entry.
@@ -71,7 +72,7 @@ impl LogEntry {
     }
 
     pub(crate) fn level(&self) -> Level {
-        self.level.clone()
+        self.level
     }
 
     pub(crate) fn message(&self) -> String {

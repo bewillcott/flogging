@@ -27,8 +27,7 @@
 //!
 
 use std::{fmt, io::Error};
-
-use crate::{FormatType, HandlerTrait, LogEntry, handlers::formatter::Formatter};
+use crate::*;
 
 ///
 /// This is used as a _fake_ or _mock_ handler.

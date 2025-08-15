@@ -1,5 +1,6 @@
 //
 // File Name:    it_customs.rs
+// Directory:    tests
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -26,13 +27,19 @@
 //! Testing both Custom Handler and Custom Formatter
 //!
 
+#![allow(dead_code)]
+
 mod custom_formatter;
 mod custom_handler;
 
+use flogging::*;
+use custom_formatter::CustomFormatter;
+use custom_handler::CustomHandler;
+
+
 #[cfg(test)]
 mod test {
-    use crate::{custom_formatter::CustomFormatter, custom_handler::CustomHandler};
-    use flogging::{FormatType, Handler, HandlerTrait, Logger};
+    use super::*;
 
     #[test]
     fn custom_handler() {

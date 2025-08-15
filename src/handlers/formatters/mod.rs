@@ -35,20 +35,20 @@ mod mock_formatter;
 mod simple_formatter;
 mod unixtimestamp_formatter;
 
-pub use crate::{
-    handlers::formatters::{
-        format_trait::FormatTrait, format_type::FormatType, formatter::Formatter,
-        iso8601_formatter::Iso8601Formatter, mock_formatter::MockFormatter,
-        simple_formatter::SimpleFormatter, unixtimestamp_formatter::UnixTimestampFormatter,
-    },
-    logger::LogEntry,
-};
+pub use format_trait::FormatTrait;
+pub use format_type::FormatType;
+pub use formatter::Formatter;
+pub use iso8601_formatter::Iso8601Formatter;
+pub use mock_formatter::MockFormatter;
+pub use simple_formatter::SimpleFormatter;
+pub use unixtimestamp_formatter::UnixTimestampFormatter;
+use crate::LogEntry;
 use std::{fmt, sync::Arc};
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{const_logger, Level::*, Logger};
+    use crate::{Level::*, Logger, const_logger};
 
     #[test]
     fn iso8601() {

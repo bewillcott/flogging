@@ -24,14 +24,7 @@
 //! # StringHandler
 //!
 use std::{fmt, io::Error};
-
-use crate::{
-    handlers::{
-        formatter::{FormatType, Formatter},
-        handler::HandlerTrait,
-    },
-    logger::{Level, LogEntry},
-};
+use crate::*;
 
 ///
 /// Publishes log entries to an internal list.

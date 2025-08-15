@@ -25,16 +25,8 @@
 //! # LoggerBuilder
 //!
 
-use super::{Handler, HandlerTrait, Level, Logger};
-use crate::{
-    ConsoleHandler, FileHandler,
-    handlers::{
-        console_handler::console_type::ConsoleType,
-        formatter::{FormatTrait, FormatType, Formatter},
-        string_handler::StringHandler,
-    },
-};
 use std::{cell::RefCell, collections::HashMap, fs};
+use crate::*;
 
 ///
 /// Used by [`Logger`] to provide more flexibility in the configuration of the
@@ -525,7 +517,7 @@ impl LoggerBuilder {
         Logger {
             mod_path: self.mod_path.clone(),
             fn_name: String::new(),
-            level: self.level.clone(),
+            level: self.level,
             handlers: self.handlers,
         }
     }
@@ -558,7 +550,7 @@ impl LoggerBuilder {
     /// ```
     ///
     pub fn remove_file(self, filename: &str) -> Self {
-        if fs::remove_file(filename).is_err() {}
+        fs::remove_file(filename).is_err();
         self
     }
 
@@ -587,12 +579,7 @@ impl LoggerBuilder {
 
 #[cfg(test)]
 mod tests {
-
-    use crate::{
-        ConsoleHandler, HandlerTrait, Logger, handlers::console_handler::console_type::ConsoleType,
-    };
-
-    use super::LoggerBuilder;
+    use super::*;
 
     #[test]
     fn add_custom_handler() {

@@ -1,5 +1,6 @@
 //
 // File Name:    mod.rs
+// Directory:    src/logger
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -51,13 +52,11 @@ use std::sync::mpsc::Sender;
 use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
 
-use crate::handlers::{
-    handler::{self, Handler, HandlerTrait},
-    mock_handler::MockHandler,
-};
-pub use crate::logger::builder::*;
-pub use crate::logger::level::Level;
-pub use crate::logger::log_entry::LogEntry;
+pub use builder::*;
+pub use level::Level;
+pub use log_entry::LogEntry;
+
+use crate::{Handler, HandlerTrait};
 
 ///
 /// This is the work-horse, providing the primary methods of the crate.

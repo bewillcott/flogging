@@ -28,19 +28,8 @@
 // #![allow(unused)]
 pub mod handler_trait;
 
-pub use handler_trait::HandlerTrait;
 use std::{fmt, hash::Hash, io::Error};
-
-use crate::{
-    handlers::{
-        console_handler::{ConsoleHandler, console_type::ConsoleType},
-        file_handler::FileHandler,
-        formatter::{FormatType, Formatter},
-        mock_handler::MockHandler,
-        string_handler::StringHandler,
-    },
-    logger::{Level, LogEntry},
-};
+pub use handler_trait::HandlerTrait;
 
 ///
 /// Available handlers.

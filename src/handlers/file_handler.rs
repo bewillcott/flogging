@@ -33,13 +33,7 @@ use std::{
     io::{Error, ErrorKind::InvalidInput, Write},
 };
 
-use crate::{
-    handlers::{
-        formatter::{FormatType, Formatter},
-        handler::HandlerTrait,
-    },
-    logger::{Level, LogEntry},
-};
+use crate::*;
 
 ///
 /// Publishes log entries to the file whose name was provided during
