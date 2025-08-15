@@ -1,6 +1,6 @@
 //
 // File Name:    format_trait.rs
-// Directory:    src/handlers/formatter
+// Directory:    src/handlers/formatters
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -26,7 +26,6 @@
 //!
 
 use crate::LogEntry;
-use chrono;
 use dyn_clone::DynClone;
 use dyn_fmt::AsStrFormatExt;
 use regex::Regex;
@@ -104,7 +103,7 @@ mod tests {
         let text = "Some text";
         let text2 = "Will this work?";
 
-        let output = format!("{}", strfmt!(fmt, text2, text).unwrap());
+        let output = strfmt!(fmt, text2, text).unwrap();
 
         println!("{output}");
     }

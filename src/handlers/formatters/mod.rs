@@ -1,5 +1,6 @@
 //
-// File Name:    formatter.rs
+// File Name:    mod.rs
+// Directory:    src/handlers/formatters
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -35,7 +36,7 @@ mod simple_formatter;
 mod unixtimestamp_formatter;
 
 pub use crate::{
-    handlers::formatter::{
+    handlers::formatters::{
         format_trait::FormatTrait, format_type::FormatType, formatter::Formatter,
         iso8601_formatter::Iso8601Formatter, mock_formatter::MockFormatter,
         simple_formatter::SimpleFormatter, unixtimestamp_formatter::UnixTimestampFormatter,
