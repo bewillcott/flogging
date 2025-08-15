@@ -1,5 +1,6 @@
 //
 // File Name:    console_handler.rs
+// Directory:    src/handlers
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -26,6 +27,8 @@
 //! Publishes log entries to the console: `[std::io::stderr]`.
 //!
 
+pub mod console_type;
+
 use std::{fmt, io::Error};
 
 use crate::{
@@ -36,25 +39,30 @@ use crate::{
     logger::{Level, LogEntry},
 };
 
+use console_type::ConsoleType;
+
 ///
 /// Publishes log entries to the console.
 ///
-/// If parameter `stderr` is `true`, then: \
-/// - [`std::io::stderr`],
+/// If `console_type` is:
 ///
-/// else the default is:
-/// - [`std::io::stdout`].
+/// - `ConsoleType::StdOut` - print to `stdout`,
+/// - `ConsoleType::StdErr` - print to `stderr`,
+/// - `ConsoleType::Production`:\
+/// If `log_entry.level` is `LeveL::INFO`, then\
+/// prints unformatted `log_entry.msg` to `stdout`, else\
+/// prints formatted `log_entry.msg` to `stderr`.
 ///
 #[derive(Debug, Default)]
 pub struct ConsoleHandler {
-    stderr: bool,
+    console_type: ConsoleType,
     formatter: Formatter,
 }
 
 impl ConsoleHandler {
-    fn create(stderr: bool) -> Self {
+    fn create(console_type: ConsoleType) -> Self {
         ConsoleHandler {
-            stderr,
+            console_type,
             formatter: FormatType::Simple.create(None),
         }
     }
@@ -67,12 +75,11 @@ impl fmt::Display for ConsoleHandler {
 }
 
 impl HandlerTrait for ConsoleHandler {
-    fn create(stderr: &str) -> Result<Self, Error>
+    fn create(console_type: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
-        let val = "true".eq_ignore_ascii_case(stderr);
-        Ok(ConsoleHandler::create(val))
+        Ok(ConsoleHandler::create(console_type.parse().unwrap()))
     }
 
     fn close(&mut self) {}
@@ -92,15 +99,28 @@ impl HandlerTrait for ConsoleHandler {
     }
 
     fn publish(&mut self, log_entry: &LogEntry) {
-        if self.stderr {
-            eprintln!("{}", self.formatter.format(log_entry));
-        } else {
-            println!("{}", self.formatter.format(log_entry));
+        // if self.stderr {
+        //     eprintln!("{}", self.formatter.format(log_entry));
+        // } else {
+        //     println!("{}", self.formatter.format(log_entry));
+        // }
+        match self.console_type {
+            ConsoleType::StdOut => println!("{}", self.formatter.format(log_entry)),
+            ConsoleType::StdErr => eprintln!("{}", self.formatter.format(log_entry)),
+            ConsoleType::Production => production(&self.formatter, log_entry),
         }
     }
 
     fn set_formatter(&mut self, formatter: Formatter) {
         self.formatter = formatter;
+    }
+}
+
+fn production(formatter: &Formatter, log_entry: &LogEntry) {
+    if log_entry.level() == Level::INFO {
+        println!("{}", log_entry.message());
+    } else {
+        eprintln!("{}", formatter.format(log_entry))
     }
 }
 
