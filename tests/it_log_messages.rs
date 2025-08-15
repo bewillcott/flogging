@@ -1,5 +1,6 @@
 //
 // File Name:    it_log_messages.rs
+// Directory:    tests
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -38,7 +39,7 @@ mod tests {
             // .add_console_handler()
             .add_custom_handler_with(
                 "console",
-                Box::new(ConsoleHandler::create("false").unwrap()),
+                Box::new(ConsoleHandler::create(ConsoleType::StdOut.as_str()).unwrap()),
                 FormatType::Iso8601,
                 None,
             )

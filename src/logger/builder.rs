@@ -1,5 +1,6 @@
 //
 // File Name:    builder.rs
+// Directory:    src/logger
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -28,6 +29,7 @@ use super::{Handler, HandlerTrait, Level, Logger};
 use crate::{
     ConsoleHandler, FileHandler,
     handlers::{
+        console_handler::console_type::ConsoleType,
         formatter::{FormatTrait, FormatType, Formatter},
         string_handler::StringHandler,
     },
@@ -56,7 +58,7 @@ impl LoggerBuilder {
 
     ///
     /// Adds a [`ConsoleHandler`] with the default formatter,
-    /// with output to: [`std::io::stdout`].
+    /// with output according to: [`ConsoleType::StdOut`].
     ///
     /// ## Examples
     /// ```
@@ -74,7 +76,7 @@ impl LoggerBuilder {
 
     ///
     /// Adds a [`ConsoleHandler`] with the default formatter,
-    /// with output to: [`std::io::stderr`].
+    /// with output according to: [`ConsoleType::StdErr`].
     ///
     /// ## Examples
     /// ```
@@ -92,7 +94,7 @@ impl LoggerBuilder {
 
     ///
     /// Adds a [`ConsoleHandler`] with the required formatter,
-    /// with output to: [`std::io::stdout`].
+    /// with output according to: [`ConsoleType::StdOut`].
     ///
     /// ## Parameters
     /// - `format_type` - The format type used to produce the required formatter.
@@ -138,7 +140,7 @@ impl LoggerBuilder {
 
     ///
     /// Adds a [`ConsoleHandler`] with the required formatter,
-    /// with output to: [`std::io::stderr`].
+    /// with output according to: [`ConsoleType::StdErr`].
     ///
     /// ## Parameters
     /// - `format_type` - The format type used to produce the required formatter.
@@ -161,7 +163,7 @@ impl LoggerBuilder {
     /// use flogging::*;
     ///
     /// let mut log = Logger::builder(module_path!())
-    ///     .add_console_handler_with(
+    ///     .add_econsole_handler_with(
     ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
@@ -351,9 +353,16 @@ impl LoggerBuilder {
     ) -> Self {
         let name = filename.unwrap_or(&self.mod_path);
         let mut h: Box<dyn HandlerTrait> = match handler {
-            Handler::Console => Box::new(ConsoleHandler::create("false").unwrap()),
-            Handler::EConsole => Box::new(ConsoleHandler::create("true").unwrap()),
+            Handler::Console => {
+                Box::new(ConsoleHandler::create(ConsoleType::StdOut.as_str()).unwrap())
+            }
+            Handler::EConsole => {
+                Box::new(ConsoleHandler::create(ConsoleType::StdErr.as_str()).unwrap())
+            }
             Handler::File => Box::new(FileHandler::create(name).unwrap()),
+            Handler::PConsole => {
+                Box::new(ConsoleHandler::create(ConsoleType::Production.as_str()).unwrap())
+            }
             Handler::String => Box::new(StringHandler::create(name).unwrap()),
             Handler::Custom(_) => custom_handler.unwrap(),
         };
@@ -371,6 +380,70 @@ impl LoggerBuilder {
         map.insert(handler, h);
 
         self
+    }
+
+    ///
+    /// Adds a [`ConsoleHandler`] with the default formatter,
+    /// with output according to: [`ConsoleType::Production`].
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_pconsole_handler()
+    ///     .build();
+    /// ```
+    ///
+    pub fn add_pconsole_handler(self) -> Self {
+        self.add_handler_with(Handler::PConsole, None, None, None, None)
+    }
+
+    ///
+    /// Adds a [`ConsoleHandler`] with the required formatter,
+    /// with output according to: [`ConsoleType::Production`].
+    ///
+    /// ## Parameters
+    /// - `format_type` - The format type used to produce the required formatter.
+    /// - `custom_formatter` - The optional boxed custom formatter.
+    ///   Used by the [`FormatType::Custom`] to produce a [`Formatter::Custom`].
+    ///
+    /// ## Examples
+    /// First, using a provided formatter:
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_pconsole_handler_with(FormatType::Iso8601, None)
+    ///     .build();
+    /// ```
+    /// Now using a custom formatter:
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_pconsole_handler_with(
+    ///         FormatType::Custom,
+    ///         Some(Box::new(MockFormatter::new())),
+    ///     )
+    ///     .build();
+    /// ```
+    ///
+    pub fn add_pconsole_handler_with(
+        self,
+        format_type: FormatType,
+        custom_formatter: Option<Box<dyn FormatTrait>>,
+    ) -> Self {
+        self.add_handler_with(
+            Handler::PConsole,
+            None,
+            None,
+            Some(format_type),
+            custom_formatter,
+        )
     }
 
     ///
@@ -515,14 +588,19 @@ impl LoggerBuilder {
 #[cfg(test)]
 mod tests {
 
-    use crate::{ConsoleHandler, HandlerTrait, Logger};
+    use crate::{
+        ConsoleHandler, HandlerTrait, Logger, handlers::console_handler::console_type::ConsoleType,
+    };
 
     use super::LoggerBuilder;
 
     #[test]
     fn add_custom_handler() {
         let mut log = Logger::builder(module_path!())
-            .add_custom_handler("Console", Box::new(ConsoleHandler::create("test").unwrap()))
+            .add_custom_handler(
+                "Console",
+                Box::new(ConsoleHandler::create(ConsoleType::StdOut.as_str()).unwrap()),
+            )
             .build();
 
         log.info("We begin!");

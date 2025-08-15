@@ -8,6 +8,7 @@
     "cSpell.words": [
         "chrono",
         "comin",
+        "confile",
         "crono",
         "doctest",
         "econsole",
@@ -17,7 +18,9 @@
         "mylog",
         "nanos",
         "PCDATA",
+        "pconsole",
         "pkill",
+        "println",
         "serde",
         "strfmt",
         "trybuild",

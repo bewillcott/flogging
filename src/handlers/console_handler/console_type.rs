@@ -27,8 +27,11 @@
 
 use std::{fmt, str::FromStr};
 
+///
+/// `ConsoleType` configures the `ConsoleHandler`'s output.
+///
 #[derive(Debug, Default)]
-pub(crate) enum ConsoleType {
+pub enum ConsoleType {
     #[default]
     ///
     /// Prints to `stdout`.
@@ -45,7 +48,6 @@ pub(crate) enum ConsoleType {
     ///
     Production,
 }
-
 
 impl ConsoleType {
     ///
@@ -66,8 +68,12 @@ impl fmt::Display for ConsoleType {
     }
 }
 
+///
+/// Returned from `FromStr::from_str()` when an unknown string
+/// is passed-in.
+///
 #[derive(Debug)]
-pub(crate) struct ConsoleTypeError {
+pub struct ConsoleTypeError {
     msg: String,
 }
 

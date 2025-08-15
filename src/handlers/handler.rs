@@ -33,7 +33,7 @@ use std::{fmt, hash::Hash, io::Error};
 
 use crate::{
     handlers::{
-        console_handler::ConsoleHandler,
+        console_handler::{ConsoleHandler, console_type::ConsoleType},
         file_handler::FileHandler,
         formatter::{FormatType, Formatter},
         mock_handler::MockHandler,
@@ -48,18 +48,22 @@ use crate::{
 #[derive(Debug, Default, Clone, Hash, PartialEq, Eq)]
 pub enum Handler {
     ///
-    /// Refers to the `ConsoleHandler` => `std::io::stdout`.
+    /// Refers to the `ConsoleHandler` => `ConsoleType::StdOut`.
     ///
     #[default]
     Console,
     ///
-    /// Refers to the `ConsoleHandler` => `std::io::stderr`.
+    /// Refers to the `ConsoleHandler` => `ConsoleType::StdErr`.
     ///
     EConsole,
     ///
     /// Refers to the `FileHandler`.
     ///
     File,
+    ///
+    /// Refers to the `ConsoleHandler` => `ConsoleType::Production`.
+    ///
+    PConsole,
     ///
     /// Refers to the `StringHandler`.
     ///
@@ -76,6 +80,7 @@ impl fmt::Display for Handler {
             Handler::Console => "Console",
             Handler::EConsole => "EConsole",
             Handler::File => "File",
+            Handler::PConsole => "PConsole",
             Handler::String => "String",
             Handler::Custom(label) => &format!("Custom({label})"),
         };

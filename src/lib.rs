@@ -1,5 +1,6 @@
 //
 // File Name:    lib.rs
+// Directory:    src
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -357,7 +358,7 @@ mod macros;
 #[doc(inline)]
 pub use flogging_macros::*;
 pub use handlers::{
-    console_handler::ConsoleHandler,
+    console_handler::{ConsoleHandler, console_type::*},
     file_handler::FileHandler,
     formatter::{
         FormatTrait, FormatType, Formatter, Iso8601Formatter, MockFormatter, SimpleFormatter,
