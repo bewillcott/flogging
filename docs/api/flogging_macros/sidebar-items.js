@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["logger"],"macro":["config","entering","exiting","fine","finer","finest","get_handler","info","is_logging","set_level","severe","warning"]};

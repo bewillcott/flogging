@@ -1,5 +1,6 @@
 //
 // File Name:    file_handler.rs
+// Directory:    src/handlers
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -140,7 +141,7 @@ mod tests {
 
         let handler = log.get_handler(crate::Handler::File).unwrap();
         assert!(handler.is_open());
-        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}\"".to_string());
+        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}\"".to_string());
         assert_eq!(handler.get_log(), "".to_string());
         handler.flush();
         handler.close();

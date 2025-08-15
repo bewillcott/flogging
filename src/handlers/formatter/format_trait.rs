@@ -1,5 +1,6 @@
 //
 // File Name:    format_trait.rs
+// Directory:    src/handlers/formatter
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -60,10 +61,11 @@ pub trait FormatTrait: fmt::Display + DynClone + Send + Sync {
     /// - `dt_fmt` - The [`chrono::DateTime`] format string.
     /// - `fmt` - The primary format string.\
     ///   Available variables:
+    ///     - `dt` - The datetime formatted with: `dt_fmt`.
     ///     - `mod_path` - The module path, possibly supplied via: [`module_path!()`][module_path].
     ///     - `fn_name` - The name of the  function/method inside which the log entry
     ///       was generated. Supplied by the [`#[logger]`][crate::logger] macro, or manually with the
-    ///       [`set_fn_name()`][crate::Logger::set_fn_name] method instead.
+    ///       [`set_fn_name()`][crate::Logger::set_fn_name] method.
     ///     - `level` - The log [level][crate::Level] for which the entry was created.
     ///     - `message` - The text of the log entry.
     ///

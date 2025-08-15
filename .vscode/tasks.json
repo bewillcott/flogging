@@ -105,7 +105,6 @@
 			]
 		},
 		{
-			// cargo llvm-cov nextest [--open|--html]
 			"label": "cargo llvm-cov html",
 			"type": "process",
 			"command": "cargo",
@@ -117,6 +116,19 @@
 				"llvm-cov",
 				"nextest",
 				"--html"
+			]
+		},
+		{
+			"label": "mdbook build guide",
+			"type": "process",
+			"command": "mdbook",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"args": [
+				"build",
+				"guide"
 			]
 		}
 	]

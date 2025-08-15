@@ -1,7 +1,8 @@
 target
 **/LICENSE.html
 **/README.html
-**/CHANGELOG.html
+/CHANGELOG.html
+/RELEASELOG.html
 *.txt
 *.log
 logger.dtd

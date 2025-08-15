@@ -1,5 +1,6 @@
 //
 // File Name:    handler_trait.rs
+// Directory:    src/handlers/handler
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -24,7 +25,10 @@
 //! # HandlerTrait
 //!
 
-use super::*;
+use std::{fmt, io::Error};
+
+use crate::{Formatter, LogEntry};
+
 
 ///
 /// Provides common methods required for all handlers.

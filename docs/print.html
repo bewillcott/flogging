@@ -1,0 +1,1630 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>FLogging Guide</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">FLogging Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- markdownlint-disable-file MD036 MD037 -->
+<h1 id="flogging-crate"><a class="header" href="#flogging-crate">FLogging crate</a></h1>
+<p><strong>&lt;&lt; Under Active Development &gt;&gt;</strong></p>
+<p><code>Flogging</code> provides an easy framework for logging.</p>
+<p>Log entries can be sent to the console (stdout or stderr), file, memory log, or a custom handler. They
+can be formatted in various layouts: ISO8601, Simple, Unix TimeStamp, or a custom
+layout.</p>
+<p>Macros and public functions are provided, with the macros being the simplest method
+of operation.</p>
+<p>There are several levels for logging at:</p>
+<ul>
+<li>SEVERE,</li>
+<li>WARNING,</li>
+<li>INFO,</li>
+<li>CONFIG,</li>
+<li>FINE,</li>
+<li>FINER, and</li>
+<li>FINEST</li>
+</ul>
+<p>There are even two special settings:</p>
+<ul>
+<li>ALL, and</li>
+<li>OFF</li>
+</ul>
+<h2 id="-warning-"><a class="header" href="#-warning-">** WARNING **</a></h2>
+<p><em><strong>Version 0.6.0</strong></em> <strong>BREAKS</strong> The output from <code>Iso8601Formatter</code> has been changed.</p>
+<p>The format string for <code>fmt_string</code> has been changed from:</p>
+<p><code>"{dt:35} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}"</code></p>
+<p>to:</p>
+<p><code>"{dt:35} {mod_path}-&gt;{fn_name} [{level:7}] {message}"</code></p>
+<p>This may affect any tests or logs that expect the precise old format.
+Sorry about this. The “|” bars were a holdover from early testing, and were not
+removed before publishing.</p>
+<p><em><strong>Version 0.5.0</strong></em> <strong>BREAKS</strong> the custom formatter API.</p>
+<p>If you have <em>not</em> yet started developing your own versions of the formatter, then this will <em>NOT</em> affect you. The Public API is currently backwards compatible to version (0.4.1).</p>
+<p>For the rest of you, please check out <code>FormatType::Custom</code> and view the <strong>Change Log</strong>.</p>
+<p><strong>Note:</strong><br />
+Version (0.6.0) is backwards compatible with version (0.5.0). Therefore it has the same warning as above. It is recommended that any use of version (0.4.X) be bumped to atleast (0.5.0), fixing the minor issue, as this will continue into all subsequent version updates.</p>
+<h2 id="acknowledgement"><a class="header" href="#acknowledgement">Acknowledgement</a></h2>
+<p>This project was developed as a learning experience. I am fully aware that there
+are many other logging crates out there, but where is the fun in that? As a hobbyist it seemed like a good idea at the time.</p>
+<p>A lot of the functionality has been inspired by, and even copied from (at the API level), the JDK’s <code>java.util.logging</code> package. Whether or not it will ever become a <em>full</em> port, only time and my level of interest, will tell. Remember, “learning experience”?</p>
+<h2 id="whats-in-a-name"><a class="header" href="#whats-in-a-name">What’s in a name?</a></h2>
+<p><code>Flogging</code>, as-in, “Flogging a dead horse”, or “Just another f*ing logger”. As I wrote above, there are <em>many</em> other logging crates around. This is just my learning spin on a very well covered tool.</p>
+<h2 id="whats-in-a-number"><a class="header" href="#whats-in-a-number">What’s in a number?</a></h2>
+<p>As per the requirements of the crate site (<a href="https://crates.io/" target="_blank">https://crates.io/</a>), I am using
+Semantic Versioning in accordance with the specifications documented
+on this site: <a href="https://semver.org/" target="_blank">https://semver.org/</a>.</p>
+<p>Therefore, once I am certain that the API is stable, I’ll release v1.0.0.</p>
+<h2 id="coverage-report"><a class="header" href="#coverage-report">Coverage Report</a></h2>
+<p>I have included the latest test coverage report, generated by <code>llvm-cov</code>.<br />
+It is located here: <a href="https://bewillcott.github.io/flogging/coverage" title="" target="_blank">coverage report</a>.</p>
+<h2 id="history"><a class="header" href="#history">History</a></h2>
+<p>See <a href="https://bewillcott.github.io/flogging/extras/RELEASELOG.html" title="" target="_blank">RELEASELOG.md</a> and <a href="https://bewillcott.github.io/flogging/extras/CHANGELOG.html" title="" target="_blank">CHANGELOG.md</a></p>
+<h2 id="final-word"><a class="header" href="#final-word">Final word</a></h2>
+<p>Having said all that, with jokes aside, this is a fully working project. One that I
+hope others will benefit from. If not just using it, then perhaps learning from
+the source code displaying the various solutions to the problems involved in providing the
+functionality.</p>
+<p>Anyway, have fun.<br />
+<a href="https://github.com/bewillcott" title="" target="_blank">Bradley Willcott</a></p>
+<p><a href="mailto:bw.opensource@yahoo.com" target="_blank">mailto:bw.opensource@yahoo.com</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
+<p>This guide is provided to assist you in customizing <code>FLogging</code>.</p>
+<p>The available options are:</p>
+<ul>
+<li>Custom Handlers</li>
+<li>Custom Formatters</li>
+</ul>
+<p>Each of these are independent of the other. You can use custom handlers with the built-in formatters, and custom formatters with the built-in handlers. Or, if you want to be very fancy, you can use your custom formatter with your custom handler!!! What a great idea, hey?</p>
+<p>I have tried to make this process as simple as possible.  Though there are many ways I could have gone with this, I decided that having separate modules/files for each one was the easiest and most efficient option, when it comes down to maintainability.</p>
+<p>So, let’s get started.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-handlers"><a class="header" href="#custom-handlers">Custom Handlers</a></h1>
+<p>Why would you want to create your own handlers?</p>
+<p>Well, you tell me!</p>
+<p>OK, I suppose I can provide a few reasons. How about:</p>
+<ul>
+<li>sending log entries to:
+<ul>
+<li>remote system log servers</li>
+<li>another program (local or remote) for live analysis, or some other processing</li>
+</ul>
+</li>
+<li>storing log entries:
+<ul>
+<li>in a specific file format (xml, json, csv)</li>
+<li>in a database</li>
+</ul>
+</li>
+</ul>
+<p>Actually, the “file format” option above may only need a custom formatter. I’ll leave that decision up you, if you need one of them.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-1"><a class="header" href="#step-1">Step 1</a></h1>
+<h2 id="why"><a class="header" href="#why">Why?</a></h2>
+<p>Firstly, you need to know why you want/need to develop a custom handler.</p>
+<p>For our example, we are going to develop a simple handler that combines outputting to both the ‘stdout’ console, and a log file. Note, that this would, at best, be a convenience handler, as it would replace two built-in handlers.</p>
+<h2 id="how"><a class="header" href="#how">How?</a></h2>
+<p>Now you need to know how you would process each log entry, so that you could either send it to somewhere or store it some where, and how you would get it there.</p>
+<p>For our example, we need to do two separate things:</p>
+<ul>
+<li><code>println!("{}", log_entry);</code></li>
+<li><code>fs::write!("example.log", log_entry);</code></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-2"><a class="header" href="#step-2">Step 2</a></h1>
+<p>Now we need to check out the existing handlers and their code, to see which one is the closest to what we are after.</p>
+<p>For our example, we could use either the <code>ConsoleHandler</code> or the <code>FileHandler</code>.
+As file handling is the more complex task, we will use the <code>FileHandler</code> as our template.</p>
+<p>There are two ways to obtain the code. If you are viewing through the on-line <a href="https://docs.rs/flogging/latest/flogging/index.html" title="" target="_blank">API documentation</a>, then at the top navigation bar, click “flogging-0.6.0”, then under “LINKS” click “Source”. This will bring up the “Source” tab. Now we need to navigate to the required file.</p>
+<ul>
+<li>src
+<ul>
+<li>handlers
+<ul>
+<li>file_handler.rs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Now select ALL of the code, from the top down, then ‘copy [ctrl/c]’. You need to include the file header (Copyright).</p>
+<p>The other way, is to access the github repository: <a href="https://github.com/bewillcott/flogging" title="" target="_blank">flogging</a>. The directory structure is the same as above.</p>
+<p>In your project <strong>src</strong> directory somewhere, create your new handler file, and paste this code into it.</p>
+<p>Our file will be called: <code>confile_handler.rs</code>, with the module: <code>ConfileHandler</code>.</p>
+<p>First things first. We now need to do some changes:</p>
+<ul>
+<li><code>file_handler.rs</code> to <code>confile_handler.rs</code></li>
+<li><code>FileHandler</code> to <code>ConfileHandler</code></li>
+<li><code>use crate::...;</code> to <code>use flogging::*;</code></li>
+</ul>
+<p>I have used a form of ‘diff’ to represent the changes:</p>
+<ul>
+<li>’- ’ old line code</li>
+<li>’+ ’ new line code</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span>
+<span class="boring">fn main() {
+</span>//
+- // File Name:    file_handler.rs
++ // File Name:    confile_handler.rs
+// Project Name: flogging
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+//
+
+//!
+- //! # FileHandler
++ //! # ConfileHandler
+//!
+
+#![allow(unused)]
+
+use std::{
+    fmt,
+    fs::{File, exists},
+    io::{Error, ErrorKind::InvalidInput, Write},
+};
+
+- use crate::{
+-     handlers::{
+-         formatter::{FormatType, Formatter},
+-         handler::HandlerTrait,
+-     },
+-     logger::{Level, LogEntry},
+- };
++ use flogging::*;
+
+///
+/// Publishes log entries to the file whose name was provided during
+/// initialization.
+///
+#[derive(Debug, Default)]
+- pub struct FileHandler {
++ pub struct ConfileHandler {
+    filename: String,
+    formatter: Formatter,
+    file: Option&lt;File&gt;,
+}
+
+- impl FileHandler {
++ impl ConfileHandler {
+    fn create(filename: &amp;str) -&gt; Result&lt;Self, Error&gt; {
+        if filename.is_empty() {
+            return Err(Error::new(InvalidInput, "'filename' must not be empty"));
+        }
+
+-        let fh = FileHandler {
++        let fh = ConfileHandler {
+            filename: filename.to_string(),
+            formatter: FormatType::Iso8601.create(None),
+            file: {
+                let f = File::options().append(true).create(true).open(filename)?;
+
+                Some(f)
+            },
+        };
+
+        Ok(fh)
+    }
+}
+
+- impl fmt::Display for FileHandler {
++ impl fmt::Display for ConfileHandler {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {
+        write!(f, "{} : {}", self.filename, self.formatter)
+    }
+}
+
+- impl HandlerTrait for FileHandler {
++ impl HandlerTrait for ConfileHandler {
+    ///
+    /// Create a new handler instance.
+    ///
+    /// ## Parameters
+    /// - `name` - This the `filename` of the log file.
+    ///
+    fn create(name: &amp;str) -&gt; Result&lt;Self, Error&gt; {
+-        FileHandler::create(name)
++        ConfileHandler::create(name)
+    }
+
+    fn close(&amp;mut self) {
+        self.flush();
+        self.file = None;
+    }
+
+    fn flush(&amp;mut self) {
+        if let Some(f) = &amp;self.file {
+            f.sync_all();
+        }
+    }
+
+    fn get_formatter(&amp;self) -&gt; Formatter {
+        self.formatter.clone()
+    }
+
+    fn get_log(&amp;self) -&gt; String {
+        String::new()
+    }
+
+    fn is_open(&amp;self) -&gt; bool {
+        self.file.is_some()
+    }
+
+    #[allow(private_interfaces)]
+    fn publish(&amp;mut self, log_entry: &amp;LogEntry) {
+        if self.is_open() {
+            let mut buf = self.formatter.format(log_entry);
+            buf.push('\n');
+
+            self.file.as_mut().unwrap().write_all(buf.as_bytes());
+        }
+    }
+
+    fn set_formatter(&amp;mut self, formatter: Formatter) {
+        self.formatter = formatter;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use crate::{Logger, logger};
+
+    #[test]
+    fn handler_trait() {
+        let mut log = Logger::file_logger(module_path!(), "test.log");
+
+        log.info("trait methods");
+
+        let handler = log.get_handler(crate::Handler::File).unwrap();
+        assert!(handler.is_open());
+        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}\"".to_string());
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.flush();
+        handler.close();
+    }
+
+    #[test]
+    #[should_panic(expected = "'filename' must not be empty")]
+    fn filename_empty() {
+        let mut log = Logger::file_logger(module_path!(), "");
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-3"><a class="header" href="#step-3">Step 3</a></h1>
+<p>With “Step 2” completed, you should be able to build your project without errors.</p>
+<p>At this point, our new handler can output to any log file we need. However, we now need to add the console output component. For this exercise, we are going to use a different formatter for the console output, to that for the file output. To keep things simple, we will only provide a “default” formatter option. That is, there will be no ability to pass-in a different one later. The same limitation for the file handler component.</p>
+<p>Firstly, we will need to modify: <code>struct ConfileHandler</code>.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>///
+/// Publishes log entries to the file whose name was provided during
+/// initialization.
+///
+#[derive(Debug, Default)]
+pub struct ConfileHandler {
+    filename: String,
+-    formatter: Formatter,
++    file_fmt: Formatter,
++    con_fmt: Formatter,
+    file: Option&lt;File&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now: <code>impl ConfileHandler</code>.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl ConfileHandler {
+    fn create(filename: &amp;str) -&gt; Result&lt;Self, Error&gt; {
+        if filename.is_empty() {
+            return Err(Error::new(InvalidInput, "'filename' must not be empty"));
+        }
+
+        let fh = ConfileHandler {
+            filename: filename.to_string(),
+-            formatter: FormatType::Iso8601.create(None),
++            file_fmt: FormatType::Iso8601.create(None),
++            con_fmt: FormatType::Simple.create(None),
+            file: {
+                let f = File::options().append(true).create(true).open(filename)?;
+
+                Some(f)
+            },
+        };
+
+        Ok(fh)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now: <code>impl fmt::Display for ConfileHandler</code>.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl fmt::Display for ConfileHandler {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {
+-        write!(f, "{} : {}", self.filename, self.formatter)
++        write!(f, "{} : {}\nConsole: {}", self.filename, self.file_fmt, self.con_fmt)
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-4"><a class="header" href="#step-4">Step 4</a></h1>
+<p>Ok, so far so good. Hopefully, your project still builds without errors.</p>
+<p>Now we get to the actual working parts.</p>
+<p>Firstly, some cleanup. Since we are not allowing outside changes to the formatters, <code>get_formatter()</code> and <code>set_formatter()</code> will be changed.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    fn get_formatter(&amp;self) -&gt; Formatter {
+-        self.formatter.clone()
++        self.file_fmt.clone()
+    }
+
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>-    fn set_formatter(&amp;mut self, formatter: Formatter) {
+-        self.formatter = formatter;
+-    }
++    fn set_formatter(&amp;mut self, _formatter: Formatter) {}
+<span class="boring">}</span></code></pre></pre>
+<p>Now the final changes:</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    fn publish(&amp;mut self, log_entry: &amp;LogEntry) {
+        if self.is_open() {
+-            let mut buf = self.formatter.format(log_entry);
++            let mut buf = self.file_fmt.format(log_entry);
+            buf.push('\n');
+
+            self.file.as_mut().unwrap().write_all(buf.as_bytes());
++           println!("{}", self.con_fmt.format(log_entry));
+        }
+    }
+
+<span class="boring">}</span></code></pre></pre>
+<p>It is done.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-5"><a class="header" href="#step-5">Step 5</a></h1>
+<p>Oops! Forgot the testing!!!!</p>
+<p>Ok, what are we doing with that?</p>
+<p>Since we are using a custom handler, we need to use the appropriate function.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg(test)]
+mod tests {
+    use super::*;
+
+-    use crate::{Logger, logger};
+
+    #[test]
+    fn handler_trait() {
+-        let mut log = Logger::file_logger(module_path!(), "test.log");
++        let mut log = Logger::custom_logger(
++            module_path!(),
++            "ConfileHandler",
++            Box::new(ConfileHandler::create("example.log").unwrap()),
++        );
+
++        log.set_fn_name("handler_trait");
+        log.info("trait methods");
+
+-        let handler = log.get_handler(crate::Handler::File).unwrap();
++        let handler = log
++            .get_handler(Handler::Custom("ConfileHandler".to_string()))
++            .unwrap();
+        assert!(handler.is_open());
+        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}\"".to_string());
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.flush();
+        handler.close();
+    }
+
+    #[test]
+    #[should_panic(expected = "'filename' must not be empty")]
+    fn filename_empty() {
+-        let mut log = Logger::file_logger(module_path!(), "");
++        let mut log = Logger::custom_logger(
++            module_path!(),
++            "ConfileHandler",
++            Box::new(ConfileHandler::create("").unwrap()),
++        );
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Possible output, minus the tester’s extraneous stuff:</p>
+<ul>
+<li>console</li>
+</ul>
+<pre><code class="language-text">my_project::confile_handler::tests-&gt;handler_trait [INFO   ] trait methods
+</code></pre>
+<ul>
+<li><code>example.log</code></li>
+</ul>
+<pre><code class="language-text">2025-08-14T18:14:37.468423953+08:00 my_project::confile_handler::tests-&gt;handler_trait [INFO   ] trait methods
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="final-code"><a class="header" href="#final-code">Final Code</a></h1>
+<p>Here is the complete source code for the custom formatter: <code>CsvFormatter</code>.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//
+// File Name:    confile_handler.rs
+// Project Name: my_project
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+//
+
+//!
+//! # ConfileHandler
+//!
+
+#![allow(unused)]
+
+use std::{
+    fmt,
+    fs::{File, exists},
+    io::{Error, ErrorKind::InvalidInput, Write},
+};
+
+use flogging::*;
+
+///
+/// Publishes log entries to the file whose name was provided during
+/// initialization.
+///
+#[derive(Debug, Default)]
+pub struct ConfileHandler {
+    filename: String,
+    file_fmt: Formatter,
+    con_fmt: Formatter,
+    file: Option&lt;File&gt;,
+}
+
+impl ConfileHandler {
+    fn create(filename: &amp;str) -&gt; Result&lt;Self, Error&gt; {
+        if filename.is_empty() {
+            return Err(Error::new(InvalidInput, "'filename' must not be empty"));
+        }
+
+        let fh = ConfileHandler {
+            filename: filename.to_string(),
+            file_fmt: FormatType::Iso8601.create(None),
+            con_fmt: FormatType::Simple.create(None),
+            file: {
+                let f = File::options().append(true).create(true).open(filename)?;
+
+                Some(f)
+            },
+        };
+
+        Ok(fh)
+    }
+}
+
+impl fmt::Display for ConfileHandler {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {
+        write!(
+            f,
+            "{} : {}\nConsole: {}",
+            self.filename, self.file_fmt, self.con_fmt
+        )
+    }
+}
+
+impl HandlerTrait for ConfileHandler {
+    ///
+    /// Create a new handler instance.
+    ///
+    /// ## Parameters
+    /// - `name` - This the `filename` of the log file.
+    ///
+    fn create(name: &amp;str) -&gt; Result&lt;Self, Error&gt; {
+        ConfileHandler::create(name)
+    }
+
+    fn close(&amp;mut self) {
+        self.flush();
+        self.file = None;
+    }
+
+    fn flush(&amp;mut self) {
+        if let Some(f) = &amp;self.file {
+            f.sync_all();
+        }
+    }
+
+    fn get_formatter(&amp;self) -&gt; Formatter {
+        self.file_fmt.clone()
+    }
+
+    fn get_log(&amp;self) -&gt; String {
+        String::new()
+    }
+
+    fn is_open(&amp;self) -&gt; bool {
+        self.file.is_some()
+    }
+
+    fn publish(&amp;mut self, log_entry: &amp;LogEntry) {
+        if self.is_open() {
+            let mut buf = self.file_fmt.format(log_entry);
+            buf.push('\n');
+
+            self.file.as_mut().unwrap().write_all(buf.as_bytes());
+            println!("{}", self.con_fmt.format(log_entry));
+        }
+    }
+
+    fn set_formatter(&amp;mut self, _formatter: Formatter) {}
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn handler_trait() {
+        let mut log = Logger::custom_logger(
+            module_path!(),
+            "ConfileHandler",
+            Box::new(ConfileHandler::create("example.log").unwrap()),
+        );
+
+        log.set_fn_name("handler_trait");
+        log.info("trait methods");
+
+        let handler = log
+            .get_handler(crate::Handler::Custom("ConfileHandler".to_string()))
+            .unwrap();
+        assert!(handler.is_open());
+        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}\"".to_string());
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.flush();
+        handler.close();
+    }
+
+    #[test]
+    #[should_panic(expected = "'filename' must not be empty")]
+    fn filename_empty() {
+        let mut log = Logger::custom_logger(
+            module_path!(),
+            "ConfileHandler",
+            Box::new(ConfileHandler::create("").unwrap()),
+        );
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="wrap-up"><a class="header" href="#wrap-up">Wrap Up</a></h1>
+<p>Right … Now we are done. We have our (hopefully) working custom handler, that can be used in our project.</p>
+<p>Of course, I expect that your requirements will be more complex.</p>
+<p>However, by following this reasonably straightforward process, you should not have too many challenges in getting your custom handler working.</p>
+<p>Remember, it’s in the <code>publish()</code> method that all the real work is done. The rest is just setup.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-formatters"><a class="header" href="#custom-formatters">Custom Formatters</a></h1>
+<p>A custom formatter will allow you to be very specific with the layout of the output for each log entry when it is logged via the log handlers. Though the built-in formatters provide the same options as that provided by the <strong>Java</strong> library, I expect you may have more specific requirements.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-1-1"><a class="header" href="#step-1-1">Step 1</a></h1>
+<h2 id="why-1"><a class="header" href="#why-1">Why?</a></h2>
+<p>What is the goal, here. What are you trying to achieve?</p>
+<p>For our example, we will work towards creating a custom formatter for outputting a <strong>csv</strong> format.</p>
+<h2 id="how-1"><a class="header" href="#how-1">How?</a></h2>
+<p>What is the specific layout that is required?</p>
+<p>Our example will aim to provide:</p>
+<pre><code class="language-text">&lt;date-time&gt;, &lt;module_path&gt;, &lt;level&gt;, "&lt;message&gt;"
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-2-1"><a class="header" href="#step-2-1">Step 2</a></h1>
+<p>Creating a custom formatter will require some investigation of other crates. Crates that are used by <code>FLogging</code>:</p>
+<ul>
+<li><a href="https://crates.io/crates/chrono" title="" target="_blank">crono</a> - Used for the date/time functionality, with its <a href="https://docs.rs/chrono/latest/chrono/format/strftime" title="" target="_blank">specifiers</a>, in the <code>dt_fmt</code> string of each formatter.</li>
+<li><a href="https://doc.rust-lang.org/stable/std/fmt/index.html" title="" target="_blank">std::fmt</a> - The format options used in the <code>fmt_string</code> string of each formatter.</li>
+<li><a href="https://crates.io/crates/strfmt" title="" target="_blank">strfmt</a> - Used to do the actual formatting.</li>
+</ul>
+<p>Now you should check out the built-in formatters to find one that is the closest to what you are after.</p>
+<p>For our example, none of the built-in formatters are really closer than the other, so we will chose the <code>UnixTimestampFormatter</code>, simply because I am running Linux as my O/S.</p>
+<p>To find them, use either the <a href="https://docs.rs/flogging/latest/flogging/index.html" title="" target="_blank">API documentation</a>, or the Github repository: <a href="https://github.com/bewillcott/flogging" title="" target="_blank">flogging</a>.</p>
+<p>As with the <a href="guide/formatters/../handlers/step_2.html">Custom Handlers</a>, to obtain the code from the API documentation, at the top navigation bar, click “flogging-0.6.0”, then under “LINKS” click “Source”. This will bring up the “Source” tab. Now we need to navigate to the required file.</p>
+<ul>
+<li>src
+<ul>
+<li>handlers
+<ul>
+<li>formatter
+<ul>
+<li>unixtimestamp_formatter.rs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Now select ALL of the code, from the top down, then ‘copy [ctrl/c]’. You need to include the file header (Copyright).</p>
+<p>In your project <strong>src</strong> directory somewhere, create your new formatter file, and paste this code into it.</p>
+<p>Our file will be called: <code>csv_formatter.rs</code>, with the module: <code>CsvFormatter</code>.</p>
+<p>First things first. We now need to do some changes:</p>
+<ul>
+<li><code>unixtimestamp_formatter.rs</code> to <code>csv_formatter.rs</code></li>
+<li><code>UnixTimestampFormatter</code> to <code>CsvFormatter</code></li>
+</ul>
+<p>I have used a form of ‘diff’ to represent the changes:</p>
+<ul>
+<li>’- ’ old line code</li>
+<li>’+ ’ new line code</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//
+- // File Name:    unixtimestamp_formatter.rs
++ // File Name:    csv_formatter.rs
+// Project Name: flogging
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+//
+
+//!
+- //! # UnixTimeStamp Formatter
++ //! # CSV Formatter
+//!
+
+use super::format_trait::FormatTrait;
+use std::fmt;
+
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+
+///
+/// Unix Timestamp format.
+///
+/// The first part (before the decimal point) is
+/// the number of seconds since 1970-01-01 00:00 UTC.
+///
+/// The second part is the number of nanoseconds since
+/// the last whole second.
+///
+/// Example:
+/// ```text
+/// 1752817859.157970496
+/// ```
+/// Template:
+/// - `dt` in the template would be the datetime string, similar to the above.
+/// - `mod_path`, `fn_name`, `level`, and `message` all come out of the `LogEntry`
+- ///   provided to the [`format()`][UnixTimestampFormatter::format] method.
++ ///   provided to the [`format()`][CsvFormatter::format] method.
+///
+/// ```ignore
+/// format!("{dt} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}");
+/// ```
+/// Sample output:
+/// ```text
+/// 1752818461.051538870 |flogging-&gt;main| [SEVERE ] Hurricanes are windy!
+/// ```
+///
+- pub struct UnixTimestampFormatter {
++ pub struct CsvFormatter {
+    dt_fmt: String,
+    fmt_string: String,
+}
+
+- impl UnixTimestampFormatter {
++ impl CsvFormatter {
+    ///
+-    /// Creates a new instance of `UnixTimestampFormatter`.
++    /// Creates a new instance of `CsvFormatter`.
+    ///
+    pub fn new() -&gt; Self {
+        Self {
+            dt_fmt: "%s.%f".to_string(),
+            fmt_string: "{dt} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}".to_string(),
+        }
+    }
+
+    ///
+    /// Returns the date/time format string.
+    ///
+    pub fn dt_fmt(&amp;self) -&gt; String {
+        self.dt_fmt.clone()
+    }
+
+    ///
+    /// Returns the primary format string.
+    ///
+    pub fn fmt_string(&amp;self) -&gt; String {
+        self.fmt_string.clone()
+    }
+}
+
+- impl Default for UnixTimestampFormatter {
++ impl Default for CsvFormatter {
+    fn default() -&gt; Self {
+        Self::new()
+    }
+}
+
+- impl fmt::Display for UnixTimestampFormatter {
++ impl fmt::Display for CsvFormatter {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {
+        write!(
+            f,
+            "dt_fmt: \"{}\" - fmt_string: \"{}\"",
+            self.dt_fmt, self.fmt_string
+        )
+    }
+}
+
+- impl FormatTrait for UnixTimestampFormatter {
++ impl FormatTrait for CsvFormatter {
+    fn format(&amp;self, log_entry: &amp;crate::LogEntry) -&gt; String {
+        self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-3-1"><a class="header" href="#step-3-1">Step 3</a></h1>
+<p>At this point your project should still build without errors.</p>
+<p>Next, let’s put together the datetime format string: <code>dt_fmt</code>.</p>
+<p>After looking into the <code>crono</code> crates specifiers, we come up with this string:</p>
+<pre><code class="language-text">"%Y-%m-%d %H:%M:%S%.6f"
+</code></pre>
+<p>which should produce something like:</p>
+<pre><code class="language-text">2025-06-23 13:10:45.123456
+</code></pre>
+<p>Now, let’s build the main format string: <code>fmt_string</code>.</p>
+<p>First, look at the provided method: <code>FormatTrait::ft_fmt()</code>. It provides the following variables that can be included in your format string via interpolation:</p>
+<ul>
+<li><code>dt</code> - The datetime formatted with: <code>dt_fmt</code>.</li>
+<li><code>mod_path</code> - The module path, possibly supplied via: <code>module_path!()</code>.</li>
+<li><code>fn_name</code> - The name of the function/method inside which the log entry was generated. Supplied by the <code>#[logger]</code> macro, or manually with the <code>set_fn_name()</code> method.</li>
+<li><code>level</code> - The log <code>Level</code> for which the entry was created.</li>
+<li><code>message</code> - The text of the log entry.</li>
+</ul>
+<p>Using the specifiers available in <code>std:fmt</code>, we produce this:</p>
+<pre><code class="language-text">"{dt},{mod_path}-&gt;{fn_name},{level},{message}"
+</code></pre>
+<p>with a possible output of:</p>
+<pre><code class="language-text">2025-06-23 13:10:45.123456,my_project::csv_formatter::tests-&gt;csv_format,INFO,"trait methods"
+</code></pre>
+<p>Using these format strings, we can now modify our new custom formatter as follows:</p>
+<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl CsvFormatter {
+    ///
+    /// Creates a new instance of `CsvFormatter`.
+    ///
+    pub fn new() -&gt; Self {
+        Self {
+-            dt_fmt: "%s.%f".to_string(),
++            dt_fmt: "%Y-%m-%d %H:%M:%S%.6f".to_string(),
+-            fmt_string: "{dt} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}".to_string(),
++            fmt_string: "{dt},{mod_path}-&gt;{fn_name},{level},{message}".to_string(),
+        }
+    }
+
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="step-4-1"><a class="header" href="#step-4-1">Step 4</a></h1>
+<p>Let’s add some testing:</p>
+<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span>
+<span class="boring">fn main() {
+</span>#[cfg(test)]
+mod tests{
+    use super::*;
+
+    const_logger!({
+        Logger::builder(module_path!())
+            .add_string_handler_with(
+                FormatType::Custom,
+                Some(Box::new(CsvFormatter::new())),
+            )
+            .build()
+    });
+
+    #[test]
+    #[logger]
+    fn csv_format() {
+        entering!();
+
+        info!("Testing a new custom formatter.");
+        warning!("Must add more testing.");
+
+        let log_str = get_handler!(Handler::String).unwrap().get_log();
+
+        print!("{log_str}");
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Possible output:</p>
+<pre><code class="language-text">2025-06-23 13:10:45.123456,my_project::csv_formatter::tests-&gt;csv_format,INFO,Testing a new custom formatter.
+2025-06-23 13:10:45.123529,my_project::csv_formatter::tests-&gt;csv_format,WARNING,Must add more testing.
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="final-code-1"><a class="header" href="#final-code-1">Final Code</a></h1>
+<p>Here is the complete source code for the custom formatter: <code>CsvFormatter</code>.</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//
+// File Name:    csv_formatter.rs
+// Project Name: my_project
+//
+// Copyright (C) 2025 Bradley Willcott
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// This library (crate) is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library (crate) is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library (crate).  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+//
+
+//!
+//! # CSV Formatter
+//!
+
+#![allow(unused)]
+
+use flogging::*;
+use std::fmt;
+
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+
+///
+/// CSV formatter.
+///
+pub struct CsvFormatter {
+    dt_fmt: String,
+    fmt_string: String,
+}
+
+impl CsvFormatter {
+    ///
+    /// Creates a new instance of `CsvFormatter`.
+    ///
+    pub fn new() -&gt; Self {
+        Self {
+            dt_fmt: "%Y-%m-%d %H:%M:%S%.6f".to_string(),
+            fmt_string: "{dt},{mod_path}-&gt;{fn_name},{level},{message}".to_string(),
+        }
+    }
+
+    ///
+    /// Returns the date/time format string.
+    ///
+    pub fn dt_fmt(&amp;self) -&gt; String {
+        self.dt_fmt.clone()
+    }
+
+    ///
+    /// Returns the primary format string.
+    ///
+    pub fn fmt_string(&amp;self) -&gt; String {
+        self.fmt_string.clone()
+    }
+}
+
+impl Default for CsvFormatter {
+    fn default() -&gt; Self {
+        Self::new()
+    }
+}
+
+impl fmt::Display for CsvFormatter {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {
+        write!(
+            f,
+            "dt_fmt: \"{}\" - fmt_string: \"{}\"",
+            self.dt_fmt, self.fmt_string
+        )
+    }
+}
+
+impl FormatTrait for CsvFormatter {
+    fn format(&amp;self, log_entry: &amp;crate::LogEntry) -&gt; String {
+        self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
+    }
+}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+
+    const_logger!({
+        Logger::builder(module_path!())
+            .add_string_handler_with(
+                FormatType::Custom,
+                Some(Box::new(CsvFormatter::new())),
+            )
+            .build()
+    });
+
+    #[test]
+    #[logger]
+    fn csv_format() {
+        entering!();
+
+        info!("Testing a new custom formatter.");
+        warning!("Must add more testing.");
+
+        let log_str = get_handler!(Handler::String).unwrap().get_log();
+
+        print!("{log_str}");
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="wrap-up-1"><a class="header" href="#wrap-up-1">Wrap Up</a></h1>
+<p>Alright! We are done.</p>
+<p>Hopefully, by following all with these steps, your own custom formatter should build and perform its duty correctly.</p>
+<p>In developing the example formatter, I found out that the <code>crono</code> specifiers are very specific. Atleast <code>%.3f</code>, etc. I tried to use: <code>%.4f</code> and it did <em>not</em> like it. Since <code>3</code> was too small, I had to go for <code>6</code>.</p>
+<p><strong>Something to note:</strong> Both the <code>CsvFormatter</code> and the <code>ConfileHandler</code> were developed as I was writing this guide. Neither were previous developments just copied in.</p>
+<div style="break-before: page; page-break-before: always;"></div><!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="FLogging"><title>flogging - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="flogging" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-4e99c027.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2 id="flogging060"><a class="header" href="#flogging060"><a href="api/flogging/../flogging/index.html">flogging</a><span class="version">0.6.0</span></a></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="api/flogging/all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3 id="sections"><a class="header" href="#sections"><a href="api/flogging/index.html#">Sections</a></a></h3><ul class="block top-toc"><li><a href="api/flogging/index.html#flogging" title="FLogging">FLogging</a><ul><li><a href="api/flogging/index.html#setting-up" title="Setting up">Setting up</a></li><li><a href="api/flogging/index.html#-warning-" title="** Warning **">** Warning **</a></li><li><a href="api/flogging/index.html#features" title="Features">Features</a></li><li><a href="api/flogging/index.html#examples" title="Examples">Examples</a></li></ul></li></ul><h3 id="crate-items"><a class="header" href="#crate-items"><a href="api/flogging/index.html#macros-1">Crate Items</a></a></h3><ul class="block"><li><a href="api/flogging/index.html#macros-1" title="Macros">Macros</a></li><li><a href="api/flogging/index.html#structs" title="Structs">Structs</a></li><li><a href="api/flogging/index.html#enums" title="Enums">Enums</a></li><li><a href="api/flogging/index.html#traits" title="Traits">Traits</a></li><li><a href="api/flogging/index.html#attributes" title="Attribute Macros">Attribute Macros</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1 id="crate-floggingcopy-item-path"><a class="header" href="#crate-floggingcopy-item-path">Crate <span>flogging</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></a></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="api/flogging/../src/flogging/lib.rs.html#24-372">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="flogging"><a class="header" href="#flogging"><a class="doc-anchor" href="api/flogging/index.html#flogging">§</a>FLogging</a></h2>
+<p>The primary purpose of logging, is to facilitate fault diagnosis through the
+provision of specific information as, when, and from where, it is needed. This could
+be during development, testing, or even during production runs.</p>
+<h3 id="setting-up"><a class="header" href="#setting-up"><a class="doc-anchor" href="api/flogging/index.html#setting-up">§</a>Setting up</a></h3>
+<p>You need to add this crate to your project:</p>
+<div class="example-wrap"><pre class="language-text"><code>$ cargo add flogging</code></pre></div>
+<p>or add this text to the projects <code>Cargo.toml</code> file:</p>
+<div class="example-wrap"><pre class="language-text"><code>[dependencies]
+flogging = &quot;0.6.0&quot;</code></pre></div><h3 id="-warning-"><a class="header" href="#-warning-"><a class="doc-anchor" href="api/flogging/index.html#-warning-">§</a>** Warning **</a></h3>
+<p>Before proceeding, please read the <a href="https://crates.io/crates/flogging">README.md</a> file.</p>
+<h3 id="features"><a class="header" href="#features"><a class="doc-anchor" href="api/flogging/index.html#features">§</a>Features</a></h3>
+<ul>
+<li><a href="api/flogging/enum.Level.html">Levels</a> - There are nine (9) levels of message logging, with two (2) special ones.</li>
+<li><a href="api/flogging/index.html#choice">Choice</a> - You can use either macros or methods.</li>
+<li><a href="api/flogging/index.html#built-in-options">Built-in options</a> - A range of handlers and formatters.</li>
+<li><a href="api/flogging/index.html#customization">Customization</a> - You can create your own handlers and/or formatters.</li>
+</ul>
+<h4 id="choice"><a class="header" href="#choice"><a class="doc-anchor" href="api/flogging/index.html#choice">§</a>Choice</a></h4>
+<ul>
+<li><a href="api/flogging/index.html#macros">Macros</a></li>
+<li><a href="api/flogging/index.html#methods">Methods</a></li>
+</ul>
+<h5 id="macros"><a class="header" href="#macros"><a class="doc-anchor" href="api/flogging/index.html#macros">§</a>Macros</a></h5>
+<ul>
+<li><a href="api/flogging/index.html#special-note">Special Note</a></li>
+</ul>
+<p>This crate has very easy to use macros. By using them, you remove a lot of the complexity
+from the process. Thus making it both simpler and less code cluttering, to use.</p>
+<ul>
+<li>There is one macro (<a href="api/flogging/macro.const_logger.html" title="macro flogging::const_logger"><code>const_logger!()</code></a>) that is used to setup a single module/file for logging.</li>
+<li>There is one macro (<a href="api/flogging/attr.logger.html" title="attr flogging::logger"><code>#[logger]</code></a>) that is applied as an attribute to each function/method
+that you need to create log entries within.</li>
+<li>There are nine macros that are used to actually log the messages:
+<ul>
+<li><a href="api/flogging/macro.config.html" title="macro flogging::config"><code>config!()</code></a></li>
+<li><a href="api/flogging/macro.entering.html" title="macro flogging::entering"><code>entering!()</code></a></li>
+<li><a href="api/flogging/macro.exiting.html" title="macro flogging::exiting"><code>exiting!()</code></a></li>
+<li><a href="api/flogging/macro.fine.html" title="macro flogging::fine"><code>fine!()</code></a></li>
+<li><a href="api/flogging/macro.finer.html" title="macro flogging::finer"><code>finer!()</code></a></li>
+<li><a href="api/flogging/macro.finest.html" title="macro flogging::finest"><code>finest!()</code></a></li>
+<li><a href="api/flogging/macro.info.html" title="macro flogging::info"><code>info!()</code></a></li>
+<li><a href="api/flogging/macro.severe.html" title="macro flogging::severe"><code>severe!()</code></a></li>
+<li><a href="api/flogging/macro.warning.html" title="macro flogging::warning"><code>warning!()</code></a></li>
+</ul>
+</li>
+<li>There are two helper macros:
+<ul>
+<li><a href="api/flogging/macro.get_handler.html" title="macro flogging::get_handler"><code>get_handler!()</code></a></li>
+<li><a href="api/flogging/macro.set_level.html" title="macro flogging::set_level"><code>set_level!()</code></a></li>
+</ul>
+</li>
+</ul>
+<p>Check out the <a href="api/flogging/index.html#examples">Examples</a> below for how easy it is to get started.</p>
+<h6 id="special-note"><a class="header" href="#special-note"><a class="doc-anchor" href="api/flogging/index.html#special-note">§</a>Special Note</a></h6>
+<p>For the macros that accept the parameter: <code>msg</code>, the following is true:</p>
+<ul>
+<li>They accept parameters the same as for <a href="https://doc.rust-lang.org/std/macro.format.html"><code>std::format!</code></a>
+<ul>
+<li>plain text <code>&amp;str</code>: <code>("It's your time.")</code></li>
+<li>format <code>&amp;str</code> with interpolated variables: <code>("Var: {var}")</code></li>
+<li>format <code>&amp;str</code> with supporting parameters: <code>("Var: {}", var)</code></li>
+<li>Combination of the last two: <code>("Vars {var1} - {}:{}", var2, var3)</code></li>
+</ul>
+</li>
+<li>Additional Feature
+<ul>
+<li>Just one or more variables without a supplied format string: <code>(var1, var2, var3)</code></li>
+<li>In this case, a default format string will be used: <code>"{}, {}, {}"</code></li>
+<li>The number of <code>"{}"</code> will depend on the number of parameters.</li>
+<li>Ideal for logging concrete instances that have very good <code>Display</code> implementations,
+or you just need their data without further explanation.</li>
+</ul>
+</li>
+<li>Special Cases
+<ul>
+<li><a href="api/flogging/macro.entering.html" title="macro flogging::entering">entering!</a> and <a href="api/flogging/macro.exiting.html" title="macro flogging::exiting">exiting!</a></li>
+<li>These two macros have the same features as the others,
+but they may also be used <em>without</em> any parameters. In such
+a case, their defaults will be used.</li>
+</ul>
+</li>
+</ul>
+<h5 id="methods"><a class="header" href="#methods"><a class="doc-anchor" href="api/flogging/index.html#methods">§</a>Methods</a></h5>
+<ul>
+<li><a href="api/flogging/index.html#logger">Logger</a></li>
+<li><a href="api/flogging/index.html#loggerbuilder">LoggerBuilder</a></li>
+</ul>
+<p>Now for the coding geeks! Yes I didn’t forget you lot.</p>
+<p>Though the macros are the easiest and simplest way to use this crate, those macros are just candy
+coating over the real workers, the methods. There are two main mods/structs in this crate, <a href="api/flogging/struct.Logger.html"><code>Logger</code></a>
+and <a href="api/flogging/struct.LoggerBuilder.html"><code>LoggerBuilder</code></a>.</p>
+<h6 id="logger"><a class="header" href="#logger"><a class="doc-anchor" href="api/flogging/index.html#logger">§</a>Logger</a></h6>
+<p><code>Logger</code> is the work-horse of the crate. It has all the methods for initializing each function/method
+for logging, and all of the message logging methods.</p>
+<p>Using the “methods” option is more complex, as-in, you have to write a lot more code, and manage it.
+To see how much more is involved, check-out the <a href="api/flogging/struct.Logger.html"><code>Logger</code></a>’s methods. There are
+plenty of examples throughout.</p>
+<ul>
+<li><a href="api/flogging/struct.Logger.html#method.builder" title="associated function flogging::Logger::builder"><code>builder()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.config" title="method flogging::Logger::config"><code>config()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.console_logger" title="associated function flogging::Logger::console_logger"><code>console_logger()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.econsole_logger" title="associated function flogging::Logger::econsole_logger"><code>econsole_logger()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.custom_logger" title="associated function flogging::Logger::custom_logger"><code>custom_logger()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.entering" title="method flogging::Logger::entering"><code>entering()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.entering_with" title="method flogging::Logger::entering_with"><code>entering_with()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.exiting" title="method flogging::Logger::exiting"><code>exiting()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.exiting_with" title="method flogging::Logger::exiting_with"><code>exiting_with()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.file_logger" title="associated function flogging::Logger::file_logger"><code>file_logger()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.fine" title="method flogging::Logger::fine"><code>fine()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.finer" title="method flogging::Logger::finer"><code>finer()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.finest" title="method flogging::Logger::finest"><code>finest()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.fn_name" title="method flogging::Logger::fn_name"><code>fn_name()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.get_handler" title="method flogging::Logger::get_handler"><code>get_handler()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.has_handler" title="method flogging::Logger::has_handler"><code>has_handler()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.info" title="method flogging::Logger::info"><code>info()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.level" title="method flogging::Logger::level"><code>level()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.reset_level" title="method flogging::Logger::reset_level"><code>reset_level()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.set_fn_name" title="method flogging::Logger::set_fn_name"><code>set_fn_name()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.set_level" title="method flogging::Logger::set_level"><code>set_level()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.severe" title="method flogging::Logger::severe"><code>severe()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.string_logger" title="associated function flogging::Logger::string_logger"><code>string_logger()</code></a></li>
+<li><a href="api/flogging/struct.Logger.html#method.warning" title="method flogging::Logger::warning"><code>warning()</code></a></li>
+</ul>
+<h6 id="loggerbuilder"><a class="header" href="#loggerbuilder"><a class="doc-anchor" href="api/flogging/index.html#loggerbuilder">§</a>LoggerBuilder</a></h6>
+<p><code>LoggerBuilder</code> is used by <code>Logger</code> to provide various configuration options for setting up your logger.
+The available options/methods are:</p>
+<ul>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_console_handler" title="method flogging::LoggerBuilder::add_console_handler"><code>add_console_handler()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_console_handler_with" title="method flogging::LoggerBuilder::add_console_handler_with"><code>add_console_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_econsole_handler" title="method flogging::LoggerBuilder::add_econsole_handler"><code>add_econsole_handler()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_econsole_handler_with" title="method flogging::LoggerBuilder::add_econsole_handler_with"><code>add_econsole_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_custom_handler" title="method flogging::LoggerBuilder::add_custom_handler"><code>add_custom_handler()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_custom_handler_with" title="method flogging::LoggerBuilder::add_custom_handler_with"><code>add_custom_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_file_handler" title="method flogging::LoggerBuilder::add_file_handler"><code>add_file_handler()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_file_handler_with" title="method flogging::LoggerBuilder::add_file_handler_with"><code>add_file_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_string_handler" title="method flogging::LoggerBuilder::add_string_handler"><code>add_string_handler()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_string_handler_with" title="method flogging::LoggerBuilder::add_string_handler_with"><code>add_string_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.set_level" title="method flogging::LoggerBuilder::set_level"><code>set_level()</code></a></li>
+</ul>
+<p>And to finish:</p>
+<ul>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.build" title="method flogging::LoggerBuilder::build"><code>build()</code></a></li>
+</ul>
+<p>These options/methods allow you a lot of flexibility in how you configure your logger. As you will typically
+have a different logger for each mod/file, you have a lot of control over what is logged, how it is formatted,
+and where it is stored/viewed. With the <a href="api/flogging/struct.LoggerBuilder.html#method.set_level" title="method flogging::LoggerBuilder::set_level"><code>set_level()</code></a> method, you can control
+this on a mod/file basis. Logging each file differently, or even turning logging off when you no-longer require it.</p>
+<p><strong>Note</strong></p>
+<p>As of version (0.4.0), you can only set the logging level for the logger. All handlers process every log entry
+that the logger accepts, based on the logger’s current log level setting. This may change in a future version,
+allowing each handler to have its own logging level.</p>
+<h4 id="built-in-options"><a class="header" href="#built-in-options"><a class="doc-anchor" href="api/flogging/index.html#built-in-options">§</a>Built-in options</a></h4>
+<p>I have included a number of handlers to get you started:</p>
+<ul>
+<li><a href="api/flogging/struct.ConsoleHandler.html" title="struct flogging::ConsoleHandler"><code>ConsoleHandler</code></a></li>
+<li><a href="api/flogging/struct.FileHandler.html" title="struct flogging::FileHandler"><code>FileHandler</code></a></li>
+<li><a href="api/flogging/struct.MockHandler.html" title="struct flogging::MockHandler"><code>MockHandler</code></a></li>
+<li><a href="api/flogging/struct.StringHandler.html" title="struct flogging::StringHandler"><code>StringHandler</code></a></li>
+</ul>
+<p>There are also a number of formatters as well:</p>
+<ul>
+<li><a href="api/flogging/struct.Iso8601Formatter.html" title="struct flogging::Iso8601Formatter"><code>Iso8601Formatter</code></a></li>
+<li><a href="api/flogging/struct.MockFormatter.html" title="struct flogging::MockFormatter"><code>MockFormatter</code></a></li>
+<li><a href="api/flogging/struct.SimpleFormatter.html" title="struct flogging::SimpleFormatter"><code>SimpleFormatter</code></a></li>
+<li><a href="api/flogging/struct.UnixTimestampFormatter.html" title="struct flogging::UnixTimestampFormatter"><code>UnixTimestampFormatter</code></a></li>
+</ul>
+<h4 id="customization"><a class="header" href="#customization"><a class="doc-anchor" href="api/flogging/index.html#customization">§</a>Customization</a></h4>
+<ul>
+<li><a href="api/flogging/index.html#custom-handler">Custom Handler</a></li>
+<li><a href="api/flogging/index.html#custom-formatter">Custom Formatter</a></li>
+</ul>
+<p>Now for the fun part - “Doing it <em>your</em> way!!!”</p>
+<p>Though I have provided some “standard” handlers and formatters, not everyone, or every project,
+will want to use them. I expect there will be a need for:</p>
+<ul>
+<li>sending log entries to remote system log servers,</li>
+<li>sending log entries to another program (local or remote) for live analysis, or some other processing,</li>
+<li>storing log entries in a specific file format (xml, json, csv),</li>
+<li>storing log entries in a database.</li>
+</ul>
+<p>And I’m sure you’ll come-up with more requirements at some time in the future. So, you have the option
+to create your own custom handlers and custom formatters. Mixing them up with the built-in ones as
+you need to.</p>
+<p>OK now, how do you do it. Well this is going to require some work on your part.</p>
+<h5 id="custom-handler"><a class="header" href="#custom-handler"><a class="doc-anchor" href="api/flogging/index.html#custom-handler">§</a>Custom Handler</a></h5>
+<p>To create a custom handler, I would suggest looking at the source code for the built-in ones, and copying
+the code from the one that is closest to your requirements. <em>Make sure that you rename as appropriate!</em>
+Then make the necessary changes, adding in your own code, to get it doing what you need.</p>
+<p>When you are ready to try-out your new custom handler, check-out these methods:</p>
+<ul>
+<li><a href="api/flogging/struct.Logger.html#method.custom_logger" title="associated function flogging::Logger::custom_logger"><code>Logger::custom_logger()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_custom_handler" title="method flogging::LoggerBuilder::add_custom_handler"><code>LoggerBuilder::add_custom_handler()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_custom_handler_with" title="method flogging::LoggerBuilder::add_custom_handler_with"><code>LoggerBuilder::add_custom_handler_with()</code></a></li>
+</ul>
+<h5 id="custom-formatter"><a class="header" href="#custom-formatter"><a class="doc-anchor" href="api/flogging/index.html#custom-formatter">§</a>Custom Formatter</a></h5>
+<p>Now for the custom formatter. This may require a bit more investigation on your part, as to the actual
+formatting options that are available.</p>
+<p>Firstly, this crate uses <a href="https://crates.io/crates/chrono">crono</a> for the date/time functionality. Check
+out the available <a href="https://docs.rs/chrono/latest/chrono/format/strftime">specifiers</a>. You will need to use the formatting options from this crate for the <code>dt_fmt</code> string, of your custom
+formatter.</p>
+<p>Secondly, the <code>fmt_string</code> uses the format options available in accordance with <a href="https://doc.rust-lang.org/1.89.0/alloc/fmt/index.html" title="mod alloc::fmt">std::fmt</a>. Though I am
+actually using the <a href="https://crates.io/crates/strfmt">strfmt</a> crate to do the formatting, because it does
+<em>not</em> require a ‘static’ string like <code>format!()</code>.</p>
+<p>Again, check-out the built-in formatters, and copy the code from the one that is closest to your
+requirements. <em>As before, renaming as necessary!</em> Also, check-out the trait: <a href="api/flogging/trait.FormatTrait.html"><code>FormatTrait</code></a>.
+You will need to implement it for your custom formatter, as you will notice when you look at the built-in formatters.
+Also, you will find that the ‘provided method’, <a href="api/flogging/trait.FormatTrait.html#method.ft_fmt" title="method flogging::FormatTrait::ft_fmt"><code>ft_fmt()</code></a>, provides certain variables
+that you can include, via interpolation, in your <code>fmt_string</code>.</p>
+<p>Once you have got your custom formatter set up, you can then use it with:</p>
+<ul>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_console_handler_with" title="method flogging::LoggerBuilder::add_console_handler_with"><code>LoggerBuilder::add_console_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_econsole_handler_with" title="method flogging::LoggerBuilder::add_econsole_handler_with"><code>LoggerBuilder::add_econsole_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_custom_handler_with" title="method flogging::LoggerBuilder::add_custom_handler_with"><code>LoggerBuilder::add_custom_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_file_handler_with" title="method flogging::LoggerBuilder::add_file_handler_with"><code>LoggerBuilder::add_file_handler_with()</code></a></li>
+<li><a href="api/flogging/struct.LoggerBuilder.html#method.add_string_handler_with" title="method flogging::LoggerBuilder::add_string_handler_with"><code>LoggerBuilder::add_string_handler_with()</code></a></li>
+</ul>
+<h3 id="examples"><a class="header" href="#examples"><a class="doc-anchor" href="api/flogging/index.html#examples">§</a>Examples</a></h3>
+<p>This example demonstrates the use of the macros. The reason I am demoing the macros, is that I expect most
+people will want to use them, instead of the methods, for ease of use.</p>
+<p>Let’s see what is required:</p>
+<ol>
+<li>At the module/file level:
+<ul>
+<li><code>use flogging::*;</code></li>
+<li><code>const_logger!({...});</code><a href="api/flogging/macro.const_logger.html" title="macro flogging::const_logger">=&gt;</a></li>
+</ul>
+</li>
+<li>On each function/method you want to add logging to:
+<ul>
+<li><code>#[logger]</code><a href="api/flogging/attr.logger.html" title="attr flogging::logger">=&gt;</a></li>
+</ul>
+</li>
+<li>Inside each such attributed function/method:
+<ul>
+<li>Any of the logging <a href="api/flogging/index.html#macros-1">macros</a></li>
+</ul>
+</li>
+</ol>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern crate </span>flogging;
+<span class="kw">use </span>flogging::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::{error::Error, result::Result};
+<p><span class="comment">// Setting up the module level logger.
+</span><span class="macro">const_logger!</span>({
+Logger::builder(<span class="macro">module_path!</span>())
+.add_console_handler()
+.add_file_handler(<span class="string">“test.log”</span>)
+.set_level(Level::FINEST)
+.build()
+});</p>
+<p><span class="attr">#[logger]
+</span><span class="kw">fn </span>do_something() {
+<span class="macro">entering!</span>();</p>
+<pre><code>&lt;span class="comment"&gt;// do some work worth noting
+&lt;/span&gt;&lt;span class="kw"&gt;let &lt;/span&gt;result = &lt;span class="string"&gt;"Just something to log."&lt;/span&gt;;
+&lt;span class="macro"&gt;info!&lt;/span&gt;(&lt;span class="string"&gt;"Did some work here.\n  {result}"&lt;/span&gt;);
+
+&lt;span class="comment"&gt;// ...
+
+&lt;/span&gt;&lt;span class="macro"&gt;fine!&lt;/span&gt;(&lt;span class="string"&gt;"Bit more detail."&lt;/span&gt;);
+
+&lt;span class="kw"&gt;if let &lt;/span&gt;&lt;span class="prelude-val"&gt;Err&lt;/span&gt;(e) = error_prone() {
+    &lt;span class="macro"&gt;warning!&lt;/span&gt;(&lt;span class="string"&gt;"Error: {}"&lt;/span&gt;, e);
+}
+
+&lt;span class="macro"&gt;exiting!&lt;/span&gt;();
+</code></pre>
+<p>}</p>
+<p><span class="attr">#[logger]
+</span><span class="kw">fn </span>error_prone() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>Error&gt;&gt; {
+<span class="macro">entering!</span>();
+<span class="kw">let </span>rtn = <span class="prelude-val">Err</span>(Box::from(<span class="string">“Bad day!”</span>));
+<span class="macro">exiting!</span>();
+rtn
+}</p>
+<p><span class="attr">#[logger]
+</span><span class="kw">fn </span>main() {
+<span class="macro">entering!</span>();
+<span class="macro">info!</span>(<span class="string">“All logging macros accept the same parameters as <code>std::format!(...)</code>”</span>);
+<span class="macro">warning!</span>(<span class="string">“Those same macros (info, etc.) MUST have atleast one parameter.”</span>);
+<span class="macro">config!</span>(<span class="string">“This is running on Fedora Linux 42.”</span>);
+do_something();
+<span class="macro">info!</span>(<span class="string">“Job’s done.”</span>);
+<span class="macro">exiting!</span>();
+}
+</code></pre></div></p>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-code"><code>flogging-&gt;main [FINER  ] Entry
+flogging-&gt;main [INFO   ] All logging macros accept the same parameters as `std::format!(...)`
+flogging-&gt;main [WARNING] Those same macros (info, etc.) MUST have atleast one parameter.
+flogging-&gt;main [CONFIG ] This is running on Fedora Linux 42.
+flogging-&gt;do_something [FINER  ] Entry
+flogging-&gt;do_something [INFO   ] Did some work here.
+  Just something to log.
+flogging-&gt;do_something [FINE   ] Bit more detail.
+flogging-&gt;error_prone [FINER  ] Entry
+flogging-&gt;error_prone [FINER  ] Return
+flogging-&gt;do_something [WARNING] Error: Bad day!
+flogging-&gt;do_something [FINER  ] Return
+flogging-&gt;main [INFO   ] Job&#39;s done.
+flogging-&gt;main [FINER  ] Return</code></pre></div></div></details><h2 id="macros-1" class="section-header"><a class="header" href="#macros-1">Macros<a href="api/flogging/index.html#macros-1" class="anchor">§</a></a></h2><dl class="item-table"><dt><a class="macro" href="api/flogging/macro.config.html" title="macro flogging::config">config</a></dt><dd>Log a CONFIG message.</dd><dt><a class="macro" href="api/flogging/macro.const_logger.html" title="macro flogging::const_logger">const_<wbr>logger</a></dt><dd>Setup module level logger access.</dd><dt><a class="macro" href="api/flogging/macro.entering.html" title="macro flogging::entering">entering</a></dt><dd>Log entry into a function/method.</dd><dt><a class="macro" href="api/flogging/macro.exiting.html" title="macro flogging::exiting">exiting</a></dt><dd>Log return from a function/method.</dd><dt><a class="macro" href="api/flogging/macro.fine.html" title="macro flogging::fine">fine</a></dt><dd>Log a FINE message.</dd><dt><a class="macro" href="api/flogging/macro.finer.html" title="macro flogging::finer">finer</a></dt><dd>Log a FINER message.</dd><dt><a class="macro" href="api/flogging/macro.finest.html" title="macro flogging::finest">finest</a></dt><dd>Log a FINEST message.</dd><dt><a class="macro" href="api/flogging/macro.get_handler.html" title="macro flogging::get_handler">get_<wbr>handler</a></dt><dd>Get the required <code>Handler</code>.</dd><dt><a class="macro" href="api/flogging/macro.info.html" title="macro flogging::info">info</a></dt><dd>Log an INFO message.</dd><dt><a class="macro" href="api/flogging/macro.is_logging.html" title="macro flogging::is_logging">is_<wbr>logging</a></dt><dd>Checks whether or not this logger is processing log requests.</dd><dt><a class="macro" href="api/flogging/macro.set_level.html" title="macro flogging::set_level">set_<wbr>level</a></dt><dd>Set the logging level for this <code>Logger</code> instance.</dd><dt><a class="macro" href="api/flogging/macro.severe.html" title="macro flogging::severe">severe</a></dt><dd>Log a SEVERE message.</dd><dt><a class="macro" href="api/flogging/macro.warning.html" title="macro flogging::warning">warning</a></dt><dd>Log a WARNING message.</dd></dl><h2 id="structs" class="section-header"><a class="header" href="#structs">Structs<a href="api/flogging/index.html#structs" class="anchor">§</a></a></h2><dl class="item-table"><dt><a class="struct" href="api/flogging/struct.ConsoleHandler.html" title="struct flogging::ConsoleHandler">Console<wbr>Handler</a></dt><dd>Publishes log entries to the console.</dd><dt><a class="struct" href="api/flogging/struct.ConsoleTypeError.html" title="struct flogging::ConsoleTypeError">Console<wbr>Type<wbr>Error</a></dt><dd>Returned from <code>FromStr::from_str()</code> when an unknown string
+is passed-in.</dd><dt><a class="struct" href="api/flogging/struct.FileHandler.html" title="struct flogging::FileHandler">File<wbr>Handler</a></dt><dd>Publishes log entries to the file whose name was provided during
+initialization.</dd><dt><a class="struct" href="api/flogging/struct.Iso8601Formatter.html" title="struct flogging::Iso8601Formatter">Iso8601<wbr>Formatter</a></dt><dd>ISO 8601 / RFC 3339 date &amp; time format.</dd><dt><a class="struct" href="api/flogging/struct.LogEntry.html" title="struct flogging::LogEntry">LogEntry</a></dt><dd>Used to provide relevant information about each log entry.</dd><dt><a class="struct" href="api/flogging/struct.Logger.html" title="struct flogging::Logger">Logger</a></dt><dd>This is the work-horse, providing the primary methods of the crate.</dd><dt><a class="struct" href="api/flogging/struct.LoggerBuilder.html" title="struct flogging::LoggerBuilder">Logger<wbr>Builder</a></dt><dd>Used by <a href="api/flogging/struct.Logger.html" title="struct flogging::Logger"><code>Logger</code></a> to provide more flexibility in the configuration of the
+final logger.</dd><dt><a class="struct" href="api/flogging/struct.MockFormatter.html" title="struct flogging::MockFormatter">Mock<wbr>Formatter</a></dt><dd>Mock Formatter.</dd><dt><a class="struct" href="api/flogging/struct.MockHandler.html" title="struct flogging::MockHandler">Mock<wbr>Handler</a></dt><dd>This is used as a <em>fake</em> or <em>mock</em> handler.</dd><dt><a class="struct" href="api/flogging/struct.SimpleFormatter.html" title="struct flogging::SimpleFormatter">Simple<wbr>Formatter</a></dt><dd>Simple format.</dd><dt><a class="struct" href="api/flogging/struct.StringHandler.html" title="struct flogging::StringHandler">String<wbr>Handler</a></dt><dd>Publishes log entries to an internal list.</dd><dt><a class="struct" href="api/flogging/struct.UnixTimestampFormatter.html" title="struct flogging::UnixTimestampFormatter">Unix<wbr>Timestamp<wbr>Formatter</a></dt><dd>Unix Timestamp format.</dd></dl><h2 id="enums" class="section-header"><a class="header" href="#enums">Enums<a href="api/flogging/index.html#enums" class="anchor">§</a></a></h2><dl class="item-table"><dt><a class="enum" href="api/flogging/enum.ConsoleType.html" title="enum flogging::ConsoleType">Console<wbr>Type</a></dt><dd><code>ConsoleType</code> configures the <code>ConsoleHandler</code>’s output.</dd><dt><a class="enum" href="api/flogging/enum.FormatType.html" title="enum flogging::FormatType">Format<wbr>Type</a></dt><dd>Used as a simple way to obtain the various <a href="api/flogging/enum.Formatter.html" title="enum flogging::Formatter"><code>Formatter</code></a>s.</dd><dt><a class="enum" href="api/flogging/enum.Formatter.html" title="enum flogging::Formatter">Formatter</a></dt><dd>Provides wrappers for holding each type of formatter.</dd><dt><a class="enum" href="api/flogging/enum.Handler.html" title="enum flogging::Handler">Handler</a></dt><dd>Available handlers.</dd><dt><a class="enum" href="api/flogging/enum.Level.html" title="enum flogging::Level">Level</a></dt><dd>Log entry level setting.</dd></dl><h2 id="traits" class="section-header"><a class="header" href="#traits">Traits<a href="api/flogging/index.html#traits" class="anchor">§</a></a></h2><dl class="item-table"><dt><a class="trait" href="api/flogging/trait.FormatTrait.html" title="trait flogging::FormatTrait">Format<wbr>Trait</a></dt><dd>Provides methods for formatting <a href="api/flogging/struct.LogEntry.html" title="struct flogging::LogEntry"><code>LogEntry</code></a>s.</dd><dt><a class="trait" href="api/flogging/trait.HandlerTrait.html" title="trait flogging::HandlerTrait">Handler<wbr>Trait</a></dt><dd>Provides common methods required for all handlers.</dd></dl><h2 id="attributes" class="section-header"><a class="header" href="#attributes">Attribute Macros<a href="api/flogging/index.html#attributes" class="anchor">§</a></a></h2><dl class="item-table"><dt><a class="attr" href="api/flogging/attr.logger.html" title="attr flogging::logger">logger</a></dt><dd>Provides for logging within the attributed function/method.</dd></dl></section></div></main></body></html><div style="break-before: page; page-break-before: always;"></div><p>&lt;!doctype html&gt;<title>Index</title><link href=./style.css rel=stylesheet></head><body><div class=index-area><p class=index-title>Coverage Report</p><p class=index-date>Created at 2025-08-15 00:59</p><table class=index-table><thead><tr class=index-header><th>Filename</th><th colspan=3>Line Coverage <p class=level-text-veryhigh>96.35 %</p></th><th colspan=3>Function Coverage <p class=level-text-veryhigh>97.22 %</p></th><th colspan=3>Region Coverage <p class=level-text-veryhigh>96.50 %</p></th></tr></thead><tbody><tr><td><a href=./flogging_macros/src/format.rs.html>flogging_macros/src/format.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>38 / 38</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>2 / 2</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>64 / 64</td></tr><tr><td><a href=./flogging_macros/src/lib.rs.html>flogging_macros/src/lib.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>47 / 47</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>13 / 13</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>75 / 75</td></tr><tr><td><a href=./flogging_macros/src/logger.rs.html>flogging_macros/src/logger.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>14 / 14</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>1 / 1</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>20 / 20</td></tr><tr><td><a href=./src/handlers/console_handler/console_type.rs.html>src/handlers/console_handler/console_type.rs</a></td><td><div class=progress-bar><div class=level-bg-medium style=width:55.5556%></div></div></td><td>55.56 %</td><td>10 / 18</td><td><div class=progress-bar><div class=level-bg-medium style=width:66.6667%></div></div></td><td>66.67 %</td><td>2 / 3</td><td><div class=progress-bar><div class=level-bg-medium style=width:57.1429%></div></div></td><td>57.14 %</td><td>12 / 21</td></tr><tr><td><a href=./src/handlers/console_handler.rs.html>src/handlers/console_handler.rs</a></td><td><div class=progress-bar><div class=level-bg-high style=width:86.7925%></div></div></td><td>86.79 %</td><td>46 / 53</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:91.6667%></div></div></td><td>91.67 %</td><td>11 / 12</td><td><div class=progress-bar><div class=level-bg-high style=width:84.4444%></div></div></td><td>84.44 %</td><td>76 / 90</td></tr><tr><td><a href=./src/handlers/file_handler.rs.html>src/handlers/file_handler.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>59 / 59</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>12 / 12</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:97.1963%></div></div></td><td>97.20 %</td><td>104 / 107</td></tr><tr><td><a href=./src/handlers/formatter/format_trait.rs.html>src/handlers/formatter/format_trait.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>36 / 36</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>5 / 5</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>64 / 64</td></tr><tr><td><a href=./src/handlers/formatter/format_type.rs.html>src/handlers/formatter/format_type.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>26 / 26</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>3 / 3</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>39 / 39</td></tr><tr><td><a href=./src/handlers/formatter/formatter.rs.html>src/handlers/formatter/formatter.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>20 / 20</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>4 / 4</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>46 / 46</td></tr><tr><td><a href=./src/handlers/formatter/iso8601_formatter.rs.html>src/handlers/formatter/iso8601_formatter.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>23 / 23</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>6 / 6</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>30 / 30</td></tr><tr><td><a href=./src/handlers/formatter/mock_formatter.rs.html>src/handlers/formatter/mock_formatter.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>21 / 21</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>6 / 6</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>29 / 29</td></tr><tr><td><a href=./src/handlers/formatter/mod.rs.html>src/handlers/formatter/mod.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>36 / 36</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>4 / 4</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>84 / 84</td></tr><tr><td><a href=./src/handlers/formatter/simple_formatter.rs.html>src/handlers/formatter/simple_formatter.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>23 / 23</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>6 / 6</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>30 / 30</td></tr><tr><td><a href=./src/handlers/formatter/unixtimestamp_formatter.rs.html>src/handlers/formatter/unixtimestamp_formatter.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>23 / 23</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>6 / 6</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>30 / 30</td></tr><tr><td><a href=./src/handlers/handler.rs.html>src/handlers/handler.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:95.4545%></div></div></td><td>95.45 %</td><td>21 / 22</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>2 / 2</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:98.0392%></div></div></td><td>98.04 %</td><td>50 / 51</td></tr><tr><td><a href=./src/handlers/mock_handler.rs.html>src/handlers/mock_handler.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:92.6829%></div></div></td><td>92.68 %</td><td>38 / 41</td><td><div class=progress-bar><div class=level-bg-high style=width:90%></div></div></td><td>90.00 %</td><td>9 / 10</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:92.6471%></div></div></td><td>92.65 %</td><td>63 / 68</td></tr><tr><td><a href=./src/handlers/string_handler.rs.html>src/handlers/string_handler.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>60 / 60</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>12 / 12</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>96 / 96</td></tr><tr><td><a href=./src/logger/builder.rs.html>src/logger/builder.rs</a></td><td><div class=progress-bar><div class=level-bg-high style=width:89.759%></div></div></td><td>89.76 %</td><td>149 / 166</td><td><div class=progress-bar><div class=level-bg-high style=width:90%></div></div></td><td>90.00 %</td><td>18 / 20</td><td><div class=progress-bar><div class=level-bg-high style=width:89.1403%></div></div></td><td>89.14 %</td><td>197 / 221</td></tr><tr><td><a href=./src/logger/level.rs.html>src/logger/level.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>43 / 43</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>5 / 5</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>64 / 64</td></tr><tr><td><a href=./src/logger/log_entry.rs.html>src/logger/log_entry.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>48 / 48</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>10 / 10</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>82 / 82</td></tr><tr><td><a href=./src/logger/mod.rs.html>src/logger/mod.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>114 / 114</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>29 / 29</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>197 / 197</td></tr><tr><td><a href=./src/logger/tests.rs.html>src/logger/tests.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>53 / 53</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>8 / 8</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:99.1667%></div></div></td><td>99.17 %</td><td>119 / 120</td></tr><tr><td><a href=./src/macros.rs.html>src/macros.rs</a></td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>1 / 1</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>1 / 1</td><td><div class=progress-bar><div class=level-bg-veryhigh style=width:100%></div></div></td><td>100.00 %</td><td>1 / 1</td></tr></tbody></table></div><p class=page-footer>Generated by <a href=https://github.com/dnaka91/llvm-cov-pretty>llvm-cov-pretty</a> – version 0.1.10</p></body></html></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="release-log"><a class="header" href="#release-log">Release Log</a></h1>
+<h2 id="060---dev"><a class="header" href="#060---dev"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">0.6.0</a> - Dev</a></h2>
+<hr />
+<p><em><strong>Important Note:</strong></em></p>
+<p>Removed</p>
+<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Handler{
+    fn new(){...}
+    fn create(name){...}
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This API is redundant. So removing it now, before v1.0.0 release is best.</p>
+<hr />
+<p>Added new methods to <code>LoggerBuilder</code>:</p>
+<ul>
+<li><code>remove_file()</code>
+<ul>
+<li>Use to remove a log file before adding a file handler.
+This is a way of resetting the log file prior to each test run.</li>
+</ul>
+</li>
+<li><code>add_pconsole_handler()</code> and <code>add_pconsole_handler_with()</code>
+<ul>
+<li>Use to add a production version of the console handler. This handler is different, in that log entries set to <code>LeveL::INFO</code>, will have their <code>msg</code> printed to <code>stdout</code> without any formatting, whilst all other <code>Level</code>s will be printed to <code>stderr</code> using the set formatter.</li>
+</ul>
+</li>
+</ul>
+<p>To facilitate the pconcole_handlers, a new enum <code>ConsoleType</code> has been added.</p>
+<h2 id="050---2025-08-03"><a class="header" href="#050---2025-08-03"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">0.5.0</a> - 2025-08-03</a></h2>
+<hr />
+<p><em><strong>Important Note:</strong></em></p>
+<p>Only applicable for those who have previously created their own custom formatter - <code>FormatType::Custom(String)</code> changed to <code>FormatType::Custom</code>.</p>
+<hr />
+<p>Now generally, there were some improvements to the API documentation.</p>
+<h2 id="041---2025-07-29"><a class="header" href="#041---2025-07-29"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">0.4.1</a> - 2025-07-29</a></h2>
+<ul>
+<li>Major improvements to the API documentation.</li>
+<li>Increased test coverage to 100%, and included the <a href="https://bewillcott.github.io/flogging/coverage" title="" target="_blank">Coverage Report</a>.</li>
+</ul>
+<h2 id="040---2025-07-27"><a class="header" href="#040---2025-07-27"><a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">0.4.0</a> - 2025-07-27</a></h2>
+<p>This is the initial release.</p>
+<p>The reason for not being (0.1.0), is the way I track internal developments
+of projects not yet published. However, now that this one is published,
+the versioning will progress as expected, in accordance with <a href="https://semver.org/" title="" target="_blank">Semantic Versioning</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><!-- markdownlint-disable-file MD024 MD042 MD033 -->
+<h1 id="changelog"><a class="header" href="#changelog">Changelog <a href="https://common-changelog.org" title="" target="_blank"><img src="https://common-changelog.org/badge.svg" alt="Common Changelog"></a></a></h1>
+<h2 id="060---dev-1"><a class="header" href="#060---dev-1"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">0.6.0</a> - Dev</a></h2>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li><strong>Breaking:</strong> Minor change to the <code>Iso8601Formatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/16a7e87e5a51e8aac4b01a5c6de53ea78ab92439" title="" target="_blank">
+<code>16a7e87</code></a>)</li>
+<li>Change: <code>ConsoleHandler</code> contains <code>console_type: ConsoleType</code> instead of <code>stderr: bool</code>. ([``])</li>
+</ul>
+<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>Add: New <code>LoggerBuilder</code> method: <code>remove_file()</code>. (<a href="https://github.com/bewillcott/flogging/commit/f9d5b9537960dd23af9f76b77ff5a4b996e777bd" title="" target="_blank">
+<code>f9d5b95</code></a>)</li>
+<li>Add: <code>enum ConsoleType</code>. (<a href="https://github.com/bewillcott/flogging/commit/b0f404b26858b4b9b1e6839b1769049e6deb2e65" title="" target="_blank">
+<code>b0f404b</code></a>)</li>
+<li>Add: New <code>LoggerBuilder</code> methods: <code>add_pconsole_handler()</code> and <code>add_pconsole_handler_with()</code>. ([``])</li>
+</ul>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<ul>
+<li><strong>Breaking:</strong> Remove <code>impl Handler{...}</code> - <code>new()</code> and <code>create(name)</code>. (<a href="https://github.com/bewillcott/flogging/commit/362319610c1f82c8be9ceb7c7d4c3a87637017fa" title="" target="_blank">
+<code>3623196</code></a>)</li>
+</ul>
+<h2 id="050---2025-08-03-1"><a class="header" href="#050---2025-08-03-1"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">0.5.0</a> - 2025-08-03</a></h2>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li><strong>Breaking:</strong> Modified <code>FormatType::Custom(String)</code> to <code>FormatType::Custom</code>. (<a href="https://github.com/bewillcott/flogging/commit/88183d392edda04b7f7f6bc24165c481991818ef" title="" target="_blank">
+<code>88183d3</code></a>)</li>
+<li>Document: Convert inline links to reference links. (<a href="https://github.com/bewillcott/flogging/commit/e5a7bf0027c386ad229ea74cfcc3483274e51580" title="" target="_blank">
+<code>e5a7bf0</code></a>)</li>
+<li>Change: <code>ConsoleHandler</code> to contain <code>stderr: bool</code> instead of <code>mod_path: String</code>. Will now output to <code>std::io::stderr</code> if true. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+<li>Change: <code>StringHandler</code> removed <code>name: String</code> and renamed private method <code>StringHandler::create()</code> to <code>StringHandler::new()</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+</ul>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<ul>
+<li>Add: Macro and method: <code>is_logging</code>. (<a href="https://github.com/bewillcott/flogging/commit/ee882f370a8eb87ef6e152194c869c42a15c19a1" title="" target="_blank">
+<code>ee882f3</code></a>)</li>
+<li>Add: <code>econsole_logger()</code> and <code>add_econsole_handler()</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+<li>Add: <code>Handler::EConsole</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+</ul>
+<h2 id="041---2025-07-29-1"><a class="header" href="#041---2025-07-29-1"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">0.4.1</a> - 2025-07-29</a></h2>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<ul>
+<li>Document comments improved or expanded. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775" title="" target="_blank">
+<code>d35d3e5</code></a>)</li>
+</ul>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<ul>
+<li>Minimum Rust version now set to: “1.85.1”. (<a href="https://github.com/bewillcott/flogging/commit/3c6e99ae0e38ac5f63540f47176df9fb6667d524" title="" target="_blank">
+<code>3c6e99a</code></a>)</li>
+<li>Test coverage improved. Now 100%. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775" title="" target="_blank">
+<code>d35d3e5</code></a>)</li>
+<li><a href="https://bewillcott.github.io/flogging/coverage" title="" target="_blank">Coverage Report</a></li>
+</ul>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<ul>
+<li>Fix broken documentation links. (<a href="https://github.com/bewillcott/flogging/commit/3e32c9095ecef4994ecb0dd44268d5025010c0cf" title="" target="_blank">
+<code>3e32c90</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/5ca139a11ef961f9b48181b76a142eb703e8b34b" title="" target="_blank">
+<code>5ca139a</code></a>)</li>
+</ul>
+<h2 id="040---2025-07-27-1"><a class="header" href="#040---2025-07-27-1"><a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">0.4.0</a> - 2025-07-27</a></h2>
+<p><em>Initial release.</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>

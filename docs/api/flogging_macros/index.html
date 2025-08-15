@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Flogging Macros"><title>flogging_macros - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="flogging_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-4e99c027.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../flogging_macros/index.html">flogging_<wbr>macros</a><span class="version">0.6.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#flogging-macros" title="Flogging Macros">Flogging Macros</a><ul><li><a href="#special-note" title="Special Note">Special Note</a></li></ul></li></ul><h3><a href="#macros">Crate Items</a></h3><ul class="block"><li><a href="#macros" title="Macros">Macros</a></li><li><a href="#attributes" title="Attribute Macros">Attribute Macros</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>flogging_macros</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/flogging_macros/lib.rs.html#23-557">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="flogging-macros"><a class="doc-anchor" href="#flogging-macros">§</a>Flogging Macros</h2>
+<p>This is a <strong>supporting crate</strong> for the <code>flogging</code> crate.</p>
+<p>It is <em>not</em> meant to be used on its own. In fact, it would not work without the
+other crate. Further, it should not be separately added to your project. Add
+<code>flogging</code> instead, and this will be included as a dependent to that crate.</p>
+<div class="example-wrap"><pre class="language-text"><code>$ cargo add flogging</code></pre></div>
+<p>Alternatively, add the following to your project’s <code>Cargo.toml</code> file:</p>
+<div class="example-wrap"><pre class="language-text"><code>[dependencies]
+flogging = &quot;0.6.0&quot;</code></pre></div><h3 id="special-note"><a class="doc-anchor" href="#special-note">§</a>Special Note</h3>
+<p>For the macros that accept the parameter: <code>msg</code>, the following is true:</p>
+<ul>
+<li>They accept parameters the same as for <a href="https://doc.rust-lang.org/std/macro.format.html"><code>std::format!</code></a>
+<ul>
+<li>plain text <code>&amp;str</code>: <code>("It's your time.")</code></li>
+<li>format <code>&amp;str</code> with interpolated variables: <code>("Var: {var}")</code></li>
+<li>format <code>&amp;str</code> with supporting parameters: <code>("Var: {}", var)</code></li>
+<li>Combination of the last two: <code>("Vars {var1} - {}:{}", var2, var3)</code></li>
+</ul>
+</li>
+<li>Additional Feature
+<ul>
+<li>Just one or more variables: <code>(var1, var2, var3)</code></li>
+<li>In this case, a default format string will be used: <code>"{}, {}, {}"</code></li>
+<li>The number of <code>"{}"</code> will depend on the number of parameters.</li>
+<li>Ideal for logging concrete instances that have very good <code>Display</code> implementations,
+or you just need their data without further explanation.</li>
+</ul>
+</li>
+<li>Special Cases
+<ul>
+<li><a href="macro.entering.html" title="macro flogging_macros::entering">entering!</a> and <a href="macro.exiting.html" title="macro flogging_macros::exiting">exiting!</a></li>
+<li>These two macros have the same features as the others,
+but they may also be used <em>without</em> any parameters. In such
+a case, their defaults will be used.</li>
+</ul>
+</li>
+</ul>
+</div></details><h2 id="macros" class="section-header">Macros<a href="#macros" class="anchor">§</a></h2><dl class="item-table"><dt><a class="macro" href="macro.config.html" title="macro flogging_macros::config">config</a></dt><dd>Log a CONFIG message.</dd><dt><a class="macro" href="macro.entering.html" title="macro flogging_macros::entering">entering</a></dt><dd>Log entry into a function/method.</dd><dt><a class="macro" href="macro.exiting.html" title="macro flogging_macros::exiting">exiting</a></dt><dd>Log return from a function/method.</dd><dt><a class="macro" href="macro.fine.html" title="macro flogging_macros::fine">fine</a></dt><dd>Log a FINE message.</dd><dt><a class="macro" href="macro.finer.html" title="macro flogging_macros::finer">finer</a></dt><dd>Log a FINER message.</dd><dt><a class="macro" href="macro.finest.html" title="macro flogging_macros::finest">finest</a></dt><dd>Log a FINEST message.</dd><dt><a class="macro" href="macro.get_handler.html" title="macro flogging_macros::get_handler">get_<wbr>handler</a></dt><dd>Get the required <code>Handler</code>.</dd><dt><a class="macro" href="macro.info.html" title="macro flogging_macros::info">info</a></dt><dd>Log an INFO message.</dd><dt><a class="macro" href="macro.is_logging.html" title="macro flogging_macros::is_logging">is_<wbr>logging</a></dt><dd>Checks whether or not this logger is processing log requests.</dd><dt><a class="macro" href="macro.set_level.html" title="macro flogging_macros::set_level">set_<wbr>level</a></dt><dd>Set the logging level for this <code>Logger</code> instance.</dd><dt><a class="macro" href="macro.severe.html" title="macro flogging_macros::severe">severe</a></dt><dd>Log a SEVERE message.</dd><dt><a class="macro" href="macro.warning.html" title="macro flogging_macros::warning">warning</a></dt><dd>Log a WARNING message.</dd></dl><h2 id="attributes" class="section-header">Attribute Macros<a href="#attributes" class="anchor">§</a></h2><dl class="item-table"><dt><a class="attr" href="attr.logger.html" title="attr flogging_macros::logger">logger</a></dt><dd>Provides for logging within the attributed function/method.</dd></dl></section></div></main></body></html>

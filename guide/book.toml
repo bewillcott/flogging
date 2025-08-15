@@ -1,0 +1,16 @@
+[book]
+authors = ["Bradley Willcott"]
+language = "en"
+src = "src"
+title = "FLogging Guide"
+description = ""
+
+[build]
+build-dir = "../docs"
+# create-missing = false
+
+[output.html]
+no-section-label = true
+input-404 = "404.md"
+
+[preprocessor.external-links]
