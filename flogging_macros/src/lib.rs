@@ -438,7 +438,7 @@ pub fn info(msg: TokenStream) -> TokenStream {
 ///
 #[proc_macro]
 pub fn is_logging(_msg: TokenStream) -> TokenStream {
-    format!("__log.is_logging()").parse().unwrap_or_default()
+    "__log.is_logging()".to_string().parse().unwrap_or_default()
 }
 
 ///
