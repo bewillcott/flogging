@@ -731,6 +731,40 @@ impl Logger {
     }
 
     ///
+    /// Create new Logger instance, with a `ConsoleHandler`, output
+    /// set to: [`std::io::stdout`].
+    ///
+    /// Logging level is set to it's default setting (INFO).
+    ///
+    /// All `INFO` level log entries are output without any formatting.
+    /// All other levels are processed through the formatter, first.
+    ///
+    /// ## Parameters
+    /// - `mod_path`- The module path. Suggest using [`module_path!()`].
+    ///
+    /// Returns a configured `Logger`.
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::pconsole_logger(module_path!());
+    /// log.set_fn_name("main");
+    ///
+    /// log.warning("Don't over do it.");
+    /// ```
+    /// Output to stderr:
+    /// ```text
+    /// flogging->main [WARNING] Don't over do it.
+    /// ```
+    ///
+    pub fn pconsole_logger(mod_path: &str) -> Logger {
+        Logger::builder(mod_path).add_pconsole_handler().build()
+    }
+
+
+    ///
     /// Reset this `Logger` instance's logging level.
     ///
     /// Returns itself for chaining purposes.
