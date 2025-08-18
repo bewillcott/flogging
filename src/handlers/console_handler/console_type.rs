@@ -26,11 +26,12 @@
 //!
 
 use std::{fmt, str::FromStr};
+use strum::{EnumIter, IntoEnumIterator};
 
 ///
 /// `ConsoleType` configures the `ConsoleHandler`'s output.
 ///
-#[derive(Debug, Default)]
+#[derive(Debug, Default, EnumIter, PartialEq, Eq)]
 pub enum ConsoleType {
     #[default]
     ///
@@ -88,6 +89,33 @@ impl FromStr for ConsoleType {
             _ => Err(ConsoleTypeError {
                 msg: format!("Unknown console type: {s}"),
             }),
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn as_str_to_from_str() {
+        for console_type in ConsoleType::iter() {
+            let label = console_type.as_str();
+            let console_type2 = ConsoleType::from_str(label).unwrap();
+            assert_eq!(console_type, console_type2);
+        }
+    }
+
+    #[test]
+    fn from_str_fail() {
+        let bad_label = "file";
+        assert!(ConsoleType::from_str(bad_label).is_err());
+    }
+
+    #[test]
+    fn console_display() {
+        for console_type in ConsoleType::iter() {
+            println!("{console_type}");
         }
     }
 }

@@ -86,12 +86,14 @@ mod test {
     fn handlers() {
         let console = Handler::Console;
         let econsole = Handler::EConsole;
+        let pconsole = Handler::PConsole;
         let file = Handler::File;
         let string = Handler::String;
         let custom = Handler::Custom("MyCustom".to_string());
 
         assert_eq!(console.to_string(), "Handler::Console".to_string());
         assert_eq!(econsole.to_string(), "Handler::EConsole".to_string());
+        assert_eq!(pconsole.to_string(), "Handler::PConsole".to_string());
         assert_eq!(file.to_string(), "Handler::File".to_string());
         assert_eq!(string.to_string(), "Handler::String".to_string());
         assert_eq!(custom.to_string(), "Handler::Custom(MyCustom)".to_string());

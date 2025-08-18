@@ -93,43 +93,45 @@ impl fmt::Debug for dyn FormatTrait {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use chrono::Local;
     use crate::*;
+    use strfmt::strfmt;
+    // use chrono::Local;
 
     #[test]
-    fn strfmt() {
-        let fmt = "test: {text}";
+    fn strfmt_test() {
+        let fmt = "test: {text} - {text2}";
         let text = "Some text";
         let text2 = "Will this work?";
 
         let output = strfmt!(fmt, text2, text).unwrap();
 
-        println!("{output}");
+        assert_eq!("test: Some text - Will this work?".to_string(), output);
     }
 
-    #[test]
-    fn format() {
-        let log_entry = LogEntry {
-            timestamp: Local::now(),
-            mod_path: module_path!().to_string(),
-            fn_name: "format".to_string(),
-            level: crate::Level::INFO,
-            message: "We are testing log entry formatting.".to_string(),
-        };
+    // #[test]
+    // fn format() {
+    //     let log_entry = LogEntry {
+    //         timestamp: Local::now(),
+    //         mod_path: module_path!().to_string(),
+    //         fn_name: "format".to_string(),
+    //         level: crate::Level::INFO,
+    //         message: "We are testing log entry formatting.".to_string(),
+    //     };
 
-        println! {"{log_entry}"};
+    //     println! {"{log_entry}"};
 
-        // let formatter =
-        // let text =
-    }
+    //     // let formatter =
+    //     // let text =
+    // }
 
     #[test]
     fn debug() {
         let mut fmt = FormatType::Custom.create(Some(Box::new(SimpleFormatter::new())));
+        println!("fmt: {fmt}");
 
         let sf: Box<dyn FormatTrait> = Box::new(SimpleFormatter::new());
-
         println!("sf: {sf:?}");
+
+        assert_eq!(fmt.to_string(), sf.to_string());
     }
 }

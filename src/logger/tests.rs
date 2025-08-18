@@ -88,7 +88,7 @@ fn file_logger() {
     use super::*;
     use std::fs;
 
-    let filename = "test.log";
+    let filename = "test_logs/file_logger.log";
     let path = Path::new(filename);
 
     if path.try_exists().unwrap() {

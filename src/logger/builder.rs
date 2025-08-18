@@ -596,6 +596,62 @@ impl LoggerBuilder {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::{Result, Write, Stdout, stdout};
+
+    #[test]
+    fn temp() -> Result<()> {
+        // let mut w = Vec::new();
+        let mut w = stdout();
+        writeln!(&mut w)?;
+        writeln!(&mut w, "test")?;
+        writeln!(&mut w, "formatted {}", "arguments")?;
+
+        // assert_eq!(&w[..], "\ntest\nformatted arguments\n".as_bytes());
+        Ok(())
+    }
+    #[test]
+    fn add_console_handler() {
+        let mut log = Logger::builder(module_path!())
+            .add_console_handler()
+            .set_fn_name("add_console_handler")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_console_handler_with() {
+        let mut log = Logger::builder(module_path!())
+            .add_console_handler_with(FormatType::Iso8601, None)
+            .set_fn_name("add_console_handler_with")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_econsole_handler() {
+        let mut log = Logger::builder(module_path!())
+            .add_econsole_handler()
+            .set_fn_name("add_econsole_handler")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_econsole_handler_with() {
+        let mut log = Logger::builder(module_path!())
+            .add_econsole_handler_with(FormatType::Iso8601, None)
+            .set_fn_name("add_econsole_handler_with")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
 
     #[test]
     fn add_custom_handler() {
@@ -604,26 +660,104 @@ mod tests {
                 "Console",
                 Box::new(ConsoleHandler::create(ConsoleType::StdOut.as_str()).unwrap()),
             )
+            .set_fn_name("add_custom_handler")
             .build();
 
         log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_custom_handler_with() {
+        let mut log = Logger::builder(module_path!())
+            .add_custom_handler_with(
+                "Console",
+                Box::new(ConsoleHandler::create(ConsoleType::StdOut.as_str()).unwrap()),
+                FormatType::Custom,
+                Some(Box::new(MockFormatter::new())),
+            )
+            .set_fn_name("add_custom_handler_with")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_file_handler() {
+        let mut log = Logger::builder(module_path!())
+            .add_file_handler("test.log")
+            .set_fn_name("add_file_handler")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
     }
 
     #[test]
     fn add_file_handler_with() {
         let mut log = Logger::builder(module_path!())
             .add_file_handler_with("test.log", crate::FormatType::UnixTimestamp, None)
+            .set_fn_name("add_file_handler_with")
             .build();
 
         log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_pconsole_handler() {
+        let mut log = Logger::builder(module_path!())
+            .add_pconsole_handler()
+            .set_fn_name("add_pconsole_handler")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_pconsole_handler_with() {
+        let mut log = Logger::builder(module_path!())
+            .add_pconsole_handler_with(FormatType::Iso8601, None)
+            .set_fn_name("add_pconsole_handler_with")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn add_string_handler() {
+        let mut log = Logger::builder(module_path!())
+            .add_string_handler()
+            .set_fn_name("add_string_handler")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
     }
 
     #[test]
     fn add_string_handler_with() {
         let mut log = Logger::builder(module_path!())
             .add_string_handler_with(crate::FormatType::Simple, None)
+            .set_fn_name("add_string_handler_with")
             .build();
 
         log.info("We begin!");
+        log.warning("Need more tests.");
+    }
+
+    #[test]
+    fn remove_file() {
+        let mut log = Logger::builder(module_path!())
+            .remove_file("test.log")
+            .add_file_handler("test.log")
+            .set_fn_name("add_file_handler")
+            .build();
+
+        log.info("We begin!");
+        log.warning("Need more tests.");
     }
 }

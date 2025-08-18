@@ -57,7 +57,8 @@ mod tests {
     const_logger!({
         Logger::builder("flogging")
             .add_console_handler()
-            .add_file_handler("test.log")
+            .remove_file("tests/it_conversion.log")
+            .add_file_handler("tests/it_conversion.log")
             .add_string_handler()
             .set_level(Level::FINEST)
             .build()

@@ -110,17 +110,21 @@ impl HandlerTrait for StringHandler {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
-    use crate::{Logger, logger};
+    use crate::*;
 
     #[test]
-    fn handler_trait() {
+    fn string_handler() {
+        let expected = "flogging::handlers::string_handler::tests-> [INFO   ] trait methods
+flogging::handlers::string_handler::tests-> [WARNING] The sky is falling!\n"
+            .to_string();
+
         let mut log = Logger::string_logger(module_path!());
 
         log.info("trait methods");
+        log.warning("The sky is falling!");
 
         let handler = log.get_handler(crate::Handler::String).unwrap();
+        handler.set_test_mode(true);
         assert!(handler.is_open());
         assert_eq!(
             handler.get_formatter().to_string(),
@@ -129,6 +133,7 @@ mod tests {
         );
         assert_eq!(expected, handler.get_log());
         handler.flush();
+
         assert_eq!(handler.get_log(), "".to_string());
         handler.close();
     }

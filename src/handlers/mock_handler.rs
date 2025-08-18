@@ -26,8 +26,8 @@
 //! Returned as Default for Custom handler that is missing.
 //!
 
-use std::{fmt, io::Error};
 use crate::*;
+use std::{fmt, io::Error};
 
 ///
 /// This is used as a _fake_ or _mock_ handler.
@@ -102,11 +102,16 @@ mod tests {
             Box::new(MockHandler::create(module_path!()).unwrap()),
         );
 
+        // println!("{log}");
+        assert_eq!("flogging::handlers::mock_handler::tests:: - [INFO]\n\nHandler::Custom(Mock): MockHandler!!\n\n".to_string(), log.to_string());
         log.info("trait methods");
+        log.warning("The sky is falling!");
 
         let handler = log
             .get_handler(crate::Handler::Custom("Mock".to_string()))
             .unwrap();
+
+        handler.set_test_mode(true);
 
         assert!(!handler.is_open());
 

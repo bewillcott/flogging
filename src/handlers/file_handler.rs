@@ -128,9 +128,9 @@ impl HandlerTrait for FileHandler {
             if let Some(w) = self.writer.as_mut() {
                 writeln!(w, "{}", self.formatter.format(log_entry));
             } else {
-            self.file.as_mut().unwrap().write_all(buf.as_bytes());
+                self.file.as_mut().unwrap().write_all(buf.as_bytes());
+            }
         }
-    }
     }
 
     fn set_formatter(&mut self, formatter: Formatter) {
@@ -155,22 +155,111 @@ impl HandlerTrait for FileHandler {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
-    use crate::{Logger, logger};
+    use crate::*;
+    use std::{
+        fs::File,
+        io::{Error, Read, Result},
+    };
 
     #[test]
-    fn handler_trait() {
-        let mut log = Logger::file_logger(module_path!(), "test.log");
+    fn file_handler() {
+        let mut log = Logger::file_logger(module_path!(), "test_logs/file_handler.log");
+
+        let h = log.get_handler(crate::Handler::File).unwrap();
+        h.set_test_mode(false);
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
 
         log.info("trait methods");
+        log.warning("The sky is falling!");
 
         let handler = log.get_handler(crate::Handler::File).unwrap();
-        assert!(handler.is_open());
-        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}\"".to_string());
         assert_eq!(handler.get_log(), "".to_string());
         handler.flush();
         handler.close();
+        log.exiting_with("This should get thrown away.");
+    }
+
+    #[test]
+    fn file_handler_file_test() {
+        let expected = "flogging::handlers::file_handler::tests-> [INFO   ] trait methods
+flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
+            .to_string();
+
+        let mut log = Logger::builder(module_path!())
+            .remove_file("test_logs/file_handler_file_test.log")
+            .add_file_handler_with(
+                "test_logs/file_handler_file_test.log",
+                FormatType::Simple,
+                None,
+            )
+            .build();
+
+        let h = log.get_handler(crate::Handler::File).unwrap();
+        h.set_test_mode(false);
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log.get_handler(crate::Handler::File).unwrap();
+        assert_eq!(h.get_log(), "".to_string());
+        h.flush();
+        h.close();
+        assert!(!h.is_open());
+
+        log.severe("This should get thrown away.");
+
+        if let Ok(mut file) = File::open("test_logs/file_handler_file_test.log") {
+            let mut buf = String::new();
+            if let Ok(count) = file.read_to_string(&mut buf) {
+                assert_eq!(expected, buf);
+            }
+        }
+    }
+
+    #[test]
+    fn file_handler_test_mode() {
+        let expected = "flogging::handlers::file_handler::tests-> [INFO   ] trait methods
+flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
+            .to_string();
+
+        let mut log = Logger::builder(module_path!())
+            .remove_file("test_logs/file_handler_test_mode.log")
+            .add_file_handler_with(
+                "test_logs/file_handler_test_mode.log",
+                FormatType::Simple,
+                None,
+            )
+            .build();
+
+        let h = log.get_handler(crate::Handler::File).unwrap();
+        h.set_test_mode(true);
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log.get_handler(crate::Handler::File).unwrap();
+        let buf = h.get_log();
+        assert_eq!(expected, buf);
+
+        h.flush();
+        h.close();
     }
 
     #[test]

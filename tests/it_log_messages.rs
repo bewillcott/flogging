@@ -71,13 +71,16 @@ mod tests {
     }
 
     #[test]
-    #[logger]
     fn shared_log_file() {
+        let logfile="tests/shared_log_file.log";
+        let logfile_fail="tests/shared_log_file1.log";
+
+
         // Added testing of 'remove_file()'.
         let mut logger1 = Logger::builder("logger1")
             .add_console_handler()
-            .remove_file("test.log")
-            .add_file_handler("test.log")
+            .remove_file(logfile)
+            .add_file_handler(logfile)
             .set_level(FINE)
             .build();
 
@@ -85,8 +88,8 @@ mod tests {
         // does not exist.
         let logger1b = Logger::builder("logger1")
             .add_console_handler()
-            .remove_file("test1.log")
-            .add_file_handler("test.log")
+            .remove_file(logfile_fail)
+            .add_file_handler(logfile)
             .set_level(FINE)
             .build();
 
@@ -94,7 +97,7 @@ mod tests {
 
         let mut logger2 = Logger::builder("logger2")
             .add_econsole_handler()
-            .add_file_handler("test.log")
+            .add_file_handler(logfile)
             .set_level(FINE)
             .build();
 
@@ -221,7 +224,8 @@ mod temp {
     const_logger!({
         Logger::builder(module_path!())
             .add_console_handler()
-            .add_file_handler("test.log")
+            .remove_file("tests/temp.log")
+            .add_file_handler("tests/temp.log")
             .set_level(Level::FINEST)
             .build()
     });
@@ -281,7 +285,8 @@ mod my_mod {
     const_logger!({
         Logger::builder(module_path!())
             .add_console_handler()
-            .add_file_handler("test.log")
+            .remove_file("tests/my_mod.log")
+            .add_file_handler("tests/my_mod.log")
             .set_level(Level::FINEST)
             .build()
     });

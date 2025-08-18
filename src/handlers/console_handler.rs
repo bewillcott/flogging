@@ -131,9 +131,9 @@ impl HandlerTrait for ConsoleHandler {
                 };
             }
             None => match self.console_type {
-            ConsoleType::StdOut => println!("{}", self.formatter.format(log_entry)),
-            ConsoleType::StdErr => eprintln!("{}", self.formatter.format(log_entry)),
-            ConsoleType::Production => production(&self.formatter, log_entry),
+                ConsoleType::StdOut => println!("{}", self.formatter.format(log_entry)),
+                ConsoleType::StdErr => eprintln!("{}", self.formatter.format(log_entry)),
+                ConsoleType::Production => production(&self.formatter, log_entry),
             },
         }
     }
@@ -182,17 +182,17 @@ fn production_test(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
-    use crate::{Logger, logger};
+    use crate::*;
 
     #[test]
-    fn handler_trait() {
+    fn stdout_handler() {
         let mut log = Logger::console_logger(module_path!());
 
         log.info("trait methods");
+        log.warning("The sky is falling!");
 
         let handler = log.get_handler(crate::Handler::Console).unwrap();
+        handler.set_test_mode(false);
         assert!(handler.is_open());
         assert_eq!(
             handler.get_formatter().to_string(),
@@ -202,5 +202,129 @@ mod tests {
         assert_eq!(handler.get_log(), "".to_string());
         handler.flush();
         handler.close();
+    }
+
+    #[test]
+    fn stdout_handler_test_mode() {
+        let expected = "flogging::handlers::console_handler::tests-> [INFO   ] trait methods
+flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
+            .to_string();
+
+        let mut log = Logger::console_logger(module_path!());
+
+        let h = log.get_handler(crate::Handler::Console).unwrap();
+        h.set_test_mode(true);
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log.get_handler(crate::Handler::Console).unwrap();
+        let buf = h.get_log();
+        assert_eq!(expected, buf);
+
+        h.flush();
+        h.close();
+    }
+
+    #[test]
+    fn stderr_handler() {
+        let mut log = Logger::econsole_logger(module_path!());
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let handler = log.get_handler(crate::Handler::EConsole).unwrap();
+        handler.set_test_mode(false);
+        assert!(handler.is_open());
+        assert_eq!(
+            handler.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.flush();
+        handler.close();
+    }
+
+    #[test]
+    fn stderr_handler_test_mode() {
+        let expected = "flogging::handlers::console_handler::tests-> [INFO   ] trait methods
+flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
+            .to_string();
+
+        let mut log = Logger::econsole_logger(module_path!());
+
+        let h = log.get_handler(crate::Handler::EConsole).unwrap();
+        h.set_test_mode(true);
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log.get_handler(crate::Handler::EConsole).unwrap();
+        let buf = h.get_log();
+        assert_eq!(expected, buf);
+
+        h.flush();
+        h.close();
+    }
+
+    #[test]
+    fn production_handler() {
+        let mut log = Logger::pconsole_logger(module_path!());
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let handler = log.get_handler(crate::Handler::PConsole).unwrap();
+        handler.set_test_mode(false);
+        assert!(handler.is_open());
+        assert_eq!(
+            handler.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+        assert_eq!(handler.get_log(), "".to_string());
+        handler.flush();
+        handler.close();
+    }
+
+    #[test]
+    fn production_handler_test_mode() {
+        let expected = "trait methods
+flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
+            .to_string();
+
+        let mut log = Logger::pconsole_logger(module_path!());
+
+        let h = log.get_handler(crate::Handler::PConsole).unwrap();
+        h.set_test_mode(true);
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log.get_handler(crate::Handler::PConsole).unwrap();
+        let buf = h.get_log();
+        assert_eq!(expected, buf);
+
+        h.flush();
+        h.close();
     }
 }
