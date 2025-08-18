@@ -8,7 +8,7 @@ Creating a custom formatter will require some investigation of other crates. Cra
 
 Now you should check out the built-in formatters to find one that is the closest to what you are after.
 
-For our example, none of the built-in formatters are really closer than the other, so we will chose the `UnixTimestampFormatter`, simply because I am running Linux as my O/S.
+For our example, none of the built-in formatters are really closer than the other, so we will choose the `UnixTimestampFormatter`, simply because I am running Linux as my O/S.
 
 To find them, use either the [API documentation], or the Github repository: [flogging].
 
@@ -29,6 +29,7 @@ First things first. We now need to do some changes:
 
 - `unixtimestamp_formatter.rs` to `csv_formatter.rs`
 - `UnixTimestampFormatter` to `CsvFormatter`
+- `use super::format_trait::FormatTrait;` to `use flogging::*;`
 
 I have used a form of ‘diff’ to represent the changes:
 
@@ -39,6 +40,7 @@ I have used a form of ‘diff’ to represent the changes:
 //
 - // File Name:    unixtimestamp_formatter.rs
 + // File Name:    csv_formatter.rs
+// Directory:    src/handlers/formatters
 // Project Name: flogging
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -64,8 +66,9 @@ I have used a form of ‘diff’ to represent the changes:
 + //! # CSV Formatter
 //!
 
-use super::format_trait::FormatTrait;
 use std::fmt;
+- use crate::FormatTrait;
++ use flogging::*;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 
@@ -111,7 +114,7 @@ use std::fmt;
     pub fn new() -> Self {
         Self {
             dt_fmt: "%s.%f".to_string(),
-            fmt_string: "{dt} |{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
+            fmt_string: "{dt} {mod_path}->{fn_name} [{level:7}] {message}".to_string(),
         }
     }
 

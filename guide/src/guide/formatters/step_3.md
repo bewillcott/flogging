@@ -29,7 +29,7 @@ First, look at the provided method: `FormatTrait::ft_fmt()`. It provides the fol
 Using the specifiers available in `std:fmt`, we produce this:
 
 ```text
-"{dt},{mod_path}->{fn_name},{level},{message}"
+"{dt},{mod_path}->{fn_name},{level},\"{message}\""
 ```
 
 with a possible output of:
@@ -40,7 +40,7 @@ with a possible output of:
 
 Using these format strings, we can now modify our new custom formatter as follows:
 
-```rust,no_run
+```rust, no_run
 impl CsvFormatter {
     ///
     /// Creates a new instance of `CsvFormatter`.
@@ -49,9 +49,8 @@ impl CsvFormatter {
         Self {
 -            dt_fmt: "%s.%f".to_string(),
 +            dt_fmt: "%Y-%m-%d %H:%M:%S%.6f".to_string(),
--            fmt_string: "{dt} |{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
-+            fmt_string: "{dt},{mod_path}->{fn_name},{level},{message}".to_string(),
+-            fmt_string: "{dt} {mod_path}->{fn_name} [{level:7}] {message}".to_string(),
++            fmt_string: "{dt},{mod_path}->{fn_name},{level},\"{message}\"".to_string(),
         }
     }
-
 ```

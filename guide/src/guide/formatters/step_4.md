@@ -35,6 +35,6 @@ mod tests{
 Possible output:
 
 ```text
-2025-06-23 13:10:45.123456,my_project::csv_formatter::tests->csv_format,INFO,Testing a new custom formatter.
-2025-06-23 13:10:45.123529,my_project::csv_formatter::tests->csv_format,WARNING,Must add more testing.
+2025-06-23 13:10:45.123456,my_project::csv_formatter::tests->csv_format,INFO,"Testing a new custom formatter."
+2025-06-23 13:10:45.123529,my_project::csv_formatter::tests->csv_format,WARNING,"Must add more testing."
 ```

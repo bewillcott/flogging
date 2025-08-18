@@ -13,5 +13,5 @@ What is the specific layout that is required?
 Our example will aim to provide:
 
 ```text
-<date-time>, <module_path>, <level>, "<message>"
+<date-time>, <module path>-><function name>, <level>, "<message>"
 ```

@@ -5,6 +5,7 @@ Here is the complete source code for the custom formatter: `CsvFormatter`.
 ```rust, no_run
 //
 // File Name:    csv_formatter.rs
+// Directory:    src/handlers/formatters
 // Project Name: my_project
 //
 // Copyright (C) 2025 Bradley Willcott
@@ -31,8 +32,8 @@ Here is the complete source code for the custom formatter: `CsvFormatter`.
 
 #![allow(unused)]
 
-use flogging::*;
 use std::fmt;
+use flogging::*;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 
@@ -51,7 +52,7 @@ impl CsvFormatter {
     pub fn new() -> Self {
         Self {
             dt_fmt: "%Y-%m-%d %H:%M:%S%.6f".to_string(),
-            fmt_string: "{dt},{mod_path}->{fn_name},{level},{message}".to_string(),
+            fmt_string: "{dt},{mod_path}->{fn_name},{level},\"{message}\"".to_string(),
         }
     }
 

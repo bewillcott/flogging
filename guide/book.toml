@@ -12,5 +12,9 @@ build-dir = "../docs"
 [output.html]
 no-section-label = true
 input-404 = "404.md"
+additional-css = ["theme/pagetoc.css"]
+additional-js = ["theme/pagetoc.js"]
 
 [preprocessor.external-links]
+
+[preprocessor.pagetoc]
