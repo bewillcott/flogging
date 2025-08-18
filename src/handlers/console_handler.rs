@@ -132,7 +132,7 @@ mod tests {
         assert!(handler.is_open());
         assert_eq!(
             handler.get_formatter().to_string(),
-            "dt_fmt: \"\" - fmt_string: \"|{mod_path}->{fn_name}| [{level:7}] {message}\""
+            "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
                 .to_string()
         );
         assert_eq!(handler.get_log(), "".to_string());

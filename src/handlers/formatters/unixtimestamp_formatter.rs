@@ -25,8 +25,8 @@
 //! # UnixTimeStamp Formatter
 //!
 
-use super::format_trait::FormatTrait;
 use std::fmt;
+use crate::FormatTrait;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 
@@ -49,11 +49,11 @@ use std::fmt;
 ///   provided to the [`format()`][UnixTimestampFormatter::format] method.
 ///
 /// ```ignore
-/// format!("{dt} |{mod_path}->{fn_name}| [{level:7}] {message}");
+/// format!("{dt} {mod_path}->{fn_name} [{level:7}] {message}");
 /// ```
 /// Sample output:
 /// ```text
-/// 1752818461.051538870 |flogging->main| [SEVERE ] Hurricanes are windy!
+/// 1752818461.051538870 flogging->main [SEVERE ] Hurricanes are windy!
 /// ```
 ///
 pub struct UnixTimestampFormatter {
@@ -68,7 +68,7 @@ impl UnixTimestampFormatter {
     pub fn new() -> Self {
         Self {
             dt_fmt: "%s.%f".to_string(),
-            fmt_string: "{dt} |{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
+            fmt_string: "{dt} {mod_path}->{fn_name} [{level:7}] {message}".to_string(),
         }
     }
 

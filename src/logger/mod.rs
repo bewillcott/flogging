@@ -161,7 +161,7 @@ impl Logger {
     /// ```
     /// Output to stdout:
     /// ```text
-    /// |flogging->main| [WARNING] Don't over do it.
+    /// flogging->main [WARNING] Don't over do it.
     /// ```
     ///
     pub fn console_logger(mod_path: &str) -> Logger {
@@ -191,7 +191,7 @@ impl Logger {
     /// ```
     /// Output to stderr:
     /// ```text
-    /// |flogging->main| [WARNING] Don't over do it.
+    /// flogging->main [WARNING] Don't over do it.
     /// ```
     ///
     pub fn econsole_logger(mod_path: &str) -> Logger {
@@ -272,7 +272,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging::my_mod->my_func| [FINER  ] Entry
+    /// flogging::my_mod->my_func [FINER  ] Entry
     /// ```
     ///
     pub fn entering(&mut self) {
@@ -321,7 +321,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging::my_mod->my_func| [FINER  ] Entry: (data: "Some data")
+    /// flogging::my_mod->my_func [FINER  ] Entry: (data: "Some data")
     /// ```
     ///
     pub fn entering_with(&mut self, msg: &str) {
@@ -371,7 +371,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging::my_mod->my_func| [FINER  ] Return
+    /// flogging::my_mod->my_func [FINER  ] Return
     /// ```
     ///
     pub fn exiting(&mut self) {
@@ -422,7 +422,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging::my_mod->my_func| [FINER  ] Return: (rtn: true)
+    /// flogging::my_mod->my_func [FINER  ] Return: (rtn: true)
     /// ```
     ///
     pub fn exiting_with(&mut self, msg: &str) {
@@ -457,7 +457,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// 2025-07-18T12:14:47.322720683+08:00 |flogging->main| [INFO   ] Some text to store.
+    /// 2025-07-18T12:14:47.322720683+08:00 flogging->main [INFO   ] Some text to store.
     /// ```
     ///
     /// [mp]: https://doc.rust-lang.org/std/macro.module_path.html
@@ -488,7 +488,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [FINE   ] Some text to store.
+    /// flogging->main [FINE   ] Some text to store.
     /// ```
     ///
     pub fn fine(&mut self, msg: &str) {
@@ -518,7 +518,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [FINER  ] Some text to store.
+    /// flogging->main [FINER  ] Some text to store.
     /// ```
     ///
     pub fn finer(&mut self, msg: &str) {
@@ -548,7 +548,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [FINEST ] Some text to store.
+    /// flogging->main [FINEST ] Some text to store.
     /// ```
     ///
     pub fn finest(&mut self, msg: &str) {
@@ -634,7 +634,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [INFO   ] Some text to store.
+    /// flogging->main [INFO   ] Some text to store.
     /// ```
     ///
     pub fn info(&mut self, msg: &str) {
@@ -792,7 +792,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [SEVERE ] Some text to store.
+    /// flogging->main [SEVERE ] Some text to store.
     /// ```
     ///
     pub fn severe(&mut self, msg: &str) {
@@ -829,7 +829,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [WARNING] Don't over do it.
+    /// flogging->main [WARNING] Don't over do it.
     /// ```
     ///
     pub fn string_logger(mod_path: &str) -> Logger {
@@ -859,7 +859,7 @@ impl Logger {
     /// ```
     /// Output:
     /// ```text
-    /// |flogging->main| [WARNING] Some text to store.
+    /// flogging->main [WARNING] Some text to store.
     /// ```
     ///
     pub fn warning(&mut self, msg: &str) {

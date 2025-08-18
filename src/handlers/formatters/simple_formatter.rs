@@ -35,11 +35,11 @@ use std::fmt;
 /// - `mod_path`, `fn_name`, `level`, and `message` all come out of the `LogEntry`
 ///   provided to the [`format()`][SimpleFormatter::format] method.
 /// ```ignore
-/// format!("|{mod_path}->{fn_name}| [{level:7}] {message}");
+/// format!("{mod_path}->{fn_name} [{level:7}] {message}");
 /// ```
 /// Sample output:
 /// ```text
-/// |flogging->main| [INFO   ] It is cloudy today.
+/// flogging->main [INFO   ] It is cloudy today.
 /// ```
 ///
 
@@ -56,7 +56,7 @@ impl SimpleFormatter {
     pub fn new() -> Self {
         Self {
             dt_fmt: "".to_string(),
-            fmt_string: "|{mod_path}->{fn_name}| [{level:7}] {message}".to_string(),
+            fmt_string: "{mod_path}->{fn_name} [{level:7}] {message}".to_string(),
         }
     }
 

@@ -59,7 +59,7 @@ mod test {
 
         println!("Log:\n{}", list);
 
-        assert_eq!(&list, "|it_customs::test->| [INFO   ] Just testing\n")
+        assert_eq!(&list, "it_customs::test-> [INFO   ] Just testing\n")
     }
 
     #[test]
