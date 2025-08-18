@@ -115,6 +115,7 @@ c = "job:clippy-all" # comment this to have 'c' run clippy on only the default t
 l = "job:llvm-cov"
 
 [jobs.llvm-cov]
-command = ["cargo", "llvm-cov", "nextest", "--lcov", "--output-path", "./target/lcov.info"]
+# command = ["cargo", "llvm-cov", "nextest", "--lcov", "--output-path", "./target/lcov.info"]
+command = ["llvm-pretty.sh"]
 need_stdout = true
-analyzer = "nextest"
+# analyzer = "nextest"

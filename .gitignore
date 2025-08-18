@@ -1,4 +1,5 @@
 target
+test_logs
 **/LICENSE.html
 **/README.html
 /CHANGELOG.html
@@ -7,3 +8,4 @@ target
 *.log
 logger.dtd
 !licenseheader.txt
+.bacon-locations
