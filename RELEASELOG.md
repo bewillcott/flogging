@@ -5,20 +5,23 @@
 ## Version 0.6.0 [*][0.6.0] - Dev
 
 <details>
+<summary>Details (click to see)</summary>
 
 ---
-**_Important Note:_**
+**_Important Notes:_**
 
-Removed
+- Removed
 
-```rust, no_run
-impl Handler{
-    fn new(){...}
-    fn create(name){...}
-}
-```
+  ```rust, no_run
+  impl Handler{
+      fn new(){...}
+      fn create(name){...}
+  }
+  ```
 
-This API is redundant. So removing it now, before v1.0.0 release is best.
+  This API is redundant. So removing it now, before v1.0.0 release is best.
+
+- Added a new method to `HandlerTrait` - `set_test_mode()`. This will require updating of any custom handlers.
 
 ---
 
@@ -29,8 +32,12 @@ Added new methods to `LoggerBuilder`:
   This is a way of resetting the log file prior to each test run.
 - `add_pconsole_handler()` and `add_pconsole_handler_with()`
   - Use to add a production version of the console handler. This handler is different, in that log entries set to `LeveL::INFO`, will have their `msg` printed to `stdout` without any formatting, whilst all other `Level`s will be printed to `stderr` using the set formatter.
+- `set_fn_name()`
+  - Set the current function/method name. Only required when using the _method_ form of operation instead of the _macro_ form.
 
-To facilitate the pconcole_handlers, a new enum `ConsoleType` has been added.
+Added new method to `LoggerBuilder` - `pconsole_logger()`.
+
+To facilitate the _pconcole_handlers_, a new enum `ConsoleType` has been added.
 
 Added new instructional guide: [FLogging Guide]
 
@@ -39,6 +46,7 @@ Added new instructional guide: [FLogging Guide]
 ## Version 0.5.0 [*][0.5.0] - 2025-08-03
 
 <details>
+<summary>Details (click to see)</summary>
 
 ---
 **_Important Note:_**
@@ -54,6 +62,7 @@ Now generally, there were some improvements to the API documentation.
 ## Version 0.4.1 [*][0.4.1] - 2025-07-29
 
 <details>
+<summary>Details (click to see)</summary>
 
 - Major improvements to the API documentation.
 - Increased test coverage to 100%, and included the [Coverage Report].
@@ -63,6 +72,7 @@ Now generally, there were some improvements to the API documentation.
 ## Version 0.4.0 [*][0.4.0] - 2025-07-27
 
 <details>
+<summary>Details (click to see)</summary>
 
 This is the initial release.
 
