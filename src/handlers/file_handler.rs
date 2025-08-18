@@ -44,6 +44,7 @@ pub struct FileHandler {
     filename: String,
     formatter: Formatter,
     file: Option<File>,
+    writer: Option<Vec<u8>>,
 }
 
 impl FileHandler {
@@ -57,12 +58,20 @@ impl FileHandler {
             formatter: FormatType::Iso8601.create(None),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
-
                 Some(f)
             },
+            writer: None,
         };
 
         Ok(fh)
+    }
+
+    fn log(&self) -> String {
+        if let Some(w) = self.writer.to_owned() {
+            String::from_utf8(w).unwrap()
+        } else {
+            String::new()
+        }
     }
 }
 
@@ -83,6 +92,11 @@ impl HandlerTrait for FileHandler {
         FileHandler::create(name)
     }
 
+    ///
+    /// Flushes and closes the file.\
+    /// Also, removes the internal buffer, if in `test_mode`.\
+    /// Will therefore, no longer be *in* `test_mode`.
+    ///
     fn close(&mut self) {
         self.flush();
         self.file = None;
@@ -99,25 +113,43 @@ impl HandlerTrait for FileHandler {
     }
 
     fn get_log(&self) -> String {
-        String::new()
+        self.log()
     }
 
     fn is_open(&self) -> bool {
         self.file.is_some()
     }
 
-    #[allow(private_interfaces)]
     fn publish(&mut self, log_entry: &LogEntry) {
         if self.is_open() {
             let mut buf = self.formatter.format(log_entry);
             buf.push('\n');
 
+            if let Some(w) = self.writer.as_mut() {
+                writeln!(w, "{}", self.formatter.format(log_entry));
+            } else {
             self.file.as_mut().unwrap().write_all(buf.as_bytes());
         }
+    }
     }
 
     fn set_formatter(&mut self, formatter: Formatter) {
         self.formatter = formatter;
+    }
+
+    ///
+    /// Sets the test mode to `state`.
+    ///
+    /// If set to `true`, use `get_log()` to obtain the
+    /// log.
+    ///
+    fn set_test_mode(&mut self, state: bool) {
+        if state {
+            // true
+            self.writer = Some(Vec::new());
+        } else {
+            self.writer = None;
+        }
     }
 }
 

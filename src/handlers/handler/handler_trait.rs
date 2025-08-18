@@ -29,7 +29,6 @@ use std::{fmt, io::Error};
 
 use crate::{Formatter, LogEntry};
 
-
 ///
 /// Provides common methods required for all handlers.
 ///
@@ -93,4 +92,17 @@ pub trait HandlerTrait: fmt::Display + Send + Sync {
     /// - `formatter` The `Formatter` to use.
     ///
     fn set_formatter(&mut self, formatter: Formatter);
+
+    ///
+    /// Set test mode.
+    ///
+    /// Internally, where needed, will switch `stdout`, `stderr`, and/or `file` to
+    /// a new `Vec` to store all outputs.
+    ///
+    /// Use `get_log()` to access this data.
+    ///
+    /// ## Parameters
+    /// - `state` - If `true`, then a new vector will be set. Otherwise `None` will be set.
+    ///
+    fn set_test_mode(&mut self, state: bool);
 }

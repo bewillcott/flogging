@@ -29,9 +29,12 @@
 
 pub mod console_type;
 
-use std::{fmt, io::Error};
 use crate::*;
 use console_type::ConsoleType;
+use std::{
+    fmt,
+    io::{self, Error, Write},
+};
 
 ///
 /// Publishes log entries to the console.
@@ -49,6 +52,7 @@ use console_type::ConsoleType;
 pub struct ConsoleHandler {
     console_type: ConsoleType,
     formatter: Formatter,
+    writer: Option<Vec<u8>>,
 }
 
 impl ConsoleHandler {
@@ -56,6 +60,15 @@ impl ConsoleHandler {
         ConsoleHandler {
             console_type,
             formatter: FormatType::Simple.create(None),
+            writer: None,
+        }
+    }
+
+    fn log(&self) -> String {
+        if let Some(w) = self.writer.to_owned() {
+            String::from_utf8(w).unwrap()
+        } else {
+            String::new()
         }
     }
 }
@@ -74,37 +87,74 @@ impl HandlerTrait for ConsoleHandler {
         Ok(ConsoleHandler::create(console_type.parse().unwrap()))
     }
 
-    fn close(&mut self) {}
+    ///
+    /// Removes the internal buffer, if in `test_mode`.\
+    /// Will therefore, no longer be *in* `test_mode`.
+    ///
+    fn close(&mut self) {
+        if self.writer.is_some() {
+            self.writer = None;
+        }
+    }
 
-    fn flush(&mut self) {}
+    ///
+    /// Clears the internal buffer, if in `test_mode`.
+    ///
+    fn flush(&mut self) {
+        if let Some(w) = self.writer.as_mut() {
+            w.clear()
+        };
+    }
 
     fn get_formatter(&self) -> Formatter {
         self.formatter.clone()
     }
 
     fn get_log(&self) -> String {
-        String::new()
+        self.log()
     }
 
+    ///
+    /// `ConsoleHandler` is *always* open.
+    ///
     fn is_open(&self) -> bool {
         true
     }
 
     fn publish(&mut self, log_entry: &LogEntry) {
-        // if self.stderr {
-        //     eprintln!("{}", self.formatter.format(log_entry));
-        // } else {
-        //     println!("{}", self.formatter.format(log_entry));
-        // }
-        match self.console_type {
+        match self.writer.as_mut() {
+            Some(w) => {
+                let _ = match self.console_type {
+                    ConsoleType::StdOut => writeln!(w, "{}", self.formatter.format(log_entry)),
+                    ConsoleType::StdErr => writeln!(w, "{}", self.formatter.format(log_entry)),
+                    ConsoleType::Production => production_test(w, &self.formatter, log_entry),
+                };
+            }
+            None => match self.console_type {
             ConsoleType::StdOut => println!("{}", self.formatter.format(log_entry)),
             ConsoleType::StdErr => eprintln!("{}", self.formatter.format(log_entry)),
             ConsoleType::Production => production(&self.formatter, log_entry),
+            },
         }
     }
 
     fn set_formatter(&mut self, formatter: Formatter) {
         self.formatter = formatter;
+    }
+
+    ///
+    /// Sets the test mode to `state`.
+    ///
+    /// If set to `true`, use `get_log()` to obtain the
+    /// log.
+    ///
+    fn set_test_mode(&mut self, state: bool) {
+        if state {
+            // true
+            self.writer = Some(Vec::new());
+        } else {
+            self.writer = None;
+        }
     }
 }
 
@@ -112,8 +162,22 @@ fn production(formatter: &Formatter, log_entry: &LogEntry) {
     if log_entry.level() == Level::INFO {
         println!("{}", log_entry.message());
     } else {
-        eprintln!("{}", formatter.format(log_entry))
+        eprintln!("{}", formatter.format(log_entry));
     }
+}
+
+fn production_test(
+    writer: &mut Vec<u8>,
+    formatter: &Formatter,
+    log_entry: &LogEntry,
+) -> io::Result<()> {
+    if log_entry.level() == Level::INFO {
+        writeln!(writer, "{}", log_entry.message())?;
+    } else {
+        writeln!(writer, "{}", formatter.format(log_entry))?;
+    }
+
+    Ok(())
 }
 
 #[cfg(test)]

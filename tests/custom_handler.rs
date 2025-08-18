@@ -108,4 +108,10 @@ impl HandlerTrait for CustomHandler {
     fn set_formatter(&mut self, format: Formatter) {
         self.formatter = format;
     }
+
+    ///
+    /// This is a 'NoOp' fn. Use `get_log()`, as this already
+    /// has the required functionality.
+    ///
+    fn set_test_mode(&mut self, _state: bool) {}
 }

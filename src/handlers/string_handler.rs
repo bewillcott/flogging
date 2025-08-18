@@ -23,8 +23,8 @@
 //!
 //! # StringHandler
 //!
-use std::{fmt, io::Error};
 use crate::*;
+use std::{fmt, io::Error};
 
 ///
 /// Publishes log entries to an internal list.
@@ -62,12 +62,7 @@ impl fmt::Display for StringHandler {
         let len = self.formatter.to_string().len();
         let line = "-".repeat(len + 3);
 
-        write!(
-            f,
-            "{}\n{line}\n{}",
-            self.formatter,
-            self.log()
-        )
+        write!(f, "{}\n{line}\n{}", self.formatter, self.log())
     }
 }
 
@@ -105,6 +100,12 @@ impl HandlerTrait for StringHandler {
     fn set_formatter(&mut self, formatter: Formatter) {
         self.formatter = formatter;
     }
+
+    ///
+    /// This is a 'NoOp' fn. Use `get_log()`, as this already
+    /// has the required functionality.
+    ///
+    fn set_test_mode(&mut self, _state: bool) {}
 }
 
 #[cfg(test)]

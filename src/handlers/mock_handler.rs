@@ -52,8 +52,14 @@ impl HandlerTrait for MockHandler {
         Ok(Default::default())
     }
 
+    ///
+    /// This is a 'NoOp' fn.
+    ///
     fn close(&mut self) {}
 
+    ///
+    /// This is a 'NoOp' fn.
+    ///
     fn flush(&mut self) {}
 
     fn get_formatter(&self) -> Formatter {
@@ -64,6 +70,9 @@ impl HandlerTrait for MockHandler {
         Default::default()
     }
 
+    ///
+    /// This is always `false`.
+    ///
     fn is_open(&self) -> bool {
         false
     }
@@ -72,6 +81,11 @@ impl HandlerTrait for MockHandler {
     fn publish(&mut self, log_entry: &LogEntry) {}
 
     fn set_formatter(&mut self, formatter: Formatter) {}
+
+    ///
+    /// This is a 'NoOp' fn.
+    ///
+    fn set_test_mode(&mut self, state: bool) {}
 }
 
 #[cfg(test)]
