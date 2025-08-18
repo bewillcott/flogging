@@ -25,8 +25,8 @@
 //! # LoggerBuilder
 //!
 
-use std::{cell::RefCell, collections::HashMap, fs};
 use crate::*;
+use std::{cell::RefCell, collections::HashMap, fs};
 
 ///
 /// Used by [`Logger`] to provide more flexibility in the configuration of the
@@ -34,6 +34,7 @@ use crate::*;
 ///
 pub struct LoggerBuilder {
     mod_path: String,
+    fn_name: String,
     level: Level,
     handlers: RefCell<HashMap<Handler, Box<dyn HandlerTrait>>>,
 }
@@ -43,6 +44,7 @@ impl LoggerBuilder {
     pub(super) fn create(mod_path: String) -> Self {
         LoggerBuilder {
             mod_path,
+            fn_name: String::new(),
             level: Level::default(),
             handlers: RefCell::new(HashMap::new()),
         }
@@ -516,7 +518,7 @@ impl LoggerBuilder {
     pub fn build(self) -> Logger {
         Logger {
             mod_path: self.mod_path.clone(),
-            fn_name: String::new(),
+            fn_name: self.fn_name.clone(),
             level: self.level,
             handlers: self.handlers,
         }
@@ -551,6 +553,20 @@ impl LoggerBuilder {
     ///
     pub fn remove_file(self, filename: &str) -> Self {
         fs::remove_file(filename).is_err();
+        self
+    }
+
+    ///
+    /// Set the current function/method name.
+    ///
+    /// ## Parameters
+    /// - `fn_name` - The name of the function/method in which you are
+    ///   logging.
+    ///
+    /// Returns itself for chaining purposes.
+    ///
+    pub fn set_fn_name(mut self, fn_name: &str) -> Self {
+        self.fn_name = fn_name.to_string();
         self
     }
 
