@@ -1,4 +1,4 @@
 book
+src/api
+src/coverage
 **.html
-!src/api/**/*.html
-!src/coverage/**/*.html
