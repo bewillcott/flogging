@@ -56,7 +56,7 @@ pub use builder::*;
 pub use level::Level;
 pub use log_entry::LogEntry;
 
-use crate::{Handler, HandlerTrait};
+use crate::*;
 
 ///
 /// This is the work-horse, providing the primary methods of the crate.

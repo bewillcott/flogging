@@ -25,8 +25,8 @@
 //! # Iso8601 Formatter
 //!
 
-use super::format_trait::FormatTrait;
 use std::fmt;
+use crate::FormatTrait;
 
 ///
 /// ISO 8601 / RFC 3339 date & time format.

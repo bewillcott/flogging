@@ -25,8 +25,8 @@
 //! # Simple Formatter
 //!
 
-use super::format_trait::FormatTrait;
 use std::fmt;
+use crate::FormatTrait;
 
 ///
 /// Simple format.

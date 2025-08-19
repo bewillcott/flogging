@@ -25,6 +25,7 @@
 //! # Formatter
 //!
 
+use std::fmt;
 use super::*;
 
 ///
