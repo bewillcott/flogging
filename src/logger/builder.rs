@@ -595,8 +595,9 @@ impl LoggerBuilder {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use std::io::{Result, Write, Stdout, stdout};
+    use std::io::{Result, Stdout, Write, stdout};
+    use regex::Regex;
+    use crate::*;
 
     #[test]
     fn temp() -> Result<()> {
@@ -611,24 +612,52 @@ mod tests {
     }
     #[test]
     fn add_console_handler() {
+        let expected = "flogging::logger::builder::tests->add_console_handler [INFO   ] We begin!
+flogging::logger::builder::tests->add_console_handler [WARNING] Need more tests.
+"
+        .to_string();
+
         let mut log = Logger::builder(module_path!())
             .add_console_handler()
             .set_fn_name("add_console_handler")
             .build();
 
+        let h = log.get_handler(crate::Handler::Console).unwrap();
+        h.set_test_mode(true);
+
         log.info("We begin!");
         log.warning("Need more tests.");
+
+        let h = log.get_handler(crate::Handler::Console).unwrap();
+        let buf = h.get_log();
+        assert_eq!(expected, buf);
     }
 
     #[test]
     fn add_console_handler_with() {
+        let re_str =
+"^(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{9}\\+\\d{2}:\\d{2}) flogging::logger::builder::tests->add_console_handler_with \\[INFO   ] We begin!
+(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{9}\\+\\d{2}:\\d{2}) flogging::logger::builder::tests->add_console_handler_with \\[WARNING] Need more tests.
+$";
+
+        let re = Regex::new(re_str).unwrap();
+
         let mut log = Logger::builder(module_path!())
             .add_console_handler_with(FormatType::Iso8601, None)
             .set_fn_name("add_console_handler_with")
             .build();
 
+        let h = log.get_handler(crate::Handler::Console).unwrap();
+        h.set_test_mode(true);
+
         log.info("We begin!");
         log.warning("Need more tests.");
+
+        let h = log.get_handler(crate::Handler::Console).unwrap();
+        let result = h.get_log();
+        println!("{result}");
+
+        assert!(re.is_match(&result));
     }
 
     #[test]
@@ -686,7 +715,7 @@ mod tests {
     #[test]
     fn add_file_handler() {
         let mut log = Logger::builder(module_path!())
-            .add_file_handler("test.log")
+            .add_file_handler("test_logs/add_file_handler.log")
             .set_fn_name("add_file_handler")
             .build();
 
@@ -697,7 +726,11 @@ mod tests {
     #[test]
     fn add_file_handler_with() {
         let mut log = Logger::builder(module_path!())
-            .add_file_handler_with("test.log", crate::FormatType::UnixTimestamp, None)
+            .add_file_handler_with(
+                "test_logs/add_file_handler_with.log",
+                crate::FormatType::UnixTimestamp,
+                None,
+            )
             .set_fn_name("add_file_handler_with")
             .build();
 
@@ -752,8 +785,8 @@ mod tests {
     #[test]
     fn remove_file() {
         let mut log = Logger::builder(module_path!())
-            .remove_file("test.log")
-            .add_file_handler("test.log")
+            .remove_file("test_logs/remove_file.log")
+            .add_file_handler("test_logs/remove_file.log")
             .set_fn_name("add_file_handler")
             .build();
 

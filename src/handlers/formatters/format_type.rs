@@ -25,6 +25,7 @@
 //! # FormatType
 //!
 
+use std::fmt;
 use super::*;
 
 ///
@@ -94,16 +95,27 @@ impl fmt::Display for FormatType {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::{Result, Write};
 
     #[test]
     fn display() {
+        let expected = "ft: Custom
+fmt: MockFormatter
+Iso8601: Iso8601
+Simple: SimpleFormatter
+UnixTimestamp: UnixTimestamp
+".to_string();
+        let mut buf = Vec::new();
+
         let ft = FormatType::Custom;
         let fmt = ft.create(None);
 
-        println!("ft: {ft}");
-        println!("fmt: {fmt}");
-        println!("Iso8601: {}", FormatType::Iso8601);
-        println!("Simple: {}", FormatType::Simple);
-        println!("UnixTimestamp: {}", FormatType::UnixTimestamp);
+        writeln!(&mut buf, "ft: {ft}");
+        writeln!(&mut buf, "fmt: {fmt}");
+        writeln!(&mut buf, "Iso8601: {}", FormatType::Iso8601);
+        writeln!(&mut buf, "Simple: {}", FormatType::Simple);
+        writeln!(&mut buf, "UnixTimestamp: {}", FormatType::UnixTimestamp);
+
+        assert_eq!(expected, String::from_utf8(buf).unwrap());
     }
 }

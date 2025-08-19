@@ -96,6 +96,7 @@ impl FromStr for ConsoleType {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::{Result, Write};
 
     #[test]
     fn as_str_to_from_str() {
@@ -114,8 +115,13 @@ mod tests {
 
     #[test]
     fn console_display() {
+        let expected = "stdout\nstderr\nproduction\n".to_string();
+        let mut buf = Vec::new();
+
         for console_type in ConsoleType::iter() {
-            println!("{console_type}");
+            writeln!(&mut buf, "{console_type}");
         }
+
+        assert_eq!(expected, String::from_utf8(buf).unwrap());
     }
 }

@@ -28,46 +28,13 @@
 use super::*;
 
 #[test]
-fn console_logger() {
-    mod helper {
-        use super::*;
-
-        pub(super) fn help() {
-            let mut log = Logger::console_logger(module_path!());
-            log.set_fn_name("help");
-            log.info("Some text to store.");
-        }
-    }
-
-    helper::help();
-}
-
-#[test]
-fn econsole_logger() {
-    mod helper {
-        use super::*;
-
-        pub(super) fn help() {
-            let mut log = Logger::econsole_logger(module_path!());
-            log.set_fn_name("help");
-            log.info("Some text to store.");
-        }
-    }
-
-    helper::help();
-}
-
-#[test]
 fn has_handler() {
     use super::*;
 
     let mut log = Logger::string_logger(module_path!());
     log.info("Some text to store.");
 
-    println!(
-        "This logger has a 'StringHandler': {}",
-        log.has_handler(Handler::String)
-    );
+    assert!(log.has_handler(Handler::String));
 }
 
 #[test]
@@ -81,29 +48,6 @@ fn get_handler() {
 
     assert!(log.get_handler(Handler::String).is_some());
     assert!(log.get_handler(Handler::Console).is_none());
-}
-
-#[test]
-fn file_logger() {
-    use super::*;
-    use std::fs;
-
-    let filename = "test_logs/file_logger.log";
-    let path = Path::new(filename);
-
-    if path.try_exists().unwrap() {
-        fs::remove_file(path).unwrap();
-    }
-
-    let mut log = Logger::file_logger(module_path!(), path.to_str().unwrap());
-    log.set_fn_name("file_logger").set_level(Level::ALL);
-
-    log.config("Running on Fedora Linux v42");
-    log.fine("This is some fine work!");
-
-    assert_eq!(log.level(), &Level::ALL);
-    log.reset_level();
-    assert_eq!(log.level(), &Level::default());
 }
 
 #[test]

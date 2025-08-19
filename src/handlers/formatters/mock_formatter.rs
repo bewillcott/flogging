@@ -25,8 +25,8 @@
 //! # Mock Formatter
 //!
 
-use super::format_trait::FormatTrait;
 use std::fmt;
+use crate::FormatTrait;
 
 ///
 /// Mock Formatter.
@@ -74,12 +74,13 @@ impl Default for MockFormatter {
 
 impl fmt::Display for MockFormatter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} : {}", self.dt_fmt(), self.fmt_string())
+        write!(f, "{}", self.fmt_string())
     }
 }
 
 impl FormatTrait for MockFormatter {
     fn format(&self, log_entry: &crate::LogEntry) -> String {
+        let _ = self.dt_fmt();
         "MockFormatter".to_string()
     }
 }

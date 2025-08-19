@@ -193,13 +193,16 @@ mod tests {
 
         let handler = log.get_handler(crate::Handler::Console).unwrap();
         handler.set_test_mode(false);
+
         assert!(handler.is_open());
         assert_eq!(
             handler.get_formatter().to_string(),
             "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
                 .to_string()
         );
+
         assert_eq!(handler.get_log(), "".to_string());
+
         handler.flush();
         handler.close();
     }
@@ -207,13 +210,15 @@ mod tests {
     #[test]
     fn stdout_handler_test_mode() {
         let expected = "flogging::handlers::console_handler::tests-> [INFO   ] trait methods
-flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
+flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!
+"
             .to_string();
 
         let mut log = Logger::console_logger(module_path!());
 
         let h = log.get_handler(crate::Handler::Console).unwrap();
         h.set_test_mode(true);
+
         assert!(h.is_open());
         assert_eq!(
             h.get_formatter().to_string(),
@@ -226,6 +231,7 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::Console).unwrap();
         let buf = h.get_log();
+
         assert_eq!(expected, buf);
 
         h.flush();
@@ -241,13 +247,16 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let handler = log.get_handler(crate::Handler::EConsole).unwrap();
         handler.set_test_mode(false);
+
         assert!(handler.is_open());
         assert_eq!(
             handler.get_formatter().to_string(),
             "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
                 .to_string()
         );
+
         assert_eq!(handler.get_log(), "".to_string());
+
         handler.flush();
         handler.close();
     }
@@ -262,6 +271,7 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::EConsole).unwrap();
         h.set_test_mode(true);
+
         assert!(h.is_open());
         assert_eq!(
             h.get_formatter().to_string(),
@@ -274,6 +284,7 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::EConsole).unwrap();
         let buf = h.get_log();
+
         assert_eq!(expected, buf);
 
         h.flush();
@@ -289,13 +300,16 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let handler = log.get_handler(crate::Handler::PConsole).unwrap();
         handler.set_test_mode(false);
+
         assert!(handler.is_open());
         assert_eq!(
             handler.get_formatter().to_string(),
             "dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\""
                 .to_string()
         );
+
         assert_eq!(handler.get_log(), "".to_string());
+
         handler.flush();
         handler.close();
     }
@@ -310,6 +324,7 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::PConsole).unwrap();
         h.set_test_mode(true);
+
         assert!(h.is_open());
         assert_eq!(
             h.get_formatter().to_string(),
@@ -322,6 +337,7 @@ flogging::handlers::console_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::PConsole).unwrap();
         let buf = h.get_log();
+
         assert_eq!(expected, buf);
 
         h.flush();
