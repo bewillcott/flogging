@@ -55,7 +55,7 @@ mod test {
     fn iso8601() {
         let re_str = "^
 dt_fmt: \"%\\+\" - fmt_string: \"\\{dt:35} \\{mod_path}->\\{fn_name} \\[\\{level:7}] \\{message}\"
-(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{9}\\+\\d{2}:\\d{2}) ->iso8601 \\[INFO   ] This is a test message
+(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) ->iso8601 \\[INFO   ] This is a test message
 $";
 
         let re = Regex::new(re_str).unwrap();
