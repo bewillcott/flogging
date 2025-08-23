@@ -30,15 +30,36 @@ Here is the complete source code for the custom formatter: `CsvFormatter`.
 //! # CSV Formatter
 //!
 
-#![allow(unused)]
-
 use std::fmt;
 use flogging::*;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 
 ///
-/// CSV formatter.
+/// CSV format.
+///
+/// The datetime format string is:
+///
+/// ```text
+/// "%Y-%m-%d %H:%M:%S%.6f"
+/// ```
+///
+/// Example:
+/// ```text
+/// 2025-08-21 19:15:04.089061
+/// ```
+/// Template:
+/// - `dt` in the template would be the datetime string, similar to the above.
+/// - `mod_path`, `fn_name`, `level`, and `message` all come out of the `LogEntry`
+///   provided to the [`format()`][CsvFormatter::format] method.
+///
+/// ```ignore
+/// format!("{dt},{mod_path}->{fn_name},{level},\"{message}\"");
+/// ```
+/// Sample output:
+/// ```text
+/// 2025-08-21 19:26:47.801287,my_project::handlers::formatters::csv_formatter::tests->csv_format,SEVERE,"Hurricanes are windy!"
+/// ```
 ///
 pub struct CsvFormatter {
     dt_fmt: String,
@@ -88,7 +109,7 @@ impl fmt::Display for CsvFormatter {
 }
 
 impl FormatTrait for CsvFormatter {
-    fn format(&self, log_entry: &crate::LogEntry) -> String {
+    fn format(&self, log_entry: &LogEntry) -> String {
         self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }
@@ -96,6 +117,7 @@ impl FormatTrait for CsvFormatter {
 #[cfg(test)]
 mod tests{
     use super::*;
+    use regex::Regex;
 
     const_logger!({
         Logger::builder(module_path!())
@@ -111,12 +133,20 @@ mod tests{
     fn csv_format() {
         entering!();
 
+        let re_str =
+"^(?:\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}),my_project::handlers::formatters::csv_formatter::tests->csv_format,INFO,\"Testing a new custom formatter.\"
+(?:\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}),my_project::handlers::formatters::csv_formatter::tests->csv_format,WARNING,\"Must add more testing.\"
+$";
+
+        let re = Regex::new(re_str).unwrap();
+
         info!("Testing a new custom formatter.");
         warning!("Must add more testing.");
 
         let log_str = get_handler!(Handler::String).unwrap().get_log();
 
-        print!("{log_str}");
+        println!("{log_str}");
+        assert!(re.is_match(&log_str));
     }
 }
 ```

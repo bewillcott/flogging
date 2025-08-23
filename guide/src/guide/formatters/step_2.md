@@ -14,14 +14,34 @@ To find them, use either the [API documentation], or the Github repository: [flo
 
 As with the [Custom Handlers][ch], to obtain the code from the API documentation, at the top navigation bar, click “flogging-0.6.0”, then under “LINKS” click “Source”. This will bring up the “Source” tab. Now we need to navigate to the required file.
 
+---
+
 - src
   - handlers
     - formatter
       - unixtimestamp_formatter.rs
 
+---
+
 Now select ALL of the code, from the top down, then ‘copy [ctrl/c]’. You need to include the file header (Copyright).
 
 In your project **src** directory somewhere, create your new formatter file, and paste this code into it.
+
+For this example, (we'll name it `my_project`) we'll have the following basic layout:
+
+---
+
+- src/\
+  lib.rs\
+  main.rs
+  - handlers/\
+    confile_handler.rs\
+    mod.rs
+    - formatters/\
+      csv_formatter.rs
+- test_logs/
+
+---
 
 Our file will be called: `csv_formatter.rs`, with the module: `CsvFormatter`.
 
@@ -29,7 +49,8 @@ First things first. We now need to do some changes:
 
 - `unixtimestamp_formatter.rs` to `csv_formatter.rs`
 - `UnixTimestampFormatter` to `CsvFormatter`
-- `use super::format_trait::FormatTrait;` to `use flogging::*;`
+- `use crate::FormatTrait;` to `use flogging::*;`
+- `&crate::LogEntry` to `&LogEntry`
 
 I have used a form of ‘diff’ to represent the changes:
 
@@ -41,7 +62,8 @@ I have used a form of ‘diff’ to represent the changes:
 - // File Name:    unixtimestamp_formatter.rs
 + // File Name:    csv_formatter.rs
 // Directory:    src/handlers/formatters
-// Project Name: flogging
+- // Project Name: flogging
++ // Project Name: my_project
 //
 // Copyright (C) 2025 Bradley Willcott
 //
@@ -73,7 +95,8 @@ use std::fmt;
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 
 ///
-/// Unix Timestamp format.
+- /// Unix Timestamp format.
++ /// CSV format.
 ///
 /// The first part (before the decimal point) is
 /// the number of seconds since 1970-01-01 00:00 UTC.
@@ -92,11 +115,11 @@ use std::fmt;
 + ///   provided to the [`format()`][CsvFormatter::format] method.
 ///
 /// ```ignore
-/// format!("{dt} |{mod_path}->{fn_name}| [{level:7}] {message}");
+/// format!("{dt} {mod_path}->{fn_name} [{level:7}] {message}");
 /// ```
 /// Sample output:
 /// ```text
-/// 1752818461.051538870 |flogging->main| [SEVERE ] Hurricanes are windy!
+/// 1752818461.051538870 flogging->main [SEVERE ] Hurricanes are windy!
 /// ```
 ///
 - pub struct UnixTimestampFormatter {
@@ -153,7 +176,8 @@ use std::fmt;
 
 - impl FormatTrait for UnixTimestampFormatter {
 + impl FormatTrait for CsvFormatter {
-    fn format(&self, log_entry: &crate::LogEntry) -> String {
+-     fn format(&self, log_entry: &crate::LogEntry) -> String {
++     fn format(&self, log_entry: &LogEntry) -> String {
         self.ft_fmt(self.dt_fmt(), self.fmt_string(), log_entry)
     }
 }

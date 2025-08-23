@@ -30,8 +30,6 @@ Here is the complete source code for the custom formatter: `CsvFormatter`.
 //! # ConfileHandler
 //!
 
-#![allow(unused)]
-
 use std::{
     fmt,
     fs::{File, exists},
@@ -47,9 +45,10 @@ use flogging::*;
 #[derive(Debug, Default)]
 pub struct ConfileHandler {
     filename: String,
-    file_fmt: Formatter,
     con_fmt: Formatter,
+    file_fmt: Formatter,
     file: Option<File>,
+    writer: Option<Vec<u8>>,
 }
 
 impl ConfileHandler {
@@ -60,16 +59,25 @@ impl ConfileHandler {
 
         let fh = ConfileHandler {
             filename: filename.to_string(),
-            file_fmt: FormatType::Iso8601.create(None),
             con_fmt: FormatType::Simple.create(None),
+            file_fmt: FormatType::Iso8601.create(None),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
 
                 Some(f)
             },
+            writer: None,
         };
 
         Ok(fh)
+    }
+
+    fn log(&self) -> String {
+        if let Some(w) = self.writer.to_owned() {
+            String::from_utf8(w).unwrap()
+        } else {
+            String::new()
+        }
     }
 }
 
@@ -77,8 +85,8 @@ impl fmt::Display for ConfileHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{} : {}\nConsole: {}",
-            self.filename, self.file_fmt, self.con_fmt
+            "Console: {}\n{} : {}",
+            self.con_fmt, self.filename, self.file_fmt
         )
     }
 }
@@ -94,6 +102,11 @@ impl HandlerTrait for ConfileHandler {
         ConfileHandler::create(name)
     }
 
+    ///
+    /// Flushes and closes the file.\
+    /// Also, removes the internal buffer, if in `test_mode`.\
+    /// Will therefore, no longer be *in* `test_mode`.
+    ///
     fn close(&mut self) {
         self.flush();
         self.file = None;
@@ -101,7 +114,7 @@ impl HandlerTrait for ConfileHandler {
 
     fn flush(&mut self) {
         if let Some(f) = &self.file {
-            f.sync_all();
+            f.sync_all().expect("sync_all() failed");
         }
     }
 
@@ -110,7 +123,7 @@ impl HandlerTrait for ConfileHandler {
     }
 
     fn get_log(&self) -> String {
-        String::new()
+        self.log()
     }
 
     fn is_open(&self) -> bool {
@@ -122,47 +135,197 @@ impl HandlerTrait for ConfileHandler {
             let mut buf = self.file_fmt.format(log_entry);
             buf.push('\n');
 
-            self.file.as_mut().unwrap().write_all(buf.as_bytes());
-            println!("{}", self.con_fmt.format(log_entry));
+            if let Some(w) = self.writer.as_mut() {
+                writeln!(w, "{}", self.con_fmt.format(log_entry)).expect("writeln!() failed");
+                writeln!(w, "{}", self.file_fmt.format(log_entry)).expect("writeln!() failed");
+            } else {
+                println!("{}", self.con_fmt.format(log_entry));
+                self.file.as_mut().unwrap().write_all(buf.as_bytes()).expect("writeln!() failed");
+            }
         }
     }
 
-    fn set_formatter(&mut self, _formatter: Formatter) {}
+    fn set_formatter(&mut self, formatter: Formatter) {
+        self.file_fmt = formatter;
+    }
+
+    ///
+    /// Sets the test mode to `state`.
+    ///
+    /// If set to `true`, use `get_log()` to obtain the
+    /// log.
+    ///
+    fn set_test_mode(&mut self, state: bool) {
+        if state {
+            // true
+            self.writer = Some(Vec::new());
+        } else {
+            self.writer = None;
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use regex::Regex;
+    use std::io::Read;
 
     #[test]
-    fn handler_trait() {
+    fn confile_handler() {
         let mut log = Logger::custom_logger(
             module_path!(),
             "ConfileHandler",
-            Box::new(ConfileHandler::create("example.log").unwrap()),
+            Box::new(ConfileHandler::create("test_logs/confile_handler.log").unwrap()),
         );
 
-        log.set_fn_name("handler_trait");
+        log.set_fn_name("confile_handler");
+
+        let h = log
+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
+            .unwrap();
+
+        h.set_test_mode(false);
+
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
         log.info("trait methods");
+        log.warning("The sky is falling!");
 
         let handler = log
-            .get_handler(crate::Handler::Custom("ConfileHandler".to_string()))
+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
             .unwrap();
-        assert!(handler.is_open());
-        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}\"".to_string());
+
         assert_eq!(handler.get_log(), "".to_string());
+
         handler.flush();
         handler.close();
+        log.exiting_with("This should get thrown away.");
+    }
+
+    #[test]
+    fn confile_handler_file_test() {
+        let re_str =
+"^(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests->confile_handler_file_test \\[INFO   ] trait methods
+(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests->confile_handler_file_test \\[WARNING] The sky is falling!
+$";
+
+        let re = Regex::new(re_str).unwrap();
+
+        let mut log = Logger::builder(module_path!())
+            .set_fn_name("confile_handler_file_test")
+            .remove_file("test_logs/confile_handler_file_test.log")
+            .add_custom_handler(
+                "ConfileHandler",
+                Box::new(
+                    ConfileHandler::create("test_logs/confile_handler_file_test.log").unwrap(),
+                ),
+            )
+            .build();
+
+        let h = log
+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
+            .unwrap();
+
+        h.set_test_mode(false);
+
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log
+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
+            .unwrap();
+
+        assert_eq!(h.get_log(), "".to_string());
+
+        h.flush();
+        h.close();
+        assert!(!h.is_open());
+
+        log.severe("This should get thrown away.");
+
+        if let Ok(mut file) = File::open("test_logs/confile_handler_file_test.log") {
+            let mut buf = String::new();
+            if let Ok(_count) = file.read_to_string(&mut buf) {
+                assert!(re.is_match(&buf));
+            }
+        }
+    }
+
+    #[test]
+    fn confile_handler_test_mode() {
+        let re_str =
+"^my_project::handlers::confile_handler::tests->confile_handler_test_mode \\[INFO   ] trait methods
+(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests->confile_handler_test_mode \\[INFO   ] trait methods
+my_project::handlers::confile_handler::tests->confile_handler_test_mode \\[WARNING] The sky is falling!
+(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests->confile_handler_test_mode \\[WARNING] The sky is falling!
+$";
+        let re = Regex::new(re_str).unwrap();
+
+        let mut log = Logger::builder(module_path!())
+            .set_fn_name("confile_handler_test_mode")
+            .add_custom_handler(
+                "ConfileHandler",
+                Box::new(
+                    // This file is never written to:
+                    ConfileHandler::create("test_logs/confile_handler_test_mode.log").unwrap(),
+                ),
+            )
+            .build();
+
+        let h = log
+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
+            .unwrap();
+
+        // All log entries will be stored in the internal buffer.
+        h.set_test_mode(true);
+
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+        let h = log
+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
+            .unwrap();
+
+        let buf = h.get_log();
+
+        assert!(re.is_match(&buf));
+
+        h.flush();
+        h.close();
     }
 
     #[test]
     #[should_panic(expected = "'filename' must not be empty")]
     fn filename_empty() {
-        let mut log = Logger::custom_logger(
-            module_path!(),
-            "ConfileHandler",
-            Box::new(ConfileHandler::create("").unwrap()),
-        );
+        let _ = Logger::builder(module_path!())
+            .set_fn_name("confile_handler_test_mode")
+            .add_custom_handler(
+                "ConfileHandler",
+                Box::new(
+                    ConfileHandler::create("").unwrap(),
+                ),
+            )
+            .build();
     }
 }
 ```

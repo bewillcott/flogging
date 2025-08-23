@@ -14,10 +14,11 @@ Firstly, we will need to modify: `struct ConfileHandler`.
 #[derive(Debug, Default)]
 pub struct ConfileHandler {
     filename: String,
--    formatter: Formatter,
-+    file_fmt: Formatter,
-+    con_fmt: Formatter,
+-     formatter: Formatter,
++     con_fmt: Formatter,
++     file_fmt: Formatter,
     file: Option<File>,
+    writer: Option<Vec<u8>>,
 }
 ```
 
@@ -32,14 +33,14 @@ impl ConfileHandler {
 
         let fh = ConfileHandler {
             filename: filename.to_string(),
--            formatter: FormatType::Iso8601.create(None),
-+            file_fmt: FormatType::Iso8601.create(None),
-+            con_fmt: FormatType::Simple.create(None),
+-             formatter: FormatType::Iso8601.create(None),
++             con_fmt: FormatType::Simple.create(None),
++             file_fmt: FormatType::Iso8601.create(None),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
-
                 Some(f)
             },
+            writer: None,
         };
 
         Ok(fh)
@@ -52,9 +53,13 @@ Now: `impl fmt::Display for ConfileHandler`.
 ```rust, no_run
 impl fmt::Display for ConfileHandler {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        write!(f, "{} : {}", self.filename, self.formatter)
-+        write!(f, "{} : {}\nConsole: {}", self.filename, self.file_fmt, self.con_fmt)
+-         write!(f, "{} : {}", self.filename, self.formatter)
++         write!(
++             f,
++             "Console: {}\n{} : {}",
++             self.con_fmt, self.filename, self.file_fmt
++         )
+
     }
 }
-
 ```

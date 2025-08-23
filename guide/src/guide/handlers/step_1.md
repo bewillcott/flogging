@@ -8,7 +8,7 @@ For our example, we are going to develop a simple handler that combines outputti
 
 ## How?
 
-Now you need to know how you would process each log entry, so that you could either send it to somewhere or store it some where, and how you would get it there.
+Now you need to know how you would process each log entry, so that you could either send or store it some where, and how you would get it there.
 
 For our example, we need to do two separate things:
 
