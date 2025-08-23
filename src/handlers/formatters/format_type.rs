@@ -25,8 +25,8 @@
 //! # FormatType
 //!
 
-use std::fmt;
 use super::*;
+use std::fmt;
 
 ///
 /// Used as a simple way to obtain the various [`Formatter`]s.
@@ -104,17 +104,19 @@ fmt: MockFormatter
 Iso8601: Iso8601
 Simple: SimpleFormatter
 UnixTimestamp: UnixTimestamp
-".to_string();
+"
+        .to_string();
         let mut buf = Vec::new();
 
         let ft = FormatType::Custom;
         let fmt = ft.create(None);
 
-        writeln!(&mut buf, "ft: {ft}");
-        writeln!(&mut buf, "fmt: {fmt}");
-        writeln!(&mut buf, "Iso8601: {}", FormatType::Iso8601);
-        writeln!(&mut buf, "Simple: {}", FormatType::Simple);
-        writeln!(&mut buf, "UnixTimestamp: {}", FormatType::UnixTimestamp);
+        writeln!(&mut buf, "ft: {ft}").expect("writeln!() failed");
+        writeln!(&mut buf, "fmt: {fmt}").expect("writeln!() failed");
+        writeln!(&mut buf, "Iso8601: {}", FormatType::Iso8601).expect("writeln!() failed");
+        writeln!(&mut buf, "Simple: {}", FormatType::Simple).expect("writeln!() failed");
+        writeln!(&mut buf, "UnixTimestamp: {}", FormatType::UnixTimestamp)
+            .expect("writeln!() failed");
 
         assert_eq!(expected, String::from_utf8(buf).unwrap());
     }

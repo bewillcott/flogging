@@ -75,6 +75,7 @@ impl fmt::Display for ConsoleType {
 ///
 #[derive(Debug)]
 pub struct ConsoleTypeError {
+    #[allow(dead_code)]
     msg: String,
 }
 
@@ -119,7 +120,7 @@ mod tests {
         let mut buf = Vec::new();
 
         for console_type in ConsoleType::iter() {
-            writeln!(&mut buf, "{console_type}");
+            writeln!(&mut buf, "{console_type}").expect("writeln!() failed");
         }
 
         assert_eq!(expected, String::from_utf8(buf).unwrap());

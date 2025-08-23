@@ -70,7 +70,7 @@ $";
         let f = FormatType::Iso8601.create(None);
         let fs = f.format(&le);
         // println!("\n{f:width$}\n{fs}", width = f.width());
-        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width());
+        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width()).expect("writeln!() failed");
         let result = String::from_utf8(buf).unwrap();
         // println!("{result}",);
 
@@ -96,7 +96,7 @@ dt_fmt: \"\" - fmt_string: \"{mod_path}->{fn_name} [{level:7}] {message}\"
         let f = FormatType::Simple.create(None);
         let fs = f.format(&le);
         // println!("\n{f:width$} {fs}\n", width = f.width());
-        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width());
+        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width()).expect("writeln!() failed");
 
         assert_eq!(expected, String::from_utf8(buf).unwrap());
     }
@@ -120,7 +120,7 @@ $";
         let f = FormatType::UnixTimestamp.create(None);
         let fs = f.format(&le);
         // println!("\n{f:width$}\n{fs}", width = f.width());
-        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width());
+        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width()).expect("writeln!() failed");
         let result = String::from_utf8(buf).unwrap();
         // println!("{result}",);
 
@@ -144,7 +144,7 @@ MockFormatter
         let f = FormatType::Custom.create(Some(Box::new(MockFormatter::new())));
         let fs = f.format(&le);
         // println!("\n{f:width$}\n{fs}", width = f.width());
-        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width());
+        writeln!(&mut buf, "\n{f:width$}\n{fs}", width = f.width()).expect("writeln!() failed");
 
         assert_eq!(expected, String::from_utf8(buf).unwrap());
     }

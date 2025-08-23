@@ -25,8 +25,6 @@
 //! # FileHandler
 //!
 
-#![allow(unused)]
-
 use std::{
     fmt,
     fs::{File, exists},
@@ -104,7 +102,7 @@ impl HandlerTrait for FileHandler {
 
     fn flush(&mut self) {
         if let Some(f) = &self.file {
-            f.sync_all();
+            f.sync_all().expect("sync_all failed");
         }
     }
 
@@ -126,9 +124,13 @@ impl HandlerTrait for FileHandler {
             buf.push('\n');
 
             if let Some(w) = self.writer.as_mut() {
-                writeln!(w, "{}", self.formatter.format(log_entry));
+                writeln!(w, "{}", self.formatter.format(log_entry)).expect("writeln!() failed");
             } else {
-                self.file.as_mut().unwrap().write_all(buf.as_bytes());
+                self.file
+                    .as_mut()
+                    .unwrap()
+                    .write_all(buf.as_bytes())
+                    .expect("write_all() failed");
             }
         }
     }
@@ -164,9 +166,11 @@ mod tests {
     #[test]
     fn file_handler() {
         let mut log = Logger::file_logger(module_path!(), "test_logs/file_handler.log");
+        log.set_fn_name("file_handler");
 
         let h = log.get_handler(crate::Handler::File).unwrap();
         h.set_test_mode(false);
+
         assert!(h.is_open());
         assert_eq!(
             h.get_formatter().to_string(),
@@ -177,20 +181,23 @@ mod tests {
         log.info("trait methods");
         log.warning("The sky is falling!");
 
-        let handler = log.get_handler(crate::Handler::File).unwrap();
-        assert_eq!(handler.get_log(), "".to_string());
-        handler.flush();
-        handler.close();
+        let h = log.get_handler(crate::Handler::File).unwrap();
+
+        assert_eq!(h.get_log(), "".to_string());
+
+        h.flush();
+        h.close();
         log.exiting_with("This should get thrown away.");
     }
 
     #[test]
     fn file_handler_file_test() {
-        let expected = "flogging::handlers::file_handler::tests-> [INFO   ] trait methods
-flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
+        let expected = "flogging::handlers::file_handler::tests->file_handler_file_test [INFO   ] trait methods
+flogging::handlers::file_handler::tests->file_handler_file_test [WARNING] The sky is falling!\n"
             .to_string();
 
         let mut log = Logger::builder(module_path!())
+            .set_fn_name("file_handler_file_test")
             .remove_file("test_logs/file_handler_file_test.log")
             .add_file_handler_with(
                 "test_logs/file_handler_file_test.log",
@@ -201,6 +208,7 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::File).unwrap();
         h.set_test_mode(false);
+
         assert!(h.is_open());
         assert_eq!(
             h.get_formatter().to_string(),
@@ -212,7 +220,9 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
         log.warning("The sky is falling!");
 
         let h = log.get_handler(crate::Handler::File).unwrap();
+
         assert_eq!(h.get_log(), "".to_string());
+
         h.flush();
         h.close();
         assert!(!h.is_open());
@@ -221,7 +231,7 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
 
         if let Ok(mut file) = File::open("test_logs/file_handler_file_test.log") {
             let mut buf = String::new();
-            if let Ok(count) = file.read_to_string(&mut buf) {
+            if let Ok(_count) = file.read_to_string(&mut buf) {
                 assert_eq!(expected, buf);
             }
         }
@@ -229,11 +239,12 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
 
     #[test]
     fn file_handler_test_mode() {
-        let expected = "flogging::handlers::file_handler::tests-> [INFO   ] trait methods
-flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
+        let expected = "flogging::handlers::file_handler::tests->file_handler_test_mode [INFO   ] trait methods
+flogging::handlers::file_handler::tests->file_handler_test_mode [WARNING] The sky is falling!\n"
             .to_string();
 
         let mut log = Logger::builder(module_path!())
+            .set_fn_name("file_handler_test_mode")
             .remove_file("test_logs/file_handler_test_mode.log")
             .add_file_handler_with(
                 "test_logs/file_handler_test_mode.log",
@@ -244,6 +255,7 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::File).unwrap();
         h.set_test_mode(true);
+
         assert!(h.is_open());
         assert_eq!(
             h.get_formatter().to_string(),
@@ -256,6 +268,7 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
 
         let h = log.get_handler(crate::Handler::File).unwrap();
         let buf = h.get_log();
+
         assert_eq!(expected, buf);
 
         h.flush();
@@ -265,6 +278,6 @@ flogging::handlers::file_handler::tests-> [WARNING] The sky is falling!\n"
     #[test]
     #[should_panic(expected = "'filename' must not be empty")]
     fn filename_empty() {
-        let mut log = Logger::file_logger(module_path!(), "");
+        let _ = Logger::file_logger(module_path!(), "");
     }
 }
