@@ -79,7 +79,7 @@ impl fmt::Display for MockFormatter {
 }
 
 impl FormatTrait for MockFormatter {
-    fn format(&self, log_entry: &crate::LogEntry) -> String {
+    fn format(&self, _log_entry: &crate::LogEntry) -> String {
         let _ = self.dt_fmt();
         "MockFormatter".to_string()
     }

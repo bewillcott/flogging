@@ -27,7 +27,10 @@
 //!
 
 use crate::*;
-use std::{fmt, io::Error};
+use std::{
+    fmt,
+    io::{self, Error},
+};
 
 ///
 /// This is used as a _fake_ or _mock_ handler.
@@ -45,7 +48,7 @@ impl fmt::Display for MockHandler {
 }
 
 impl HandlerTrait for MockHandler {
-    fn create(name: &str) -> Result<Self, Error>
+    fn create(_name: &str) -> Result<Self, Error>
     where
         Self: Sized,
     {
@@ -78,14 +81,14 @@ impl HandlerTrait for MockHandler {
     }
 
     #[allow(private_interfaces)]
-    fn publish(&mut self, log_entry: &LogEntry) {}
+    fn publish(&mut self, _log_entry: &LogEntry) {}
 
-    fn set_formatter(&mut self, formatter: Formatter) {}
+    fn set_formatter(&mut self, _formatter: Formatter) {}
 
     ///
     /// This is a 'NoOp' fn.
     ///
-    fn set_test_mode(&mut self, state: bool) {}
+    fn set_test_mode(&mut self, _state: bool) {}
 }
 
 #[cfg(test)]
