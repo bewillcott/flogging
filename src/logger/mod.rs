@@ -763,19 +763,6 @@ impl Logger {
         Logger::builder(mod_path).add_pconsole_handler().build()
     }
 
-
-    ///
-    /// Reset this `Logger` instance's logging level.
-    ///
-    /// Returns itself for chaining purposes.
-    ///
-    /// See [Level]
-    ///
-    pub fn reset_level(&mut self) -> &mut Self {
-        self.level = Level::default();
-        self
-    }
-
     ///
     /// Set the current function/method name.
     ///
