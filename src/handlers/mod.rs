@@ -24,8 +24,6 @@
 //! # Handlers
 //!
 
-#![allow(unused)]
-
 mod console_handler;
 mod file_handler;
 mod formatters;

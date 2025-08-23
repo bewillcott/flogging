@@ -74,6 +74,7 @@ impl Formatter {
         }
     }
 
+    #[allow(dead_code)]
     pub(crate) fn width(&self) -> usize {
         15
     }
