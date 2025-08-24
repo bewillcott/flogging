@@ -72,10 +72,8 @@ Possible output:
 - console
 
     ```text
-
     my_project::handlers::confile_handler::tests->confile_handler [INFO   ] trait methods
     my_project::handlers::confile_handler::tests->confile_handler [WARNING] The sky is falling!
-
     ```
 
 - "test_logs/confile_handler.log"\
@@ -84,7 +82,6 @@ Possible output:
     ```text
     2025-08-21T17:08:49.939233702+08:00 my_project::handlers::confile_handler::tests->confile_handler [INFO   ] trait methods
     2025-08-21T17:08:49.939325645+08:00 my_project::handlers::confile_handler::tests->confile_handler [WARNING] The sky is falling!
-
     ```
 
 ---
@@ -168,10 +165,8 @@ Possible output:
 - console
 
     ```text
-
     my_project::handlers::confile_handler::tests->confile_handler_file_test [INFO   ] trait methods
     my_project::handlers::confile_handler::tests->confile_handler_file_test [WARNING] The sky is falling!
-
     ```
 
 - "test_logs/confile_handler_file_test.log"\
@@ -179,7 +174,6 @@ Possible output:
     ```text
     2025-08-21T17:10:24.123558141+08:00 my_project::handlers::confile_handler::tests->confile_handler_file_test [INFO   ] trait methods
     2025-08-21T17:10:24.123657909+08:00 my_project::handlers::confile_handler::tests->confile_handler_file_test [WARNING] The sky is falling!
-
     ```
 
 ---
@@ -279,7 +273,6 @@ Test passes with output:
 - console
 
     ```text
-
     thread 'handlers::confile_handler::tests::filename_empty' panicked at src/handlers/confile_handler.rs:318:48:
     called `Result::unwrap()` on an `Err` value: Custom { kind: InvalidInput, error: "'filename' must not be empty" }
     ```
