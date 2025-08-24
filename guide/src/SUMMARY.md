@@ -7,6 +7,18 @@
 # Guide
 
 - [Overview](./guide/overview.md)
+
+# Usage
+
+- [Macros](./guide/macros.md)
+  - [Explain (Part 1)](./guide/macros/explain_1.md)
+  - [Idea](./guide/macros/idea.md)
+  - [Explain (Part 2)](./guide/macros/explain_2.md)
+  - [Wrap Up](./guide/macros/wrap_up.md)
+- [Methods](./guide/methods.md)
+
+# Customization
+
 - [Custom Handlers](./guide/custom_handlers.md)
   - [Step 1](./guide/handlers/step_1.md)
   - [Step 2](./guide/handlers/step_2.md)
@@ -22,6 +34,7 @@
   - [Step 4](./guide/formatters/step_4.md)
   - [Final Code](./guide/formatters/final_code.md)
   - [Wrap Up](./guide/formatters/wrap_up.md)
+- [Integration](./guide/integration.md)
 
 # Extras
 

@@ -56,13 +56,13 @@ Each module or file will require its own instance of this setup. This is intenti
 Let's assume you want to setup just a "global" instance in `lib.rs`, to be used by all of its "child" mods/files. This is what you might get from logging a function - `do_it()`:
 
 ```text
-test_proj->do_it [FINER  ] Entry
+my_project->do_it [FINER  ] Entry
 ```
 
 or with individual instances (as currently required):
 
 ```text
-test_proj::core::control->do_it [FINER  ] Entry
+my_project::core::control->do_it [FINER  ] Entry
 ```
 
 where both examples are from the file: `src/core/control.rs`.
@@ -78,7 +78,7 @@ This text came from the file `src/core/mod.rs`, just to let you know.
 instead of:
 
 ```text
-test_proj::core::mod->do_it [INFO   ] This text came from the file `src/core/mod.rs`, just to let you know.
+my_project::core::mod->do_it [INFO   ] This text came from the file `src/core/mod.rs`, just to let you know.
 ```
 
 You might set this particular file's instance to log level `Level::INFO`, and have regular types of textual output that would be a normal part of the running program.
@@ -86,80 +86,6 @@ You might set this particular file's instance to log level `Level::INFO`, and ha
 Mix and match - Have fun!!!
 
 ---
-
-### Idea
-
-Let's say you have something like this project (`test_proj`) structure:
-
-- `src/`
-  - `lib.rs`
-  - `core/`
-    - `control.rs`
-    - `mod.rs`
-
-You might have:
-
-- `src/lib.rs`
-
-    ```rust, no_run
-    mod core;
-
-    pub(crate) use flogging::*;
-    pub use core::*;
-
-    pub(crate) const DEBUG_LEVEL:Level = Level::ALL;
-    ```
-
-- `src/core/control.rs`\
-  Notice the use of `DEBUG_LEVEL`:
-
-    ```rust, no_run
-    use crate::*;
-
-    const_logger!({
-        Logger::builder(module_path!())
-            .add_console_handler()
-            .remove_file("test_logs/usage.log")
-            .add_file_handler("test_logs/usage.log")
-            .set_level(DEBUG_LEVEL)
-            //         ^^^^^^^^^^^
-            .build()
-    });
-
-    #[logger]
-    pub fn do_it() {
-        entering!();
-    }
-    ...
-    ```
-
-- `src/core/mod.rs`\
-  Notice the use of `DEBUG_LEVEL`, and `add_pconsole_handler()`:
-
-    ```rust, no_run
-    use crate::*;
-
-    const_logger!({
-        Logger::builder(module_path!())
-            .add_pconsole_handler()
-            //   ^^^^^^^^
-            .remove_file("test_logs/usage.log")
-            .add_file_handler("test_logs/usage.log")
-            .set_level(DEBUG_LEVEL)
-            //         ^^^^^^^^^^^
-            .build()
-    });
-
-    #[logger]
-    pub fn do_it() {
-        entering!();
-        info!("This text came from the file `src/core/mod.rs`, just to let you know.");
-        exiting!();
-    }
-    ...
-    ```
-
-This is an effective way of controlling all of the logging within the "lib" part of your crate. Of course, each mod/file instance can be individually set to its own level.
 
 ### Warning
 
