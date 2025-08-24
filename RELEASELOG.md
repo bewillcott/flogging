@@ -19,7 +19,13 @@
   }
   ```
 
-  This API is redundant. So removing it now, before v1.0.0 release is best.
+- Removed
+
+  ```rust, no_run
+  Logger::reset_level()
+  ```
+
+Both of the above APIs are redundant. So removing them now, before v1.0.0 is released, is best.
 
 - Added a new method to `HandlerTrait` - `set_test_mode()`. This will require updating of any custom handlers.
 
@@ -40,6 +46,8 @@ Added new method to `LoggerBuilder` - `pconsole_logger()`.
 To facilitate the _pconcole_handlers_, a new enum `ConsoleType` has been added.
 
 Added new instructional guide: [FLogging Guide]
+
+Extensive work done on improving both unit and integration tests.
 
 </details>
 

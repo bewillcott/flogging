@@ -13,21 +13,25 @@
 - **Breaking:** Minor change to the `SimpleFormatter::fmt_string` and `UnixTimestampFormatter::fmt_string`. ([`5a435f7`])
 - Change: `ConsoleHandler` contains `console_type: ConsoleType` instead of ``stderr: bool``.\
   ([`aeceb23`])
-- Change: Many updates to the Guide. ([`0d4e738`])
+- Change: Update and improve tests. ([`b51d4ba`])
+- Change: Many updates to the Guide. ([`0d4e738`]) ([`b16e260`]) ([`bda2ef3`]) ([`3a0bd0b`]) ([b997cbb`])
+- Change: Update Guide, remove `api` and `coverage` directories from source control. ([`f8acd75`])
 
 ### Added
 
 - **Breaking** Add: New method to `HandlerTrait` - `set_test_mode()`. ([`0fc162b`])
+- Add: New instructional Guide. ([`73d048a`])
 - Add: New `LoggerBuilder` method: `remove_file()`. ([`f9d5b95`])
 - Add: New `LoggerBuilder` method: `set_fn_name()`. ([`0a76ce2`])
 - Add: `enum ConsoleType`. ([`b0f404b`])
 - Add: New `LoggerBuilder` methods: `add_pconsole_handler()` and `add_pconsole_handler_with()`. ([`85bbe5a`])
 - Add: New method to `Logger` - `pconsole_logger()`. ([`29bef45`])
-- Add: New instructional guide. ([`73d048a`])
 
 ### Removed
 
 - **Breaking:** Remove `impl Handler{...}` - `new()` and `create(name)`. ([`3623196`])
+- **Breaking:** Removed `Logger::reset_level()`. No longer applicable. Use `Logger::set_level()`.
+- Remove: `main.rs` from project. ([`6a2a3cc`])
 
 ### Fixed
 
@@ -81,6 +85,13 @@
 _Initial release._
 
 [0.6.0]: https://github.com/bewillcott/flogging/releases/tag/v0.6.0
+[`b997cbb`]: https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6
+[`3a0bd0b`]: https://github.com/bewillcott/flogging/commit/3a0bd0b74a57449ae786771165d482dc3cc9fae0
+[`6a2a3cc`]: https://github.com/bewillcott/flogging/commit/6a2a3ccbbbfa8ca36827ebad7fb2b2a18e8da643
+[`bda2ef3`]: https://github.com/bewillcott/flogging/commit/bda2ef33cb41504ac4a06150cc12e9a98b039209
+[`b16e260`]: https://github.com/bewillcott/flogging/commit/b16e26076bbf731c662f40ed01ec4c73ae176183
+[`b51d4ba`]: https://github.com/bewillcott/flogging/commit/b51d4ba470d12e3cb88163f7c2d51781a060e693
+[`f8acd75`]: https://github.com/bewillcott/flogging/commit/f8acd757979fc1a1b985d901ba347e2c01e68fdd
 [`0d4e738`]: https://github.com/bewillcott/flogging/commit/0d4e7388040a205bc013385e173cb7efb36e4a4d
 [`0c6aa2f`]: https://github.com/bewillcott/flogging/commit/0c6aa2f9521085870144c3e200429133f910469a
 [`29bef45`]: https://github.com/bewillcott/flogging/commit/29bef4580276b64cf91bcbb156ce890d27110df6

@@ -15,6 +15,7 @@ repository = "https://github.com/bewillcott/flogging"
 keywords = ["log", "logger", "logging", "tracing", "debug"]
 categories = ["development-tools::debugging"]
 exclude = ["/.vscode", "logger.dtd", "/src/main.rs", "licenseheader.txt"]
+publish = false
 
 [badges]
 maintenance = { status = "actively-developed" }
