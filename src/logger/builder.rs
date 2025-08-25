@@ -69,24 +69,6 @@ impl LoggerBuilder {
     }
 
     ///
-    /// Adds a [`ConsoleHandler`] with the default formatter,
-    /// with output according to: [`ConsoleType::StdErr`].
-    ///
-    /// ## Examples
-    /// ```
-    /// extern crate flogging;
-    /// use flogging::*;
-    ///
-    /// let mut log = Logger::builder(module_path!())
-    ///     .add_econsole_handler()
-    ///     .build();
-    /// ```
-    ///
-    pub fn add_econsole_handler(self) -> Self {
-        self.add_handler_with(Handler::EConsole, None, None, None, None)
-    }
-
-    ///
     /// Adds a [`ConsoleHandler`] with the required formatter,
     /// with output according to: [`ConsoleType::StdOut`].
     ///
@@ -130,6 +112,24 @@ impl LoggerBuilder {
             Some(format_type),
             custom_formatter,
         )
+    }
+
+    ///
+    /// Adds a [`ConsoleHandler`] with the default formatter,
+    /// with output according to: [`ConsoleType::StdErr`].
+    ///
+    /// ## Examples
+    /// ```
+    /// extern crate flogging;
+    /// use flogging::*;
+    ///
+    /// let mut log = Logger::builder(module_path!())
+    ///     .add_econsole_handler()
+    ///     .build();
+    /// ```
+    ///
+    pub fn add_econsole_handler(self) -> Self {
+        self.add_handler_with(Handler::EConsole, None, None, None, None)
     }
 
     ///
@@ -601,11 +601,11 @@ mod tests {
 
     #[test]
     fn temp() -> Result<()> {
-        // let mut w = Vec::new();
+        let msg = "arguments";
         let mut w = stdout();
         writeln!(&mut w)?;
         writeln!(&mut w, "test")?;
-        writeln!(&mut w, "formatted {}", "arguments")?;
+        writeln!(&mut w, "formatted {}", msg)?;
 
         // assert_eq!(&w[..], "\ntest\nformatted arguments\n".as_bytes());
         Ok(())

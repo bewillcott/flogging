@@ -142,7 +142,6 @@
 //! - [`has_handler()`][Logger::has_handler]
 //! - [`info()`][Logger::info]
 //! - [`level()`][Logger::level]
-//! - [`reset_level()`][Logger::reset_level]
 //! - [`set_fn_name()`][Logger::set_fn_name]
 //! - [`set_level()`][Logger::set_level]
 //! - [`severe()`][Logger::severe]
@@ -158,12 +157,16 @@
 //! - [`add_console_handler_with()`][LoggerBuilder::add_console_handler_with()]
 //! - [`add_econsole_handler()`][LoggerBuilder::add_econsole_handler()]
 //! - [`add_econsole_handler_with()`][LoggerBuilder::add_econsole_handler_with()]
+//! - [`add_console_handler()`][LoggerBuilder::add_pconsole_handler()]
+//! - [`add_console_handler_with()`][LoggerBuilder::add_pconsole_handler_with()]
 //! - [`add_custom_handler()`][LoggerBuilder::add_custom_handler()]
 //! - [`add_custom_handler_with()`][LoggerBuilder::add_custom_handler_with()]
 //! - [`add_file_handler()`][LoggerBuilder::add_file_handler()]
 //! - [`add_file_handler_with()`][LoggerBuilder::add_file_handler_with()]
 //! - [`add_string_handler()`][LoggerBuilder::add_string_handler()]
 //! - [`add_string_handler_with()`][LoggerBuilder::add_string_handler_with()]
+//! - [`remove_file()`][LoggerBuilder::remove_file()]
+//! - [`set_fn_name()`][LoggerBuilder::set_fn_name()]
 //! - [`set_level()`][LoggerBuilder::set_level()]
 //!
 //! And to finish:
@@ -172,7 +175,7 @@
 //! These options/methods allow you a lot of flexibility in how you configure your logger. As you will typically
 //! have a different logger for each mod/file, you have a lot of control over what is logged, how it is formatted,
 //! and where it is stored/viewed. With the [`set_level()`][LoggerBuilder::set_level()] method, you can control
-//! this on a mod/file basis. Logging each file differently, or even turning logging off when you no-longer require it.
+//! this on a mod/file basis. Logging each mod/file differently, or even turning logging off when you no-longer require it.
 //!
 //! **Note**
 //!
@@ -185,6 +188,9 @@
 //! I have included a number of handlers to get you started:
 //!
 //! - [`ConsoleHandler`]
+//!   - [`ConsoleType::StdOut`]
+//!   - [`ConsoleType::StdErr`]
+//!   - [`ConsoleType::Production`]
 //! - [`FileHandler`]
 //! - [`MockHandler`]
 //! - [`StringHandler`]
