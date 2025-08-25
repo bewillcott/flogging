@@ -2,7 +2,7 @@
 authors = ["Bradley Willcott"]
 language = "en"
 src = "src"
-title = "FLogging Guide"
+title = "The FLogging Guide"
 description = ""
 
 [build]
