@@ -30,5 +30,5 @@
         "unixtimestamp"
     ],
     "rust-analyzer.checkOnSave": false,
-    "markdown.extension.preview.autoShowPreviewToSide": true,
+    "markdown.extension.preview.autoShowPreviewToSide": false,
 }
