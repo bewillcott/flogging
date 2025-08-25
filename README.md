@@ -10,8 +10,7 @@ Log entries can be sent to the console (stdout or stderr), file, memory log, or 
 can be formatted in various layouts: ISO8601, Simple, Unix TimeStamp, or a custom
 layout.
 
-Macros and public functions are provided, with the macros being the simplest method
-of operation.
+Macros and public methods are provided, with the macros being the simplest _method_ of operation.
 
 There are several levels for logging at:
 
@@ -30,9 +29,9 @@ There are even two special settings:
 
 ## ** WARNING **
 
-***Version 0.6.0*** **BREAKS**:
+**_Version 0.6.0_** **BREAKS**:
 
-- The output from `Iso8601Formatter`. It has been changed [*].
+- The output from `Iso8601Formatter`. It has been changed [^bars].
   The format string for `fmt_string` has been changed from:
 
   `"{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}"`
@@ -41,25 +40,25 @@ There are even two special settings:
 
   `"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}"`
 
-- In similar fashion, both `SimpleFormatter` and `UnixTimestampFormatter` have been changed [*].
+- In similar fashion, both `SimpleFormatter` and `UnixTimestampFormatter` have been changed [^bars].
 - Added new method to `HandlerTrait` - `set_test_mode()`. This will require updating any custom formatters you have created.
 
-[*] This may affect any tests or logs that expect the precise old format.
+[^bars]: This may affect any tests or logs that expect the precise old format.\
 Sorry about this. The "|" bars were a holdover from early testing, and were not
 removed before publishing.
 
 **Note:**\
 Version (0.6.0) is backwards compatible with version (0.5.0). Therefore it has the same warning. It is recommended that any use of version (0.4.X) be bumped to atleast (0.5.0), fixing the minor issue, as this will continue into all subsequent version updates.
 
-***Version 0.5.0*** **BREAKS** the custom formatter API.
+**_Version 0.5.0_** **BREAKS** the custom formatter API.
 
-If you have *not* yet started developing your own versions of the formatter, then this will *NOT* affect you. The Public API is currently backwards compatible to version (0.4.1).
+If you have _not_ yet started developing your own versions of the formatter, then this will _NOT_ affect you. The Public API is currently backwards compatible to version (0.4.1).
 
 For the rest of you, please check out `FormatType::Custom` and view the **Change Log**.
 
 ## New Instruction Guide
 
-That's right. I realized that having *just* the API documentation was not going to be enough for you nerds out there, who just **love** to customize. So, I have written a guide. So far it covers the development of a *custom handler* and a *custom formatter*. There should be enough of an example of each to get you started.
+That's right. I realized that having _just_ the API documentation was not going to be enough for you nerds out there, who just **love** to customize. So, I have written a guide. So far it covers the development of a _custom handler_ and a _custom formatter_. There should be enough of an example of each to get you started.
 
 At some point in the future, I might add more help/instructions. But at the moment I can't think of anything else to add. If you think of something that will help you and others, create an [issue on Github].
 
@@ -67,11 +66,11 @@ At some point in the future, I might add more help/instructions. But at the mome
 
 This project is being developed as a learning experience. I am fully aware that there are many other logging crates out there, but where is the fun in that? As a hobbyist it still seems like a good idea.
 
-A lot of the functionality has been inspired by, and even copied from (at the API level), the JDK's `java.util.logging` package. Whether or not it will ever become a *full* port, only time and my level of interest, will tell. Remember, "learning experience"?
+A lot of the functionality has been inspired by, and even copied from (at the API level), the JDK's `java.util.logging` package. Whether or not it will ever become a _full_ port, only time and my level of interest, will tell. Remember, "learning experience"?
 
 ## What's in a name?
 
-`Flogging`, as-in, "Flogging a dead horse", or "Just another f\*ing logger". As I wrote above, there are *many* other logging crates around. This is just my learning spin on a very well covered tool.
+`Flogging`, as-in, "Flogging a dead horse", or "Just another f\*ing logger". As I wrote above, there are _many_ other logging crates around. This is just my learning spin on a very well covered tool.
 
 ## What's in a number?
 

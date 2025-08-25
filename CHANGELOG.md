@@ -4,9 +4,6 @@
 
 ## Version 0.6.0 [*][0.6.0] - Dev
 
-<details>
-<summary>Details (click to see)</summary>
-
 ### Changed
 
 - **Breaking:** Minor change to the `Iso8601Formatter::fmt_string`. ([`16a7e87`])
@@ -14,7 +11,8 @@
 - Change: `ConsoleHandler` contains `console_type: ConsoleType` instead of ``stderr: bool``.\
   ([`aeceb23`])
 - Change: Update and improve tests. ([`b51d4ba`])
-- Change: Many updates to the Guide. ([`0d4e738`]) ([`b16e260`]) ([`bda2ef3`]) ([`3a0bd0b`]) ([b997cbb`])
+- Change: Many updates to the Guide.\
+  ([`0d4e738`]) ([`b16e260`]) ([`bda2ef3`]) ([`3a0bd0b`]) ([`b997cbb`]) ([`bd3c370`])
 - Change: Update Guide, remove `api` and `coverage` directories from source control. ([`f8acd75`])
 
 ### Added
@@ -36,8 +34,6 @@
 ### Fixed
 
 - Fix: Many tests due to new and modified API and internal code. ([`0c6aa2f`])
-
-</details>
 
 ## Version 0.5.0 [*][0.5.0] - 2025-08-03
 
@@ -85,6 +81,7 @@
 _Initial release._
 
 [0.6.0]: https://github.com/bewillcott/flogging/releases/tag/v0.6.0
+[`bd3c370`]: https://github.com/bewillcott/flogging/commit/bd3c370702c882a4232a78634c49733eda02841f
 [`b997cbb`]: https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6
 [`3a0bd0b`]: https://github.com/bewillcott/flogging/commit/3a0bd0b74a57449ae786771165d482dc3cc9fae0
 [`6a2a3cc`]: https://github.com/bewillcott/flogging/commit/6a2a3ccbbbfa8ca36827ebad7fb2b2a18e8da643
