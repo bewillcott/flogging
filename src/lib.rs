@@ -30,6 +30,8 @@
 //! provision of specific information as, when, and from where, it is needed. This could
 //! be during development, testing, or even during production runs.
 //!
+//! There is a new tutorial guide: **[The FLogging Guide]**.
+//!
 //! ## Setting up
 //!
 //! You need to add this crate to your project:
@@ -48,7 +50,7 @@
 //! ## Features
 //!
 //! - [Levels](enum.Level.html) - There are nine (9) levels of message logging, with two (2) special ones.
-//! - [Choice](index.html#choice) - You can use either macros or methods.
+//! - [Choice](index.html#choice) - You can use either macros, methods, or a mix of both.
 //! - [Built-in options](index.html#built-in-options) - A range of handlers and formatters.
 //! - [Customization](index.html#customization) - You can create your own handlers and/or formatters.
 //!
@@ -81,7 +83,7 @@
 //!     - [`get_handler!()`]
 //!     - [`set_level!()`]
 //!
-//! Check out the [Examples](index.html#examples) below for how easy it is to get started.
+//! Check out the [Examples](index.html#examples) below, or **[The FLogging Guide]**, for how easy it is to get started.
 //!
 //! ##### Special Note
 //!
@@ -177,6 +179,8 @@
 //! and where it is stored/viewed. With the [`set_level()`][LoggerBuilder::set_level()] method, you can control
 //! this on a mod/file basis. Logging each mod/file differently, or even turning logging off when you no-longer require it.
 //!
+//! Check out **[The FLogging Guide]** for examples and further help.
+//!
 //! **Note**
 //!
 //! As of version (0.4.0), you can only set the logging level for the logger. All handlers process every log entry
@@ -223,6 +227,12 @@
 //!
 //! OK now, how do you do it. Well this is going to require some work on your part.
 //!
+//! ---
+//!
+//! For a more in-depth tutorial refer to **[The FLogging Guide]**.
+//!
+//! ---
+//!
 //! #### Custom Handler
 //!
 //! To create a custom handler, I would suggest looking at the source code for the built-in ones, and copying
@@ -258,6 +268,7 @@
 //!
 //! - [`LoggerBuilder::add_console_handler_with()`]
 //! - [`LoggerBuilder::add_econsole_handler_with()`]
+//! - [`LoggerBuilder::add_pconsole_handler_with()`]
 //! - [`LoggerBuilder::add_custom_handler_with()`]
 //! - [`LoggerBuilder::add_file_handler_with()`]
 //! - [`LoggerBuilder::add_string_handler_with()`]
@@ -352,6 +363,7 @@
 //! [macros]: index.html#macros-1
 //! [specifiers]: https://docs.rs/chrono/latest/chrono/format/strftime
 //! [strfmt]: https://crates.io/crates/strfmt
+//! [The FLogging Guide]: https://bewillcott.github.io/flogging
 //!
 
 #![allow(unused_imports)]
