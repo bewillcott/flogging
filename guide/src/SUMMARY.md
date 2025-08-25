@@ -16,6 +16,11 @@
   - [Explain (Part 2)](./guide/macros/explain_2.md)
   - [Wrap Up](./guide/macros/wrap_up.md)
 - [Methods](./guide/methods.md)
+  - [Explain (Part 1)](./guide/methods/explain_1.md)
+  - [Explain (Part 2)](./guide/methods/explain_2.md)
+  - [Explain (Part 3)](./guide/methods/explain_3.md)
+  - [Wrap Up](./guide/methods/wrap_up.md)
+- [Hybrid](./guide/hybrid.md)
 
 # Customization
 
