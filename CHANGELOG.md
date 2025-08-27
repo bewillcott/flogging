@@ -2,7 +2,7 @@
 
 # Changelog <a href="https://common-changelog.org" title="" target="_blank"><img src="https://common-changelog.org/badge.svg" alt="Common Changelog"></a>
 
-## Version 0.6.0 [*][0.6.0] - Dev
+## Version 0.6.0 [*][0.6.0] - 2025-08-27
 
 - Initial release of the online Guide: "The FLogging Guide". ([`ebe97fc`])
 

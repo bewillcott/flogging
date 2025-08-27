@@ -2,7 +2,7 @@
 
 # Release Log
 
-## Version 0.6.0 [*][0.6.0] - Dev
+## Version 0.6.0 [*][0.6.0] - 2025-08-27
 
 ---
 **_Important Notes:_**

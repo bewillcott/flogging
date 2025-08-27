@@ -15,7 +15,7 @@ repository = "https://github.com/bewillcott/flogging"
 keywords = ["log", "logger", "logging", "tracing", "debug"]
 categories = ["development-tools::debugging"]
 exclude = ["/.vscode", "logger.dtd", "/src/main.rs", "licenseheader.txt"]
-publish = false
+# publish = false
 
 [badges]
 maintenance = { status = "actively-developed" }
@@ -24,7 +24,7 @@ maintenance = { status = "actively-developed" }
 anyhow = "1.0.99"
 chrono = { version = "0.4.41", features = ["std", "alloc"] }
 flogging_macros = { version = "=0.6.0", path = "flogging_macros" }
-regex = "1.11.1"
+regex = "1.11.2"
 dyn-fmt = "0.4.3"
 strfmt = "0.2.5"
 dyn-clone = "1.0.20"
