@@ -5,7 +5,8 @@ echo Clean directories
 rm -r ./docs
 rm -r ./guide/src/api
 rm -r ./guide/src/coverage
-rm -r ./guide/src/**.html
+rm -r ./guide/src/*.html
+find ./guide/src/guide/ -depth -name "*.html" -delete
 
 # Rebuild 'api' documentation
 echo Rebuild 'api' documentation
