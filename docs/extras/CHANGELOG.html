@@ -1,90 +1,344 @@
-<div
-            class="github-markdown-body"
-            data-color-mode="auto"
-            data-light-theme="light"
-            data-dark-theme="dark"
-        >
-            <div class="github-markdown-content"><span id="markdown-mermaid" aria-hidden="true"
-                    data-dark-mode-theme="dark"
-                    data-light-mode-theme="default"
-                    data-max-text-size="50000"></span>
-                <!-- markdownlint-disable-file MD024 MD042 MD033 -->
-<h1 id="changelog-">Changelog <a href="https://common-changelog.org" title="" target="_blank"><img src="https://common-changelog.org/badge.svg" alt="Common Changelog"></a></h1>
-<h2 id="version-060----dev">Version 0.6.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0">*</a> - Dev</h2>
-<ul>
-<li>Initial release of the online Guide: &quot;The FLogging Guide&quot;. (<a href="https://github.com/bewillcott/flogging/commit/ebe97fc99c17ca31339c908b5301512547553068"><code>ebe97fc</code></a>)</li>
-</ul>
-<h3 id="changed">Changed</h3>
-<ul>
-<li><strong>Breaking:</strong> Minor change to the <code>Iso8601Formatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/16a7e87e5a51e8aac4b01a5c6de53ea78ab92439"><code>16a7e87</code></a>)</li>
-<li><strong>Breaking:</strong> Minor change to the <code>SimpleFormatter::fmt_string</code> and <code>UnixTimestampFormatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/5a435f75ff9baee54d02c725018561beadc273f6"><code>5a435f7</code></a>)</li>
-<li>Change: <code>ConsoleHandler</code> contains <code>console_type: ConsoleType</code> instead of <code>stderr: bool</code>.<br>
-(<a href="https://github.com/bewillcott/flogging/commit/aeceb233270f7745b2ff7dbcb44d01ce68098f45"><code>aeceb23</code></a>)</li>
-<li>Change: Name: <code>impl ConsoleHandler::create()</code> to: <code>impl ConsoleHandler::_create()</code>. (<a href="https://github.com/bewillcott/flogging/commit/4a24410b82ae9f09a25e4bacf81663418f5da01b"><code>4a24410</code></a>)</li>
-<li>Change: Name: <code>impl FileHandler::create()</code> to: <code>impl FileHandler::_create()</code>. (<a href="https://github.com/bewillcott/flogging/commit/e08498ecf6e1c46310ec66bd5ae2961faf7c8264"><code>e08498e</code></a>)</li>
-<li>Change: Update and improve tests. (<a href="https://github.com/bewillcott/flogging/commit/b51d4ba470d12e3cb88163f7c2d51781a060e693"><code>b51d4ba</code></a>)</li>
-<li>Change: Many updates to the Guide.<br>
-(<a href="https://github.com/bewillcott/flogging/commit/0d4e7388040a205bc013385e173cb7efb36e4a4d"><code>0d4e738</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/b16e26076bbf731c662f40ed01ec4c73ae176183"><code>b16e260</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/bda2ef33cb41504ac4a06150cc12e9a98b039209"><code>bda2ef3</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/3a0bd0b74a57449ae786771165d482dc3cc9fae0"><code>3a0bd0b</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6"><code>b997cbb</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/bd3c370702c882a4232a78634c49733eda02841f"><code>bd3c370</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/af573a376cc99f5cccbac8a9572d88f4216c472c"><code>af573a3</code></a>)</li>
-<li>Change: Update Guide, remove <code>api</code> and <code>coverage</code> directories from source control. (<a href="https://github.com/bewillcott/flogging/commit/f8acd757979fc1a1b985d901ba347e2c01e68fdd"><code>f8acd75</code></a>)</li>
-<li>Change: Various improvements to the documentation. (<a href="https://github.com/bewillcott/flogging/commit/19c327aeff87a9550effe2218115144c85012f71"><code>19c327a</code></a>)</li>
-</ul>
-<h3 id="added">Added</h3>
-<ul>
-<li><strong>Breaking</strong> Add: New method to <code>HandlerTrait</code> - <code>set_test_mode()</code>. (<a href="https://github.com/bewillcott/flogging/commit/0fc162bf5898c0fe3cc5a8f89c069cfe83baa9c4"><code>0fc162b</code></a>)</li>
-<li>Add: New instructional Guide. (<a href="https://github.com/bewillcott/flogging/commit/73d048a44d1effb496d01213ad549b28bfdf027e"><code>73d048a</code></a>)</li>
-<li>Add: New <code>LoggerBuilder</code> method: <code>remove_file()</code>. (<a href="https://github.com/bewillcott/flogging/commit/f9d5b9537960dd23af9f76b77ff5a4b996e777bd"><code>f9d5b95</code></a>)</li>
-<li>Add: New <code>LoggerBuilder</code> method: <code>set_fn_name()</code>. (<a href="https://github.com/bewillcott/flogging/commit/0a76ce27ce98047045889f24f56684e1d44b9ec7"><code>0a76ce2</code></a>)</li>
-<li>Add: <code>enum ConsoleType</code>. (<a href="https://github.com/bewillcott/flogging/commit/b0f404b26858b4b9b1e6839b1769049e6deb2e65"><code>b0f404b</code></a>)</li>
-<li>Add: New <code>LoggerBuilder</code> methods: <code>add_pconsole_handler()</code> and <code>add_pconsole_handler_with()</code>. (<a href="https://github.com/bewillcott/flogging/commit/85bbe5a79320f19091abe1f11d06a962f29c2863"><code>85bbe5a</code></a>)</li>
-<li>Add: New method to <code>Logger</code> - <code>pconsole_logger()</code>. (<a href="https://github.com/bewillcott/flogging/commit/29bef4580276b64cf91bcbb156ce890d27110df6"><code>29bef45</code></a>)</li>
-<li>Add: New <code>Logger</code> associative function: <code>remove_file()</code>. (<a href="https://github.com/bewillcott/flogging/commit/9f848fdbb8fbf366bdc2f775091bd4297fc11f3b"><code>9f848fd</code></a>)</li>
-</ul>
-<h3 id="removed">Removed</h3>
-<ul>
-<li><strong>Breaking:</strong> Remove <code>impl Handler{...}</code> - <code>new()</code> and <code>create(name)</code>. (<a href="https://github.com/bewillcott/flogging/commit/362319610c1f82c8be9ceb7c7d4c3a87637017fa"><code>3623196</code></a>)</li>
-<li><strong>Breaking:</strong> Removed <code>Logger::reset_level()</code>. No longer applicable. Use <code>Logger::set_level()</code>. (<a href="https://github.com/bewillcott/flogging/commit/153c324caad9ad2942104ad801bc80b47d97b0ee"><code>153c324</code></a>)</li>
-<li>Remove: <code>main.rs</code> from project. (<a href="https://github.com/bewillcott/flogging/commit/6a2a3ccbbbfa8ca36827ebad7fb2b2a18e8da643"><code>6a2a3cc</code></a>)</li>
-</ul>
-<h3 id="fixed">Fixed</h3>
-<ul>
-<li>Fix: Many tests due to new and modified API and internal code. (<a href="https://github.com/bewillcott/flogging/commit/0c6aa2f9521085870144c3e200429133f910469a"><code>0c6aa2f</code></a>)</li>
-</ul>
-<h2 id="version-050----2025-08-03">Version 0.5.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0">*</a> - 2025-08-03</h2>
-<details>
-<summary>Details (click to see)</summary>
-<h3 id="changed-1">Changed</h3>
-<ul>
-<li><strong>Breaking:</strong> Modified <code>FormatType::Custom(String)</code> to <code>FormatType::Custom</code>. (<a href="https://github.com/bewillcott/flogging/commit/88183d392edda04b7f7f6bc24165c481991818ef"><code>88183d3</code></a>)</li>
-<li>Document: Convert inline links to reference links. (<a href="https://github.com/bewillcott/flogging/commit/e5a7bf0027c386ad229ea74cfcc3483274e51580"><code>e5a7bf0</code></a>)</li>
-<li>Change: <code>ConsoleHandler</code> to contain <code>stderr: bool</code> instead of <code>mod_path: String</code>. Will now output to <code>std::io::stderr</code> if true. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de"><code>41f5e9e</code></a>)</li>
-<li>Change: <code>StringHandler</code> removed <code>name: String</code> and renamed private method <code>StringHandler::create()</code> to <code>StringHandler::new()</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de"><code>41f5e9e</code></a>)</li>
-</ul>
-<h3 id="added-1">Added</h3>
-<ul>
-<li>Add: Macro and method: <code>is_logging</code>. (<a href="https://github.com/bewillcott/flogging/commit/ee882f370a8eb87ef6e152194c869c42a15c19a1"><code>ee882f3</code></a>)</li>
-<li>Add: <code>econsole_logger()</code> and <code>add_econsole_handler()</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de"><code>41f5e9e</code></a>)</li>
-<li>Add: <code>Handler::EConsole</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de"><code>41f5e9e</code></a>)</li>
-</ul>
-</details>
-<h2 id="version-041----2025-07-29">Version 0.4.1 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1">*</a> - 2025-07-29</h2>
-<details>
-<summary>Details (click to see)</summary>
-<h3 id="changed-2">Changed</h3>
-<ul>
-<li>Document comments improved or expanded. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775"><code>d35d3e5</code></a>)</li>
-</ul>
-<h3 id="added-2">Added</h3>
-<ul>
-<li>Minimum Rust version now set to: &quot;1.85.1&quot;. (<a href="https://github.com/bewillcott/flogging/commit/3c6e99ae0e38ac5f63540f47176df9fb6667d524"><code>3c6e99a</code></a>)</li>
-<li>Test coverage improved. Now 100%. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775"><code>d35d3e5</code></a>)</li>
-<li><a href="https://bewillcott.github.io/flogging/coverage">Coverage Report</a></li>
-</ul>
-<h3 id="fixed-1">Fixed</h3>
-<ul>
-<li>Fix broken documentation links. (<a href="https://github.com/bewillcott/flogging/commit/3e32c9095ecef4994ecb0dd44268d5025010c0cf"><code>3e32c90</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/5ca139a11ef961f9b48181b76a142eb703e8b34b"><code>5ca139a</code></a>)</li>
-</ul>
-</details>
-<h2 id="version-040----2025-07-27">Version 0.4.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0">*</a> - 2025-07-27</h2>
-<p><u>Initial release.</u></p>
-</div>
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Change Log - The FLogging Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
         </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The FLogging Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- markdownlint-disable-file MD024 MD042 MD033 -->
+<h1 id="changelog"><a class="header" href="#changelog">Changelog <a href="https://common-changelog.org" title="" target="_blank"><img src="https://common-changelog.org/badge.svg" alt="Common Changelog"></a></a></h1>
+<h2 id="version-060----dev"><a class="header" href="#version-060----dev">Version 0.6.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">*</a> - Dev</a></h2>
+<ul>
+<li>Initial release of the online Guide: “The FLogging Guide”. (<a href="https://github.com/bewillcott/flogging/commit/ebe97fc99c17ca31339c908b5301512547553068" title="" target="_blank">
+<code>ebe97fc</code></a>)</li>
+</ul>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li><strong>Breaking:</strong> Minor change to the <code>Iso8601Formatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/16a7e87e5a51e8aac4b01a5c6de53ea78ab92439" title="" target="_blank">
+<code>16a7e87</code></a>)</li>
+<li><strong>Breaking:</strong> Minor change to the <code>SimpleFormatter::fmt_string</code> and <code>UnixTimestampFormatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/5a435f75ff9baee54d02c725018561beadc273f6" title="" target="_blank">
+<code>5a435f7</code></a>)</li>
+<li>Change: <code>ConsoleHandler</code> contains <code>console_type: ConsoleType</code> instead of <code>stderr: bool</code>.<br />
+(<a href="https://github.com/bewillcott/flogging/commit/aeceb233270f7745b2ff7dbcb44d01ce68098f45" title="" target="_blank">
+<code>aeceb23</code></a>)</li>
+<li>Change: Name: <code>impl ConsoleHandler::create()</code> to: <code>impl ConsoleHandler::_create()</code>. (<a href="https://github.com/bewillcott/flogging/commit/4a24410b82ae9f09a25e4bacf81663418f5da01b" title="" target="_blank">
+<code>4a24410</code></a>)</li>
+<li>Change: Name: <code>impl FileHandler::create()</code> to: <code>impl FileHandler::_create()</code>. (<a href="https://github.com/bewillcott/flogging/commit/e08498ecf6e1c46310ec66bd5ae2961faf7c8264" title="" target="_blank">
+<code>e08498e</code></a>)</li>
+<li>Change: Update and improve tests. (<a href="https://github.com/bewillcott/flogging/commit/b51d4ba470d12e3cb88163f7c2d51781a060e693" title="" target="_blank">
+<code>b51d4ba</code></a>)</li>
+<li>Change: Many updates to the Guide.<br />
+(<a href="https://github.com/bewillcott/flogging/commit/0d4e7388040a205bc013385e173cb7efb36e4a4d" title="" target="_blank">
+<code>0d4e738</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/b16e26076bbf731c662f40ed01ec4c73ae176183" title="" target="_blank">
+<code>b16e260</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/bda2ef33cb41504ac4a06150cc12e9a98b039209" title="" target="_blank">
+<code>bda2ef3</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/3a0bd0b74a57449ae786771165d482dc3cc9fae0" title="" target="_blank">
+<code>3a0bd0b</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6" title="" target="_blank">
+<code>b997cbb</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/bd3c370702c882a4232a78634c49733eda02841f" title="" target="_blank">
+<code>bd3c370</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/af573a376cc99f5cccbac8a9572d88f4216c472c" title="" target="_blank">
+<code>af573a3</code></a>)</li>
+<li>Change: Update Guide, remove <code>api</code> and <code>coverage</code> directories from source control. (<a href="https://github.com/bewillcott/flogging/commit/f8acd757979fc1a1b985d901ba347e2c01e68fdd" title="" target="_blank">
+<code>f8acd75</code></a>)</li>
+<li>Change: Various improvements to the documentation. (<a href="https://github.com/bewillcott/flogging/commit/19c327aeff87a9550effe2218115144c85012f71" title="" target="_blank">
+<code>19c327a</code></a>)</li>
+</ul>
+<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li><strong>Breaking</strong> Add: New method to <code>HandlerTrait</code> - <code>set_test_mode()</code>. (<a href="https://github.com/bewillcott/flogging/commit/0fc162bf5898c0fe3cc5a8f89c069cfe83baa9c4" title="" target="_blank">
+<code>0fc162b</code></a>)</li>
+<li>Add: New instructional Guide. (<a href="https://github.com/bewillcott/flogging/commit/73d048a44d1effb496d01213ad549b28bfdf027e" title="" target="_blank">
+<code>73d048a</code></a>)</li>
+<li>Add: New <code>LoggerBuilder</code> method: <code>remove_file()</code>. (<a href="https://github.com/bewillcott/flogging/commit/f9d5b9537960dd23af9f76b77ff5a4b996e777bd" title="" target="_blank">
+<code>f9d5b95</code></a>)</li>
+<li>Add: New <code>LoggerBuilder</code> method: <code>set_fn_name()</code>. (<a href="https://github.com/bewillcott/flogging/commit/0a76ce27ce98047045889f24f56684e1d44b9ec7" title="" target="_blank">
+<code>0a76ce2</code></a>)</li>
+<li>Add: <code>enum ConsoleType</code>. (<a href="https://github.com/bewillcott/flogging/commit/b0f404b26858b4b9b1e6839b1769049e6deb2e65" title="" target="_blank">
+<code>b0f404b</code></a>)</li>
+<li>Add: New <code>LoggerBuilder</code> methods: <code>add_pconsole_handler()</code> and <code>add_pconsole_handler_with()</code>. (<a href="https://github.com/bewillcott/flogging/commit/85bbe5a79320f19091abe1f11d06a962f29c2863" title="" target="_blank">
+<code>85bbe5a</code></a>)</li>
+<li>Add: New method to <code>Logger</code> - <code>pconsole_logger()</code>. (<a href="https://github.com/bewillcott/flogging/commit/29bef4580276b64cf91bcbb156ce890d27110df6" title="" target="_blank">
+<code>29bef45</code></a>)</li>
+<li>Add: New <code>Logger</code> associative function: <code>remove_file()</code>. (<a href="https://github.com/bewillcott/flogging/commit/9f848fdbb8fbf366bdc2f775091bd4297fc11f3b" title="" target="_blank">
+<code>9f848fd</code></a>)</li>
+</ul>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<ul>
+<li><strong>Breaking:</strong> Remove <code>impl Handler{...}</code> - <code>new()</code> and <code>create(name)</code>. (<a href="https://github.com/bewillcott/flogging/commit/362319610c1f82c8be9ceb7c7d4c3a87637017fa" title="" target="_blank">
+<code>3623196</code></a>)</li>
+<li><strong>Breaking:</strong> Removed <code>Logger::reset_level()</code>. No longer applicable. Use <code>Logger::set_level()</code>. (<a href="https://github.com/bewillcott/flogging/commit/153c324caad9ad2942104ad801bc80b47d97b0ee" title="" target="_blank">
+<code>153c324</code></a>)</li>
+<li>Remove: <code>main.rs</code> from project. (<a href="https://github.com/bewillcott/flogging/commit/6a2a3ccbbbfa8ca36827ebad7fb2b2a18e8da643" title="" target="_blank">
+<code>6a2a3cc</code></a>)</li>
+</ul>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<ul>
+<li>Fix: Many tests due to new and modified API and internal code. (<a href="https://github.com/bewillcott/flogging/commit/0c6aa2f9521085870144c3e200429133f910469a" title="" target="_blank">
+<code>0c6aa2f</code></a>)</li>
+</ul>
+<h2 id="version-050----2025-08-03"><a class="header" href="#version-050----2025-08-03">Version 0.5.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">*</a> - 2025-08-03</a></h2>
+<details>
+<summary>Details (click to see)</summary>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li><strong>Breaking:</strong> Modified <code>FormatType::Custom(String)</code> to <code>FormatType::Custom</code>. (<a href="https://github.com/bewillcott/flogging/commit/88183d392edda04b7f7f6bc24165c481991818ef" title="" target="_blank">
+<code>88183d3</code></a>)</li>
+<li>Document: Convert inline links to reference links. (<a href="https://github.com/bewillcott/flogging/commit/e5a7bf0027c386ad229ea74cfcc3483274e51580" title="" target="_blank">
+<code>e5a7bf0</code></a>)</li>
+<li>Change: <code>ConsoleHandler</code> to contain <code>stderr: bool</code> instead of <code>mod_path: String</code>. Will now output to <code>std::io::stderr</code> if true. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+<li>Change: <code>StringHandler</code> removed <code>name: String</code> and renamed private method <code>StringHandler::create()</code> to <code>StringHandler::new()</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+</ul>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<ul>
+<li>Add: Macro and method: <code>is_logging</code>. (<a href="https://github.com/bewillcott/flogging/commit/ee882f370a8eb87ef6e152194c869c42a15c19a1" title="" target="_blank">
+<code>ee882f3</code></a>)</li>
+<li>Add: <code>econsole_logger()</code> and <code>add_econsole_handler()</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+<li>Add: <code>Handler::EConsole</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
+<code>41f5e9e</code></a>)</li>
+</ul>
+</details>
+<h2 id="version-041----2025-07-29"><a class="header" href="#version-041----2025-07-29">Version 0.4.1 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">*</a> - 2025-07-29</a></h2>
+<details>
+<summary>Details (click to see)</summary>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<ul>
+<li>Document comments improved or expanded. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775" title="" target="_blank">
+<code>d35d3e5</code></a>)</li>
+</ul>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<ul>
+<li>Minimum Rust version now set to: “1.85.1”. (<a href="https://github.com/bewillcott/flogging/commit/3c6e99ae0e38ac5f63540f47176df9fb6667d524" title="" target="_blank">
+<code>3c6e99a</code></a>)</li>
+<li>Test coverage improved. Now 100%. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775" title="" target="_blank">
+<code>d35d3e5</code></a>)</li>
+<li><a href="https://bewillcott.github.io/flogging/coverage" title="" target="_blank">Coverage Report</a></li>
+</ul>
+<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
+<ul>
+<li>Fix broken documentation links. (<a href="https://github.com/bewillcott/flogging/commit/3e32c9095ecef4994ecb0dd44268d5025010c0cf" title="" target="_blank">
+<code>3e32c90</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/5ca139a11ef961f9b48181b76a142eb703e8b34b" title="" target="_blank">
+<code>5ca139a</code></a>)</li>
+</ul>
+</details>
+<h2 id="version-040----2025-07-27"><a class="header" href="#version-040----2025-07-27">Version 0.4.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">*</a> - 2025-07-27</a></h2>
+<p><em>Initial release.</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../extras/RELEASELOG.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../extras/RELEASELOG.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

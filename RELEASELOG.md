@@ -45,6 +45,7 @@ Added new methods to `LoggerBuilder`:
   - Set the current function/method name. Only required when using the _method_ form of operation instead of the _macro_ form.
 
 Added new method to `Logger` - `pconsole_logger()`.
+Added new associative function to `Logger` - `remove_file()`.
 
 To facilitate the _pconcole_handlers_, a new enum `ConsoleType` has been added.
 
