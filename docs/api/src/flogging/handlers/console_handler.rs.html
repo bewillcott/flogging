@@ -56,7 +56,7 @@
 <a href=#56 id=56 data-nosnippet>56</a>}
 <a href=#57 id=57 data-nosnippet>57</a>
 <a href=#58 id=58 data-nosnippet>58</a><span class="kw">impl </span>ConsoleHandler {
-<a href=#59 id=59 data-nosnippet>59</a>    <span class="kw">fn </span>create(console_type: ConsoleType) -&gt; <span class="self">Self </span>{
+<a href=#59 id=59 data-nosnippet>59</a>    <span class="kw">fn </span>_create(console_type: ConsoleType) -&gt; <span class="self">Self </span>{
 <a href=#60 id=60 data-nosnippet>60</a>        ConsoleHandler {
 <a href=#61 id=61 data-nosnippet>61</a>            console_type,
 <a href=#62 id=62 data-nosnippet>62</a>            formatter: FormatType::Simple.create(<span class="prelude-val">None</span>),
@@ -84,7 +84,7 @@
 <a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">where
 <a href=#85 id=85 data-nosnippet>85</a>        </span><span class="self">Self</span>: Sized,
 <a href=#86 id=86 data-nosnippet>86</a>    {
-<a href=#87 id=87 data-nosnippet>87</a>        <span class="prelude-val">Ok</span>(ConsoleHandler::create(console_type.parse().unwrap()))
+<a href=#87 id=87 data-nosnippet>87</a>        <span class="prelude-val">Ok</span>(ConsoleHandler::_create(console_type.parse().unwrap()))
 <a href=#88 id=88 data-nosnippet>88</a>    }
 <a href=#89 id=89 data-nosnippet>89</a>
 <a href=#90 id=90 data-nosnippet>90</a>    <span class="doccomment">///

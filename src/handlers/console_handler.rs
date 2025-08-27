@@ -56,7 +56,7 @@ pub struct ConsoleHandler {
 }
 
 impl ConsoleHandler {
-    fn create(console_type: ConsoleType) -> Self {
+    fn _create(console_type: ConsoleType) -> Self {
         ConsoleHandler {
             console_type,
             formatter: FormatType::Simple.create(None),
@@ -84,7 +84,7 @@ impl HandlerTrait for ConsoleHandler {
     where
         Self: Sized,
     {
-        Ok(ConsoleHandler::create(console_type.parse().unwrap()))
+        Ok(ConsoleHandler::_create(console_type.parse().unwrap()))
     }
 
     ///
