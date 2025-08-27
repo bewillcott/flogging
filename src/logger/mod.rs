@@ -41,7 +41,6 @@ use std::cell::{LazyCell, RefCell};
 use std::collections::hash_map::IterMut;
 use std::collections::{HashMap, HashSet};
 use std::f32::consts;
-use std::fmt;
 use std::fs::{File, exists};
 use std::io::Write;
 use std::marker::PhantomData;
@@ -51,6 +50,7 @@ use std::path::Path;
 use std::sync::mpsc::Sender;
 use std::sync::{Arc, MutexGuard, PoisonError, mpsc};
 use std::thread;
+use std::{fmt, fs};
 
 pub use builder::*;
 pub use level::Level;
@@ -102,7 +102,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::builder(module_path!())
@@ -126,7 +125,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -151,7 +149,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -180,7 +177,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::custom_logger(
@@ -216,7 +212,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::econsole_logger(module_path!());
@@ -447,10 +442,9 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::Logger;
     ///
-    /// let mut log = Logger::file_logger(module_path!(), "test.log");
+    /// let mut log = Logger::file_logger(module_path!(), "test_logs/logger.log");
     /// log.set_fn_name("main");
     ///
     /// log.info("Some text to store.");
@@ -477,7 +471,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -507,7 +500,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -537,7 +529,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -572,7 +563,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::string_logger(module_path!());
@@ -600,7 +590,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::string_logger(module_path!());
@@ -623,7 +612,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -660,7 +648,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -746,7 +733,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::pconsole_logger(module_path!());
@@ -761,6 +747,36 @@ impl Logger {
     ///
     pub fn pconsole_logger(mod_path: &str) -> Logger {
         Logger::builder(mod_path).add_pconsole_handler().build()
+    }
+
+    ///
+    /// Remove an existing log file.
+    ///
+    /// The purpose of this, is to allow resetting of the log file, each time
+    /// a test run is done.
+    ///
+    /// ## Note
+    ///
+    /// This **must** be called _before_ adding the corresponding file handler
+    /// that is going to open this file.
+    ///
+    /// ## Parameters
+    ///
+    /// - `filename` - The name of the output log file. Must include any relevant
+    ///   path (relative or absolute).
+    ///
+    /// ## Examples
+    /// ```
+    /// use flogging::*;
+    ///
+    /// Logger::remove_file("test_logs/logger.log");
+    /// let mut log = Logger::file_logger(module_path!(), "test_logs/logger.log");
+    /// log.set_fn_name("main");
+    /// log.info("Something to log.");
+    /// ```
+    ///
+    pub fn remove_file(filename: &str) {
+        let _ = fs::remove_file(filename).is_err();
     }
 
     ///
@@ -802,7 +818,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());
@@ -836,7 +851,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::string_logger(module_path!());
@@ -869,7 +883,6 @@ impl Logger {
     ///
     /// ## Examples
     /// ```
-    /// extern crate flogging;
     /// use flogging::*;
     ///
     /// let mut log = Logger::console_logger(module_path!());

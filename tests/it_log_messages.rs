@@ -43,7 +43,7 @@ mod tests {
                 FormatType::Iso8601,
                 None,
             )
-            // .add_file_handler("test.log")
+            // .add_file_handler("tests/test.log")
             .set_level(FINEST)
             .build()
     });
@@ -75,11 +75,11 @@ mod tests {
         let logfile="tests/shared_log_file.log";
         let logfile_fail="tests/shared_log_file1.log";
 
+        Logger::remove_file(logfile);
 
         // Added testing of 'remove_file()'.
         let mut logger1 = Logger::builder("logger1")
             .add_console_handler()
-            .remove_file(logfile)
             .add_file_handler(logfile)
             .set_level(FINE)
             .build();
