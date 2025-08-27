@@ -116,7 +116,7 @@ use std::{
 
 - impl FileHandler {
 + impl ConfileHandler {
-    fn create(filename: &str) -> Result<Self, Error> {
+    fn _create(filename: &str) -> Result<Self, Error> {
         if filename.is_empty() {
             return Err(Error::new(InvalidInput, "'filename' must not be empty"));
         }
@@ -160,8 +160,8 @@ use std::{
     /// - `name` - This the `filename` of the log file.
     ///
     fn create(name: &str) -> Result<Self, Error> {
--         FileHandler::create(name)
-+         ConfileHandler::create(name)
+-         FileHandler::_create(name)
++         ConfileHandler::_create(name)
     }
 
     ///
