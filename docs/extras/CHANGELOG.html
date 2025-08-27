@@ -179,6 +179,10 @@
                         <!-- markdownlint-disable-file MD024 MD042 MD033 -->
 <h1 id="changelog"><a class="header" href="#changelog">Changelog <a href="https://common-changelog.org" title="" target="_blank"><img src="https://common-changelog.org/badge.svg" alt="Common Changelog"></a></a></h1>
 <h2 id="version-060----dev"><a class="header" href="#version-060----dev">Version 0.6.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">*</a> - Dev</a></h2>
+<ul>
+<li>Initial release of the online Guide: “The FLogging Guide”. (<a href="https://github.com/bewillcott/flogging/commit/ebe97fc99c17ca31339c908b5301512547553068" title="" target="_blank">
+<code>ebe97fc</code></a>)</li>
+</ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
 <li><strong>Breaking:</strong> Minor change to the <code>Iso8601Formatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/16a7e87e5a51e8aac4b01a5c6de53ea78ab92439" title="" target="_blank">
@@ -188,6 +192,9 @@
 <li>Change: <code>ConsoleHandler</code> contains <code>console_type: ConsoleType</code> instead of <code>stderr: bool</code>.<br />
 (<a href="https://github.com/bewillcott/flogging/commit/aeceb233270f7745b2ff7dbcb44d01ce68098f45" title="" target="_blank">
 <code>aeceb23</code></a>)</li>
+<li>Change: Name: <code>impl ConsoleHandler::create()</code> to: <code>impl ConsoleHandler::_create()</code>. (<a href="https://github.com/bewillcott/flogging/commit/5db0ad3626147740c0421c97611a4de5f735e1da" title="" target="_blank">
+<code>5db0ad3</code></a>)</li>
+<li>Change: Name: <code>impl ConfileHandler::create()</code> to: <code>impl ConfileHandler::_create()</code>.</li>
 <li>Change: Update and improve tests. (<a href="https://github.com/bewillcott/flogging/commit/b51d4ba470d12e3cb88163f7c2d51781a060e693" title="" target="_blank">
 <code>b51d4ba</code></a>)</li>
 <li>Change: Many updates to the Guide.<br />
@@ -200,6 +207,8 @@
 <code>bd3c370</code></a>)</li>
 <li>Change: Update Guide, remove <code>api</code> and <code>coverage</code> directories from source control. (<a href="https://github.com/bewillcott/flogging/commit/f8acd757979fc1a1b985d901ba347e2c01e68fdd" title="" target="_blank">
 <code>f8acd75</code></a>)</li>
+<li>Change: Various improvements to the documentation. (<a href="https://github.com/bewillcott/flogging/commit/07ec0bf92e3f1430826047beb4744112808a7169" title="" target="_blank">
+<code>07ec0bf</code></a>)</li>
 </ul>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
 <ul>
@@ -304,6 +313,22 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

@@ -16,6 +16,7 @@ mv ./target/doc ./guide/src/api
 # Rebuild llvm-cov-pretty files
 echo Rebuild llvm-cov-pretty files
 cargo llvm-cov nextest --json | llvm-cov-pretty --output-dir guide/src/coverage
+sed -i 's|<title>Index</title>|<title>Coverage Report</title>|' guide/src/coverage/index.html
 
 # Copy in 'extras'
 # ===================================================
@@ -30,3 +31,5 @@ cargo llvm-cov nextest --json | llvm-cov-pretty --output-dir guide/src/coverage
 # Build the book
 echo Build the book
 mdbook build guide --dest-dir ../docs
+sed -i 's|<a href="api/flogging/index.html">|<a href="api/flogging/index.html" title="Opens in new tab" target="_blank">|' docs/toc.js
+sed -i 's|<a href="coverage/index.html">|<a href="coverage/index.html" title="Opens in new tab" target="_blank">|' docs/toc.js

@@ -4,16 +4,21 @@
 
 ## Version 0.6.0 [*][0.6.0] - Dev
 
+- Initial release of the online Guide: "The FLogging Guide". ([`ebe97fc`])
+
 ### Changed
 
 - **Breaking:** Minor change to the `Iso8601Formatter::fmt_string`. ([`16a7e87`])
 - **Breaking:** Minor change to the `SimpleFormatter::fmt_string` and `UnixTimestampFormatter::fmt_string`. ([`5a435f7`])
 - Change: `ConsoleHandler` contains `console_type: ConsoleType` instead of ``stderr: bool``.\
   ([`aeceb23`])
+- Change: Name: `impl ConsoleHandler::create()` to: `impl ConsoleHandler::_create()`. ([`5db0ad3`])
+- Change: Name: `impl ConfileHandler::create()` to: `impl ConfileHandler::_create()`.
 - Change: Update and improve tests. ([`b51d4ba`])
 - Change: Many updates to the Guide.\
   ([`0d4e738`]) ([`b16e260`]) ([`bda2ef3`]) ([`3a0bd0b`]) ([`b997cbb`]) ([`bd3c370`])
 - Change: Update Guide, remove `api` and `coverage` directories from source control. ([`f8acd75`])
+- Change: Various improvements to the documentation. ([`07ec0bf`])
 
 ### Added
 
@@ -81,6 +86,9 @@
 _Initial release._
 
 [0.6.0]: https://github.com/bewillcott/flogging/releases/tag/v0.6.0
+[`5db0ad3`]: https://github.com/bewillcott/flogging/commit/5db0ad3626147740c0421c97611a4de5f735e1da
+[`07ec0bf`]: https://github.com/bewillcott/flogging/commit/07ec0bf92e3f1430826047beb4744112808a7169
+[`ebe97fc`]: https://github.com/bewillcott/flogging/commit/ebe97fc99c17ca31339c908b5301512547553068
 [`bd3c370`]: https://github.com/bewillcott/flogging/commit/bd3c370702c882a4232a78634c49733eda02841f
 [`b997cbb`]: https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6
 [`3a0bd0b`]: https://github.com/bewillcott/flogging/commit/3a0bd0b74a57449ae786771165d482dc3cc9fae0

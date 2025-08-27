@@ -199,6 +199,9 @@
 <li>Added a new method to <code>HandlerTrait</code> - <code>set_test_mode()</code>. This will require updating of any custom handlers.</li>
 </ul>
 <hr />
+<h3 id="great-news"><a class="header" href="#great-news">Great News</a></h3>
+<p>Initial release of the online instructional guide: <a href="https://bewillcott.github.io/flogging/" title="" target="_blank">The FLogging Guide</a>.</p>
+<hr />
 <p>Added new methods to <code>LoggerBuilder</code>:</p>
 <ul>
 <li><code>remove_file()</code>
@@ -220,7 +223,6 @@ This is a way of resetting the log file prior to each test run.</li>
 </ul>
 <p>Added new method to <code>Logger</code> - <code>pconsole_logger()</code>.</p>
 <p>To facilitate the <em>pconcole_handlers</em>, a new enum <code>ConsoleType</code> has been added.</p>
-<p>Added new instructional guide: <a href="https://bewillcott.github.io/flogging/" title="" target="_blank">FLogging Guide</a></p>
 <p>Extensive work done on improving both unit and integration tests.</p>
 <h2 id="version-050----2025-08-03"><a class="header" href="#version-050----2025-08-03">Version 0.5.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">*</a> - 2025-08-03</a></h2>
 <details>
@@ -277,6 +279,22 @@ the versioning will progress as expected, in accordance with <a href="https://se
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
