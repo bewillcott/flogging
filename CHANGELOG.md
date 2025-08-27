@@ -12,13 +12,13 @@
 - **Breaking:** Minor change to the `SimpleFormatter::fmt_string` and `UnixTimestampFormatter::fmt_string`. ([`5a435f7`])
 - Change: `ConsoleHandler` contains `console_type: ConsoleType` instead of ``stderr: bool``.\
   ([`aeceb23`])
-- Change: Name: `impl ConsoleHandler::create()` to: `impl ConsoleHandler::_create()`. ([`5db0ad3`])
-- Change: Name: `impl ConfileHandler::create()` to: `impl ConfileHandler::_create()`.
+- Change: Name: `impl ConsoleHandler::create()` to: `impl ConsoleHandler::_create()`. ([`4a24410`])
+- Change: Name: `impl FileHandler::create()` to: `impl FileHandler::_create()`. ([`e08498e`])
 - Change: Update and improve tests. ([`b51d4ba`])
 - Change: Many updates to the Guide.\
-  ([`0d4e738`]) ([`b16e260`]) ([`bda2ef3`]) ([`3a0bd0b`]) ([`b997cbb`]) ([`bd3c370`])
+  ([`0d4e738`]) ([`b16e260`]) ([`bda2ef3`]) ([`3a0bd0b`]) ([`b997cbb`]) ([`bd3c370`]) ([`af573a3`])
 - Change: Update Guide, remove `api` and `coverage` directories from source control. ([`f8acd75`])
-- Change: Various improvements to the documentation. ([`07ec0bf`])
+- Change: Various improvements to the documentation. ([`19c327a`])
 
 ### Added
 
@@ -29,11 +29,12 @@
 - Add: `enum ConsoleType`. ([`b0f404b`])
 - Add: New `LoggerBuilder` methods: `add_pconsole_handler()` and `add_pconsole_handler_with()`. ([`85bbe5a`])
 - Add: New method to `Logger` - `pconsole_logger()`. ([`29bef45`])
+- Add: New `Logger` associative function: `remove_file()`. ([`9f848fd`])
 
 ### Removed
 
 - **Breaking:** Remove `impl Handler{...}` - `new()` and `create(name)`. ([`3623196`])
-- **Breaking:** Removed `Logger::reset_level()`. No longer applicable. Use `Logger::set_level()`.
+- **Breaking:** Removed `Logger::reset_level()`. No longer applicable. Use `Logger::set_level()`. ([`153c324`])
 - Remove: `main.rs` from project. ([`6a2a3cc`])
 
 ### Fixed
@@ -86,8 +87,12 @@
 _Initial release._
 
 [0.6.0]: https://github.com/bewillcott/flogging/releases/tag/v0.6.0
-[`5db0ad3`]: https://github.com/bewillcott/flogging/commit/5db0ad3626147740c0421c97611a4de5f735e1da
-[`07ec0bf`]: https://github.com/bewillcott/flogging/commit/07ec0bf92e3f1430826047beb4744112808a7169
+[`e08498e`]: https://github.com/bewillcott/flogging/commit/e08498ecf6e1c46310ec66bd5ae2961faf7c8264
+[`9f848fd`]: https://github.com/bewillcott/flogging/commit/9f848fdbb8fbf366bdc2f775091bd4297fc11f3b
+[`af573a3`]: https://github.com/bewillcott/flogging/commit/af573a376cc99f5cccbac8a9572d88f4216c472c
+[`153c324`]: https://github.com/bewillcott/flogging/commit/153c324caad9ad2942104ad801bc80b47d97b0ee
+[`4a24410`]: https://github.com/bewillcott/flogging/commit/4a24410b82ae9f09a25e4bacf81663418f5da01b
+[`19c327a`]: https://github.com/bewillcott/flogging/commit/19c327aeff87a9550effe2218115144c85012f71
 [`ebe97fc`]: https://github.com/bewillcott/flogging/commit/ebe97fc99c17ca31339c908b5301512547553068
 [`bd3c370`]: https://github.com/bewillcott/flogging/commit/bd3c370702c882a4232a78634c49733eda02841f
 [`b997cbb`]: https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6
