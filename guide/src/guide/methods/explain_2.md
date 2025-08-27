@@ -2,11 +2,13 @@
 
 Now let's look at the `do_something()` function.
 
-```rust, no_run
+```rust, no_run, noplayground
 fn do_something() {
     let mut log = Logger::builder(module_path!())
         .set_fn_name("do_something")
+        //^^^^^^^^^^
         .add_econsole_handler()
+        //   ^^^^^^^^
         .add_file_handler("test_logs/usage.log")
         .set_level(DEBUG_LEVEL)
         .build();
@@ -44,11 +46,11 @@ able to have that facility. So, here in this code we see the need to work around
 
 Let's compare  the macro version with the method version:
 
-```rust, no_run
+```rust, no_run, noplayground
 info!("Did some work here.\n  {result}");
 ```
 
-```rust, no_run
+```rust, no_run, noplayground
 log.info(&format!("Did some work here.\n  {result}"));
 ```
 
@@ -57,10 +59,10 @@ Where as, the macro version does that for you, internally.
 
 The same goes for:
 
-```rust, no_run
+```rust, no_run, noplayground
 warning!("Error: {}", e);
 ```
 
-```rust, no_run
+```rust, no_run, noplayground
 log.warning(&format!("Error: {}", e));
 ```

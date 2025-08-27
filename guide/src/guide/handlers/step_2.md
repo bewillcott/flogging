@@ -1,11 +1,15 @@
 # Step 2
 
-Now we need to check out the existing handlers and their code, to see which one is the closest to what we are after.
+Now we need to check out the existing handlers and their code, to see which one is the
+closest to what we are after.
 
 For our example, we could use either the `ConsoleHandler` or the `FileHandler`.
 As file handling is the more complex task, we will use the `FileHandler` as our template.
 
-There are two ways to obtain the code. If you are viewing through the on-line [API documentation], then at the top navigation bar, click "flogging-X.X.X", where "X.X.X" is the version number, then under "LINKS" click "Source". This will bring up the "Source" tab. Now we need to navigate to the required file.
+There are two ways to obtain the code. If you are viewing through the on-line [API documentation],
+then at the top navigation bar, click "flogging-X.X.X", where "X.X.X" is the version number,
+then under "LINKS" click "Source". This will bring up the "Source" tab. Now we need to navigate
+to the required file.
 
 ---
 
@@ -21,7 +25,7 @@ The other way, is to access the github repository: [flogging]. The directory str
 
 In your project **src** directory somewhere, create your new handler file, and paste this code into it.
 
-For this example, (we'll name it `my_project`) we'll have the following basic layout:
+For this example, (we'll name it [`my_project`]) we'll have the following basic layout:
 
 ---
 
@@ -43,7 +47,7 @@ First things first. We now need to do some changes:
 
 - `file_handler.rs` to `confile_handler.rs`
 - `FileHandler` to `ConfileHandler`
-- `use crate::...;` to `use flogging::*;`
+- `use crate::*;` to `use flogging::*;`
 
 I have used a form of 'diff' to represent the changes:
 
@@ -56,7 +60,7 @@ I have used a form of 'diff' to represent the changes:
 
 ---
 
-```rust, no_run
+```rust, no_run, noplayground
 
 //
 - // File Name:    file_handler.rs
@@ -353,5 +357,6 @@ flogging::handlers::file_handler::tests->file_handler_test_mode [WARNING] The sk
 }
 ```
 
-[API documentation]: https://docs.rs/flogging/latest/flogging/index.html
+[API documentation]: /api/flogging/index.html
 [flogging]: https://github.com/bewillcott/flogging
+[`my_project`]: https://github.com/bewillcott/my_project/tree/Custom

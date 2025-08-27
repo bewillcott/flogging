@@ -13,4 +13,5 @@ OK, I suppose I can provide a few reasons. How about:
   - in a specific file format (xml, json, csv)
   - in a database
 
-Actually, the "file format" option above may only need a custom formatter. I'll leave that decision up you, if you need one of them.
+Actually, the "file format" option above may only need a custom formatter.
+I'll leave that decision up to you, if you need one of them.

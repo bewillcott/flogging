@@ -9,7 +9,7 @@ into your files. I would consider that a waste of effort though, as that is what
 
 Now then, let's look at the `main()` function first:
 
-```rust, no_run
+```rust, no_run, noplayground
 fn main() {
     let mut log = Logger::builder(module_path!())
         .set_fn_name("main")
@@ -44,9 +44,9 @@ Having the `remove_file()` function here, allows you to always have just the ent
 the last run available in the log file. This is _not_ necessary if you need to track entries
 over multiple runs. It is here to keep it clean.
 
-The code (`Logger::builder...`) is basically a copy of that used in the macros version to setup
-the file level 'logger'. The main difference is that it also has the `.set_fn_name("main")`
-function, which, among other things, is set by the `#[logger]` macro in the macros version.
+The code (`Logger::builder...`) is basically a copy of that used in the macro version, that sets
+up the file level 'logger'. The main difference is that it also has the `.set_fn_name("main")`
+function, which, among other things, is set by the `#[logger]` macro in the macro version.
 
-There other difference between the macros and methods version , is the use of the `log` variable
-to access the logging functionality. Again we have more coding to keep tract of.
+There other differences between the macro and method versions. That being the use of the `log` variable
+to access the logging functionality. Again we have more coding to keep track of.

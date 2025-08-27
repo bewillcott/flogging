@@ -10,7 +10,9 @@ What a great idea! Who would have thought?
 
 So, let's see what we can do with our example code.
 
-```rust, no_run
+The following code is the `main.rs` file from the `my_project` example, under the [`Usage_Hybrid`] branch.
+
+```rust, no_run, noplayground
 //
 // File Name:    main.rs
 // Directory:    src
@@ -117,4 +119,6 @@ requirements, as to how it is used.
 
 _Mix and match to your hearts desire!_
 
-P.S.: See what happens when you set the macros setup to `Level::OFF`, and the `main()` to `Level::INFO`.
+P.S.: See what happens when you set the 'macro' setup to `Level::OFF`, and the `main()` to `Level::INFO`.
+
+[`Usage_Hybrid`]: https://github.com/bewillcott/my_project/tree/Usage_Hybrid

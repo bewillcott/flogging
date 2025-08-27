@@ -2,7 +2,7 @@
 
 Here is the complete source code for the custom formatter: `CsvFormatter`.
 
-```rust, no_run
+```rust, no_run, noplayground
 //
 // File Name:    csv_formatter.rs
 // Directory:    src/handlers/formatters

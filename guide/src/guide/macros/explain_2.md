@@ -2,7 +2,7 @@
 
 Now the next part of the code:
 
-```rust, no_run
+```rust, no_run, noplayground
 #[logger]
 fn do_something() {
     entering!();

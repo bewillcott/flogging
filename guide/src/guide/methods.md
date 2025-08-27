@@ -4,8 +4,9 @@ For when you need greater flexibility than having just the one logger
 per mod/file, you have the methods option.
 
 For a comparison, let's look at redoing the _Macros_ example using the _methods_.
+The following code is the `main.rs` file from the `my_project` example, under the [`Usage_Methods`] branch.
 
-```rust, no_run
+```rust, no_run, noplayground
 //
 // File Name:    main.rs
 // Directory:    src
@@ -95,3 +96,5 @@ fn main() {
     log.exiting();
 }
 ```
+
+[`Usage_Methods`]: https://github.com/bewillcott/my_project/tree/Usage_Methods

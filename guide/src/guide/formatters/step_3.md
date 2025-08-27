@@ -40,7 +40,7 @@ with a possible output of:
 
 Using these format strings, we can now modify our new custom formatter as follows:
 
-```rust, no_run
+```rust, no_run, noplayground
 impl CsvFormatter {
     ///
     /// Creates a new instance of `CsvFormatter`.

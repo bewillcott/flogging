@@ -4,7 +4,8 @@
 
 What is the goal, here. What are you trying to achieve?
 
-For our example, we will work towards creating a custom formatter for outputting a **csv** format.
+For our example, we will work towards creating a custom formatter
+for outputting a **csv** style format.
 
 ## How?
 
@@ -13,5 +14,5 @@ What is the specific layout that is required?
 Our example will aim to provide:
 
 ```text
-<date-time>, <module path>-><function name>, <level>, "<message>"
+<date-time>,<module path>-><function name>,<level>,"<message>"
 ```

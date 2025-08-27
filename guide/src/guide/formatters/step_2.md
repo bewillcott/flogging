@@ -1,18 +1,25 @@
 # Step 2
 
-Creating a custom formatter will require some investigation of other crates. Crates that are used by `FLogging`:
+Creating a custom formatter will require some investigation of other crates.
+Crates that are used by `FLogging`:
 
-- [crono] - Used for the date/time functionality, with its [specifiers], in the `dt_fmt` string of each formatter.
+- [crono] - Used for the date/time functionality, with its [specifiers], in
+- the `dt_fmt` string of each formatter.
 - [std::fmt] - The format options used in the `fmt_string` string of each formatter.
 - [strfmt] - Used to do the actual formatting.
 
-Now you should check out the built-in formatters to find one that is the closest to what you are after.
+Now you should check out the built-in formatters to find one that is the closest
+to what you are after.
 
-For our example, none of the built-in formatters are really closer than the other, so we will choose the `UnixTimestampFormatter`, simply because I am running Linux as my O/S.
+For our example, none of the built-in formatters are really closer than the other, so we will
+choose the `UnixTimestampFormatter`, simply because I am running Linux as my O/S.
 
 To find them, use either the [API documentation], or the Github repository: [flogging].
 
-As with the [Custom Handlers][ch], to obtain the code from the API documentation, at the top navigation bar, click “flogging-0.6.0”, then under “LINKS” click “Source”. This will bring up the “Source” tab. Now we need to navigate to the required file.
+As with the [Custom Handlers][ch], to obtain the code from the API documentation, at the top
+navigation bar, click "flogging-X.X.X", where "X.X.X" is the version number,
+then under “LINKS” click “Source”. This will bring up the “Source” tab.
+Now we need to navigate to the required file.
 
 ---
 
@@ -23,11 +30,14 @@ As with the [Custom Handlers][ch], to obtain the code from the API documentation
 
 ---
 
-Now select ALL of the code, from the top down, then ‘copy [ctrl/c]’. You need to include the file header (Copyright).
+Now select ALL of the code, from the top down, then ‘copy [ctrl/c]’. You need
+to include the file header (Copyright).
 
-In your project **src** directory somewhere, create your new formatter file, and paste this code into it.
+In your project **src** directory somewhere, create your new formatter file,
+and paste this code into it.
 
-For this example, (we'll name it `my_project`) we'll have the following basic layout:
+For this example, (we'll name it [`my_project`]) we'll have the following basic
+layout:
 
 ---
 
@@ -57,7 +67,7 @@ I have used a form of ‘diff’ to represent the changes:
 - ’- ’ old line code
 - ’+ ’ new line code
 
-```rust, no_run
+```rust, no_run, noplayground
 //
 - // File Name:    unixtimestamp_formatter.rs
 + // File Name:    csv_formatter.rs
@@ -183,10 +193,11 @@ use std::fmt;
 }
 ```
 
-[API documentation]: https://docs.rs/flogging/latest/flogging/index.html
+[API documentation]: /api/flogging/index.html
 [ch]: ../handlers/step_2.md
 [crono]: https://crates.io/crates/chrono
 [flogging]: https://github.com/bewillcott/flogging
+[`my_project`]: https://github.com/bewillcott/my_project/tree/Custom
 [specifiers]: https://docs.rs/chrono/latest/chrono/format/strftime
 [std::fmt]: https://doc.rust-lang.org/stable/std/fmt/index.html
 [strfmt]: https://crates.io/crates/strfmt

@@ -6,7 +6,7 @@ Now we get to the actual working parts.
 
 Firstly, some cleanup. We will make it possible to change the `file_fmt` once we have developed our custom formatter. So let's change `get_formatter()` and `set_formatter()`.
 
-```rust, no_run
+```rust, no_run, noplayground
     fn get_formatter(&self) -> Formatter {
 -         self.formatter.clone()
 +         self.file_fmt.clone()
@@ -14,7 +14,7 @@ Firstly, some cleanup. We will make it possible to change the `file_fmt` once we
 
 ```
 
-```rust, no_run
+```rust, no_run, noplayground
     fn set_formatter(&mut self, formatter: Formatter) {
 -         self.formatter = formatter;
 +         self.file_fmt = formatter;
@@ -23,7 +23,7 @@ Firstly, some cleanup. We will make it possible to change the `file_fmt` once we
 
 Now the final changes:
 
-```rust, no_run
+```rust, no_run, noplayground
     fn publish(&mut self, log_entry: &LogEntry) {
         if self.is_open() {
 -             let mut buf = self.formatter.format(log_entry);

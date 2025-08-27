@@ -4,11 +4,11 @@ Now that we have our custom handler and formatter, let's use them.
 
 For those interested, I have uploaded the whole example project to:
 
-<https://github.com/bewillcott/my_project>.
+<https://github.com/bewillcott/my_project/tree/Custom>.
 
 Here is the sample main.rs:
 
-```rust, no_run
+```rust, no_run, noplayground
 //
 // File Name:    main.rs
 // Directory:    src
@@ -73,23 +73,21 @@ Sample output:
     my_project->main [INFO   ] This is a test of the integration of the 'FLogging crate' and the custom handler and formatter.
     *** My Project ***
     my_project->main [FINER  ] Return
-
     ```
 
 - `test_logs/debug.log`
 
     ```text
-    2025-08-21 20:06:01.536473,my_project->main,FINER,"Entry"
-    2025-08-21 20:06:01.536554,my_project->main,CONFIG,"Operating system: Fedora Linux"
-    2025-08-21 20:06:01.536591,my_project->main,CONFIG,"Version: 42"
-    2025-08-21 20:06:01.536618,my_project->main,INFO,"This is a test of the integration of the 'FLogging crate' and the custom handler and formatter."
-    2025-08-21 20:06:01.536652,my_project->main,FINER,"Return"
-
+    2025-08-27 12:22:28.291102,my_project->main,FINER,"Entry"
+    2025-08-27 12:22:28.291180,my_project->main,CONFIG,"Operating system: Fedora Linux"
+    2025-08-27 12:22:28.291205,my_project->main,CONFIG,"Version: 42"
+    2025-08-27 12:22:28.291226,my_project->main,INFO,"This is a test of the integration of the 'FLogging crate' and the custom handler and formatter."
+    2025-08-27 12:22:28.291255,my_project->main,FINER,"Return"
     ```
 
 Now let's see what we get when we turn `OFF` logging:
 
-```rust, no_run
+```rust, no_run, noplayground
 const_logger!({
     Logger::builder(module_path!())
         .remove_file("test_logs/debug.log")
@@ -111,10 +109,10 @@ Sample output:
 
     ```text
     *** My Project ***
-
     ```
 
 - `test_logs/debug.log`
 
     ```text
+
     ```

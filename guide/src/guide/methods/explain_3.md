@@ -2,7 +2,7 @@
 
 And finally, we get to the last function.
 
-```rust, no_run
+```rust, no_run, noplayground
 fn error_prone() -> Result<(), Box<dyn Error>> {
     let mut log = Logger::builder(module_path!())
         .set_fn_name("error_prone")
@@ -25,6 +25,6 @@ would expect this to be the case for most situations.
 
 We also have a case of using `format!()` to preformat a message:
 
-```rust, no_run
+```rust, no_run, noplayground
 log.exiting_with(&format!("{rtn:?}"));
 ```

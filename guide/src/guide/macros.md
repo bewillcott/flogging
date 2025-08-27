@@ -2,9 +2,9 @@
 
 Using macros is easy, simple, and straight-forward.
 
-The following code is the `main.rs` file from the `my_project` example, under the `Usage_Macros` branch.
+The following code is the `main.rs` file from the `my_project` example, under the [`Usage_Macros`] branch.
 
-```rust, no_run
+```rust, no_run, noplayground
 //
 // File Name:    main.rs
 // Directory:    src
@@ -83,3 +83,5 @@ fn main() {
     exiting!("Bye!");
 }
 ```
+
+[`Usage_Macros`]: https://github.com/bewillcott/my_project/tree/Usage_Macros

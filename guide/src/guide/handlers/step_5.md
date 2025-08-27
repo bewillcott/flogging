@@ -6,7 +6,7 @@ Ok, what are we doing with that?
 
 Since we are using a custom handler, we need to use the appropriate methods.
 
-```rust, no_run
+```rust, no_run, noplayground
 
 #[cfg(test)]
 mod tests {
@@ -23,7 +23,7 @@ mod tests {
 
 ---
 
-```rust, no_run
+```rust, no_run, noplayground
     #[test]
 -     fn file_handler() {
 +     fn confile_handler() {
@@ -72,6 +72,7 @@ Possible output:
 - console
 
     ```text
+    ---- handlers::confile_handler::tests::confile_handler stdout ----
     my_project::handlers::confile_handler::tests->confile_handler [INFO   ] trait methods
     my_project::handlers::confile_handler::tests->confile_handler [WARNING] The sky is falling!
     ```
@@ -80,13 +81,13 @@ Possible output:
     Note: This file will continue to grow. So there maybe previous entries.
 
     ```text
-    2025-08-21T17:08:49.939233702+08:00 my_project::handlers::confile_handler::tests->confile_handler [INFO   ] trait methods
-    2025-08-21T17:08:49.939325645+08:00 my_project::handlers::confile_handler::tests->confile_handler [WARNING] The sky is falling!
+    2025-08-27T11:52:13.273205045+08:00 my_project::handlers::confile_handler::tests->confile_handler [INFO   ] trait methods
+    2025-08-27T11:52:13.273294181+08:00 my_project::handlers::confile_handler::tests->confile_handler [WARNING] The sky is falling!
     ```
 
 ---
 
-```rust, no_run
+```rust, no_run, noplayground
     #[test]
 -     fn file_handler_file_test() {
 +     fn confile_handler_file_test() {
@@ -165,6 +166,7 @@ Possible output:
 - console
 
     ```text
+    ---- handlers::confile_handler::tests::confile_handler_file_test stdout ----
     my_project::handlers::confile_handler::tests->confile_handler_file_test [INFO   ] trait methods
     my_project::handlers::confile_handler::tests->confile_handler_file_test [WARNING] The sky is falling!
     ```
@@ -172,13 +174,13 @@ Possible output:
 - "test_logs/confile_handler_file_test.log"\
 
     ```text
-    2025-08-21T17:10:24.123558141+08:00 my_project::handlers::confile_handler::tests->confile_handler_file_test [INFO   ] trait methods
-    2025-08-21T17:10:24.123657909+08:00 my_project::handlers::confile_handler::tests->confile_handler_file_test [WARNING] The sky is falling!
+    2025-08-27T11:54:07.165918573+08:00 my_project::handlers::confile_handler::tests->confile_handler_file_test [INFO   ] trait methods
+    2025-08-27T11:54:07.166004387+08:00 my_project::handlers::confile_handler::tests->confile_handler_file_test [WARNING] The sky is falling!
     ```
 
 ---
 
-```rust, no_run
+```rust, no_run, noplayground
     #[test]
 -     fn file_handler_test_mode() {
 +     fn confile_handler_test_mode() {
@@ -250,7 +252,7 @@ Test passes, but no other output.
 
 ---
 
-```rust, no_run
+```rust, no_run, noplayground
     #[test]
     #[should_panic(expected = "'filename' must not be empty")]
     fn filename_empty() {
@@ -273,7 +275,7 @@ Test passes with output:
 - console
 
     ```text
-    thread 'handlers::confile_handler::tests::filename_empty' panicked at src/handlers/confile_handler.rs:318:48:
+    thread 'handlers::confile_handler::tests::filename_empty' panicked at src/handlers/confile_handler.rs:323:53:
     called `Result::unwrap()` on an `Err` value: Custom { kind: InvalidInput, error: "'filename' must not be empty" }
     ```
 

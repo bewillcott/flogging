@@ -2,7 +2,7 @@
 
 Let's add some testing:
 
-```rust,no_run
+```rust,no_run, noplayground
 #[cfg(test)]
 mod tests{
     use super::*;
@@ -43,13 +43,14 @@ $";
 Possible output:
 
 ```text
-2025-08-21 19:15:04.089061,my_project::handlers::formatters::csv_formatter::tests->csv_format,INFO,"Testing a new custom formatter."
-2025-08-21 19:15:04.089138,my_project::handlers::formatters::csv_formatter::tests->csv_format,WARNING,"Must add more testing."
+---- handlers::formatters::csv_formatter::tests::csv_format stdout ----
+2025-08-27 12:15:48.853979,my_project::handlers::formatters::csv_formatter::tests->csv_format,INFO,"Testing a new custom formatter."
+2025-08-27 12:15:48.854052,my_project::handlers::formatters::csv_formatter::tests->csv_format,WARNING,"Must add more testing."
 ```
 
 Now let's do a final fixup of the API comments.
 
-```rust, no_run
+```rust, no_run, noplayground
 ///
 /// CSV format.
 ///

@@ -1,8 +1,8 @@
 # Final Code
 
-Here is the complete source code for the custom formatter: `CsvFormatter`.
+Here is the complete source code for the custom formatter: `ConfileHandler`.
 
-```rust, no_run
+```rust, no_run, noplayground
 //
 // File Name:    confile_handler.rs
 // Directory:    src/handlers
@@ -63,7 +63,6 @@ impl ConfileHandler {
             file_fmt: FormatType::Iso8601.create(None),
             file: {
                 let f = File::options().append(true).create(true).open(filename)?;
-
                 Some(f)
             },
             writer: None,
@@ -168,8 +167,8 @@ impl HandlerTrait for ConfileHandler {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use regex::Regex;
     use std::io::Read;
+    use regex::Regex;
 
     #[test]
     fn confile_handler() {

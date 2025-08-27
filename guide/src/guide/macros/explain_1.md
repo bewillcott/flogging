@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD001 -->
+<!-- markdownlint-disable-file MD001 MD033 -->
 
 # Explain (Part 1)
 
@@ -6,20 +6,32 @@ Ok, what's happening in this code?
 
 Let's look at the first part:
 
-```rust, no_run
+```rust, no_run, noplayground
 use flogging::*;
 use std::{error::Error, result::Result};
 
 // Setting up the module level logger.
-const_logger!({
+const_logger!({ // <= [1]
     Logger::builder(module_path!())
         .add_console_handler()
         .remove_file("test_logs/usage.log")
         .add_file_handler("test_logs/usage.log")
         .set_level(Level::ALL)
-        .build()
-});
+        .build() // <= [2]
+}); // <= [1] [3]
 ```
+
+<div class="warning">
+
+Some gotchas. Well atleast they keep getting me:
+
+- `[1]` - You _must_ have the internal braces wrapping the\
+  `{ Logger::builder(...) ... }` code.
+- `[2]` - Do _not_ terminate the braced code with a "`;`".\
+  In this example, after the `.build()`
+- `[3]` - Don't forget the final "`;`" after the macro: "`});`"
+
+</div>
 
 I think the first two lines are self explanatory.
 
@@ -85,14 +97,4 @@ You might set this particular file's instance to log level `Level::INFO`, and ha
 
 Mix and match - Have fun!!!
 
----
-
-### Warning
-
-Some gotchas. Well atleast they keep getting me:
-
-- "`{}`" - You _must_ have the internal braces wrapping the `Logger::builder(...)` code.
-- ! "`;`" - Do _not_ terminate the braced code with a "`;`". In this example, after the `.build()`
-- "`;`" - Don't forget the final "`;`" after the macro: "`});`"
-
-[API]: https://docs.rs/flogging/latest/flogging/struct.LoggerBuilder.html
+[API]: /api/flogging/struct.LoggerBuilder.html
