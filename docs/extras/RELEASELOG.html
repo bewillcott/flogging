@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Release Log - FLogging Guide</title>
+        <title>Release Log - The FLogging Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -29,6 +29,7 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -138,7 +139,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">FLogging Guide</h1>
+                    <h1 class="menu-title">The FLogging Guide</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -175,19 +176,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="release-log"><a class="header" href="#release-log">Release Log</a></h1>
-<h2 id="060---dev"><a class="header" href="#060---dev"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">0.6.0</a> - Dev</a></h2>
+                        <!-- markdownlint-disable-file MD024 MD042 MD033 -->
+<h1 id="release-log"><a class="header" href="#release-log">Release Log</a></h1>
+<h2 id="version-060----dev"><a class="header" href="#version-060----dev">Version 0.6.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">*</a> - Dev</a></h2>
 <hr />
-<p><em><strong>Important Note:</strong></em></p>
+<p><em><strong>Important Notes:</strong></em></p>
+<ul>
+<li>
 <p>Removed</p>
-<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl Handler{
+<pre><code class="language-rust  no_run  noplayground">impl Handler{
     fn new(){...}
     fn create(name){...}
-}
-<span class="boring">}</span></code></pre></pre>
-<p>This API is redundant. So removing it now, before v1.0.0 release is best.</p>
+}</code></pre>
+</li>
+<li>
+<p>Removed</p>
+<pre><code class="language-rust  no_run  noplayground">Logger::reset_level()</code></pre>
+</li>
+</ul>
+<p>Both of the above APIs are redundant. So removing them now, before v1.0.0 is released, is best.</p>
+<ul>
+<li>Added a new method to <code>HandlerTrait</code> - <code>set_test_mode()</code>. This will require updating of any custom handlers.</li>
+</ul>
 <hr />
 <p>Added new methods to <code>LoggerBuilder</code>:</p>
 <ul>
@@ -202,24 +212,41 @@ This is a way of resetting the log file prior to each test run.</li>
 <li>Use to add a production version of the console handler. This handler is different, in that log entries set to <code>LeveL::INFO</code>, will have their <code>msg</code> printed to <code>stdout</code> without any formatting, whilst all other <code>Level</code>s will be printed to <code>stderr</code> using the set formatter.</li>
 </ul>
 </li>
+<li><code>set_fn_name()</code>
+<ul>
+<li>Set the current function/method name. Only required when using the <em>method</em> form of operation instead of the <em>macro</em> form.</li>
 </ul>
-<p>To facilitate the pconcole_handlers, a new enum <code>ConsoleType</code> has been added.</p>
-<h2 id="050---2025-08-03"><a class="header" href="#050---2025-08-03"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">0.5.0</a> - 2025-08-03</a></h2>
+</li>
+</ul>
+<p>Added new method to <code>Logger</code> - <code>pconsole_logger()</code>.</p>
+<p>To facilitate the <em>pconcole_handlers</em>, a new enum <code>ConsoleType</code> has been added.</p>
+<p>Added new instructional guide: <a href="https://bewillcott.github.io/flogging/" title="" target="_blank">FLogging Guide</a></p>
+<p>Extensive work done on improving both unit and integration tests.</p>
+<h2 id="version-050----2025-08-03"><a class="header" href="#version-050----2025-08-03">Version 0.5.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">*</a> - 2025-08-03</a></h2>
+<details>
+<summary>Details (click to see)</summary>
 <hr />
 <p><em><strong>Important Note:</strong></em></p>
 <p>Only applicable for those who have previously created their own custom formatter - <code>FormatType::Custom(String)</code> changed to <code>FormatType::Custom</code>.</p>
 <hr />
 <p>Now generally, there were some improvements to the API documentation.</p>
-<h2 id="041---2025-07-29"><a class="header" href="#041---2025-07-29"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">0.4.1</a> - 2025-07-29</a></h2>
+</details>
+<h2 id="version-041----2025-07-29"><a class="header" href="#version-041----2025-07-29">Version 0.4.1 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">*</a> - 2025-07-29</a></h2>
+<details>
+<summary>Details (click to see)</summary>
 <ul>
 <li>Major improvements to the API documentation.</li>
 <li>Increased test coverage to 100%, and included the <a href="https://bewillcott.github.io/flogging/coverage" title="" target="_blank">Coverage Report</a>.</li>
 </ul>
-<h2 id="040---2025-07-27"><a class="header" href="#040---2025-07-27"><a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">0.4.0</a> - 2025-07-27</a></h2>
+</details>
+<h2 id="version-040----2025-07-27"><a class="header" href="#version-040----2025-07-27">Version 0.4.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">*</a> - 2025-07-27</a></h2>
+<details>
+<summary>Details (click to see)</summary>
 <p>This is the initial release.</p>
-<p>The reason for not being (0.1.0), is the way I track internal developments
+<p>The reason for not being (0.1.0), is the way I track the internal development
 of projects not yet published. However, now that this one is published,
 the versioning will progress as expected, in accordance with <a href="https://semver.org/" title="" target="_blank">Semantic Versioning</a>.</p>
+</details>
 
                     </main>
 
@@ -267,6 +294,7 @@ the versioning will progress as expected, in accordance with <a href="https://se
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../theme/pagetoc.js"></script>
 
 
 

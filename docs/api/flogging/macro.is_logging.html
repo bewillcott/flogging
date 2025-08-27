@@ -8,7 +8,7 @@
 </span><span class="macro">const_logger!</span>({
     Logger::builder(<span class="macro">module_path!</span>())
         .add_console_handler()
-        .add_file_handler(<span class="string">"test.log"</span>)
+        .add_file_handler(<span class="string">"test_logs/debug.log"</span>)
         .set_level(Level::FINEST)
         .build()
 });

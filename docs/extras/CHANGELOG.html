@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Change Log - FLogging Guide</title>
+        <title>Change Log - The FLogging Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -29,6 +29,7 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -138,7 +139,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">FLogging Guide</h1>
+                    <h1 class="menu-title">The FLogging Guide</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -177,27 +178,62 @@
                     <main>
                         <!-- markdownlint-disable-file MD024 MD042 MD033 -->
 <h1 id="changelog"><a class="header" href="#changelog">Changelog <a href="https://common-changelog.org" title="" target="_blank"><img src="https://common-changelog.org/badge.svg" alt="Common Changelog"></a></a></h1>
-<h2 id="060---dev"><a class="header" href="#060---dev"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">0.6.0</a> - Dev</a></h2>
+<h2 id="version-060----dev"><a class="header" href="#version-060----dev">Version 0.6.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.6.0" title="" target="_blank">*</a> - Dev</a></h2>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
 <li><strong>Breaking:</strong> Minor change to the <code>Iso8601Formatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/16a7e87e5a51e8aac4b01a5c6de53ea78ab92439" title="" target="_blank">
 <code>16a7e87</code></a>)</li>
-<li>Change: <code>ConsoleHandler</code> contains <code>console_type: ConsoleType</code> instead of <code>stderr: bool</code>. ([``])</li>
+<li><strong>Breaking:</strong> Minor change to the <code>SimpleFormatter::fmt_string</code> and <code>UnixTimestampFormatter::fmt_string</code>. (<a href="https://github.com/bewillcott/flogging/commit/5a435f75ff9baee54d02c725018561beadc273f6" title="" target="_blank">
+<code>5a435f7</code></a>)</li>
+<li>Change: <code>ConsoleHandler</code> contains <code>console_type: ConsoleType</code> instead of <code>stderr: bool</code>.<br />
+(<a href="https://github.com/bewillcott/flogging/commit/aeceb233270f7745b2ff7dbcb44d01ce68098f45" title="" target="_blank">
+<code>aeceb23</code></a>)</li>
+<li>Change: Update and improve tests. (<a href="https://github.com/bewillcott/flogging/commit/b51d4ba470d12e3cb88163f7c2d51781a060e693" title="" target="_blank">
+<code>b51d4ba</code></a>)</li>
+<li>Change: Many updates to the Guide.<br />
+(<a href="https://github.com/bewillcott/flogging/commit/0d4e7388040a205bc013385e173cb7efb36e4a4d" title="" target="_blank">
+<code>0d4e738</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/b16e26076bbf731c662f40ed01ec4c73ae176183" title="" target="_blank">
+<code>b16e260</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/bda2ef33cb41504ac4a06150cc12e9a98b039209" title="" target="_blank">
+<code>bda2ef3</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/3a0bd0b74a57449ae786771165d482dc3cc9fae0" title="" target="_blank">
+<code>3a0bd0b</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/b997cbbec8983217ea3cb8b7efecab2c5640e6f6" title="" target="_blank">
+<code>b997cbb</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/bd3c370702c882a4232a78634c49733eda02841f" title="" target="_blank">
+<code>bd3c370</code></a>)</li>
+<li>Change: Update Guide, remove <code>api</code> and <code>coverage</code> directories from source control. (<a href="https://github.com/bewillcott/flogging/commit/f8acd757979fc1a1b985d901ba347e2c01e68fdd" title="" target="_blank">
+<code>f8acd75</code></a>)</li>
 </ul>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
 <ul>
+<li><strong>Breaking</strong> Add: New method to <code>HandlerTrait</code> - <code>set_test_mode()</code>. (<a href="https://github.com/bewillcott/flogging/commit/0fc162bf5898c0fe3cc5a8f89c069cfe83baa9c4" title="" target="_blank">
+<code>0fc162b</code></a>)</li>
+<li>Add: New instructional Guide. (<a href="https://github.com/bewillcott/flogging/commit/73d048a44d1effb496d01213ad549b28bfdf027e" title="" target="_blank">
+<code>73d048a</code></a>)</li>
 <li>Add: New <code>LoggerBuilder</code> method: <code>remove_file()</code>. (<a href="https://github.com/bewillcott/flogging/commit/f9d5b9537960dd23af9f76b77ff5a4b996e777bd" title="" target="_blank">
 <code>f9d5b95</code></a>)</li>
+<li>Add: New <code>LoggerBuilder</code> method: <code>set_fn_name()</code>. (<a href="https://github.com/bewillcott/flogging/commit/0a76ce27ce98047045889f24f56684e1d44b9ec7" title="" target="_blank">
+<code>0a76ce2</code></a>)</li>
 <li>Add: <code>enum ConsoleType</code>. (<a href="https://github.com/bewillcott/flogging/commit/b0f404b26858b4b9b1e6839b1769049e6deb2e65" title="" target="_blank">
 <code>b0f404b</code></a>)</li>
-<li>Add: New <code>LoggerBuilder</code> methods: <code>add_pconsole_handler()</code> and <code>add_pconsole_handler_with()</code>. ([``])</li>
+<li>Add: New <code>LoggerBuilder</code> methods: <code>add_pconsole_handler()</code> and <code>add_pconsole_handler_with()</code>. (<a href="https://github.com/bewillcott/flogging/commit/85bbe5a79320f19091abe1f11d06a962f29c2863" title="" target="_blank">
+<code>85bbe5a</code></a>)</li>
+<li>Add: New method to <code>Logger</code> - <code>pconsole_logger()</code>. (<a href="https://github.com/bewillcott/flogging/commit/29bef4580276b64cf91bcbb156ce890d27110df6" title="" target="_blank">
+<code>29bef45</code></a>)</li>
 </ul>
 <h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
 <ul>
 <li><strong>Breaking:</strong> Remove <code>impl Handler{...}</code> - <code>new()</code> and <code>create(name)</code>. (<a href="https://github.com/bewillcott/flogging/commit/362319610c1f82c8be9ceb7c7d4c3a87637017fa" title="" target="_blank">
 <code>3623196</code></a>)</li>
+<li><strong>Breaking:</strong> Removed <code>Logger::reset_level()</code>. No longer applicable. Use <code>Logger::set_level()</code>.</li>
+<li>Remove: <code>main.rs</code> from project. (<a href="https://github.com/bewillcott/flogging/commit/6a2a3ccbbbfa8ca36827ebad7fb2b2a18e8da643" title="" target="_blank">
+<code>6a2a3cc</code></a>)</li>
 </ul>
-<h2 id="050---2025-08-03"><a class="header" href="#050---2025-08-03"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">0.5.0</a> - 2025-08-03</a></h2>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<ul>
+<li>Fix: Many tests due to new and modified API and internal code. (<a href="https://github.com/bewillcott/flogging/commit/0c6aa2f9521085870144c3e200429133f910469a" title="" target="_blank">
+<code>0c6aa2f</code></a>)</li>
+</ul>
+<h2 id="version-050----2025-08-03"><a class="header" href="#version-050----2025-08-03">Version 0.5.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.5.0" title="" target="_blank">*</a> - 2025-08-03</a></h2>
+<details>
+<summary>Details (click to see)</summary>
 <h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
 <ul>
 <li><strong>Breaking:</strong> Modified <code>FormatType::Custom(String)</code> to <code>FormatType::Custom</code>. (<a href="https://github.com/bewillcott/flogging/commit/88183d392edda04b7f7f6bc24165c481991818ef" title="" target="_blank">
@@ -218,7 +254,10 @@
 <li>Add: <code>Handler::EConsole</code>. (<a href="https://github.com/bewillcott/flogging/commit/41f5e9e047e8cb3fea6cb664f84f9d0f621c89de" title="" target="_blank">
 <code>41f5e9e</code></a>)</li>
 </ul>
-<h2 id="041---2025-07-29"><a class="header" href="#041---2025-07-29"><a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">0.4.1</a> - 2025-07-29</a></h2>
+</details>
+<h2 id="version-041----2025-07-29"><a class="header" href="#version-041----2025-07-29">Version 0.4.1 <a href="https://github.com/bewillcott/flogging/releases/tag/v0.4.1" title="" target="_blank">*</a> - 2025-07-29</a></h2>
+<details>
+<summary>Details (click to see)</summary>
 <h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Document comments improved or expanded. (<a href="https://github.com/bewillcott/flogging/commit/d35d3e5e8eb0a443b8b71a1f94ba9ea0faca0775" title="" target="_blank">
@@ -232,13 +271,14 @@
 <code>d35d3e5</code></a>)</li>
 <li><a href="https://bewillcott.github.io/flogging/coverage" title="" target="_blank">Coverage Report</a></li>
 </ul>
-<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
 <ul>
 <li>Fix broken documentation links. (<a href="https://github.com/bewillcott/flogging/commit/3e32c9095ecef4994ecb0dd44268d5025010c0cf" title="" target="_blank">
 <code>3e32c90</code></a>) (<a href="https://github.com/bewillcott/flogging/commit/5ca139a11ef961f9b48181b76a142eb703e8b34b" title="" target="_blank">
 <code>5ca139a</code></a>)</li>
 </ul>
-<h2 id="040---2025-07-27"><a class="header" href="#040---2025-07-27"><a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">0.4.0</a> - 2025-07-27</a></h2>
+</details>
+<h2 id="version-040----2025-07-27"><a class="header" href="#version-040----2025-07-27">Version 0.4.0 <a href="https://github.com/bewillcott/flogging/releases/tag/v-0.4.0" title="" target="_blank">*</a> - 2025-07-27</a></h2>
 <p><em>Initial release.</em></p>
 
                     </main>
@@ -281,6 +321,7 @@
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../theme/pagetoc.js"></script>
 
 
 

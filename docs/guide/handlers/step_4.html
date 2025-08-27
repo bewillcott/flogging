@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Step 4 - FLogging Guide</title>
+        <title>Step 4 - The FLogging Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -29,6 +29,7 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -138,7 +139,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">FLogging Guide</h1>
+                    <h1 class="menu-title">The FLogging Guide</h1>
 
                     <div class="right-buttons">
                         <a href="../../print.html" title="Print this book" aria-label="Print this book">
@@ -178,37 +179,37 @@
                         <h1 id="step-4"><a class="header" href="#step-4">Step 4</a></h1>
 <p>Ok, so far so good. Hopefully, your project still builds without errors.</p>
 <p>Now we get to the actual working parts.</p>
-<p>Firstly, some cleanup. Since we are not allowing outside changes to the formatters, <code>get_formatter()</code> and <code>set_formatter()</code> will be changed.</p>
-<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>    fn get_formatter(&amp;self) -&gt; Formatter {
--        self.formatter.clone()
-+        self.file_fmt.clone()
+<p>Firstly, some cleanup. We will make it possible to change the <code>file_fmt</code> once we have developed our custom formatter. So let’s change <code>get_formatter()</code> and <code>set_formatter()</code>.</p>
+<pre><code class="language-rust  no_run  noplayground">    fn get_formatter(&amp;self) -&gt; Formatter {
+-         self.formatter.clone()
++         self.file_fmt.clone()
     }
-
-<span class="boring">}</span></code></pre></pre>
-<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>-    fn set_formatter(&amp;mut self, formatter: Formatter) {
--        self.formatter = formatter;
--    }
-+    fn set_formatter(&amp;mut self, _formatter: Formatter) {}
-<span class="boring">}</span></code></pre></pre>
+</code></pre>
+<pre><code class="language-rust  no_run  noplayground">    fn set_formatter(&amp;mut self, formatter: Formatter) {
+-         self.formatter = formatter;
++         self.file_fmt = formatter;
+    }</code></pre>
 <p>Now the final changes:</p>
-<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>    fn publish(&amp;mut self, log_entry: &amp;LogEntry) {
+<pre><code class="language-rust  no_run  noplayground">    fn publish(&amp;mut self, log_entry: &amp;LogEntry) {
         if self.is_open() {
--            let mut buf = self.formatter.format(log_entry);
-+            let mut buf = self.file_fmt.format(log_entry);
+-             let mut buf = self.formatter.format(log_entry);
++             let mut buf = self.file_fmt.format(log_entry);
             buf.push('\n');
 
-            self.file.as_mut().unwrap().write_all(buf.as_bytes());
-+           println!("{}", self.con_fmt.format(log_entry));
+            if let Some(w) = self.writer.as_mut() {
+-                 writeln!(w, "{}", self.formatter.format(log_entry)).expect("writeln!() failed");
++                 writeln!(w, "{}", self.con_fmt.format(log_entry)).expect("writeln!() failed");
++                 writeln!(w, "{}", self.file_fmt.format(log_entry)).expect("writeln!() failed");
+            } else {
++                 println!("{}", self.con_fmt.format(log_entry));
+                self.file
+                    .as_mut()
+                    .unwrap()
+                    .write_all(buf.as_bytes())
+                    .expect("write_all() failed");
+            }
         }
-    }
-
-<span class="boring">}</span></code></pre></pre>
+    }</code></pre>
 <p>It is done.</p>
 
                     </main>
@@ -257,6 +258,7 @@
         <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
 
 
 

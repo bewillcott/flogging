@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Step 5 - FLogging Guide</title>
+        <title>Step 5 - The FLogging Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -29,6 +29,7 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -138,7 +139,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">FLogging Guide</h1>
+                    <h1 class="menu-title">The FLogging Guide</h1>
 
                     <div class="right-buttons">
                         <a href="../../print.html" title="Print this book" aria-label="Print this book">
@@ -178,61 +179,259 @@
                         <h1 id="step-5"><a class="header" href="#step-5">Step 5</a></h1>
 <p>Oops! Forgot the testing!!!!</p>
 <p>Ok, what are we doing with that?</p>
-<p>Since we are using a custom handler, we need to use the appropriate function.</p>
-<pre><pre class="playground"><code class="language-rust  no_run"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>#[cfg(test)]
+<p>Since we are using a custom handler, we need to use the appropriate methods.</p>
+<pre><code class="language-rust  no_run  noplayground">
+#[cfg(test)]
 mod tests {
-    use super::*;
+-     use crate::*;
+-     use std::{
+-         fs::File,
+-         io::{Error, Read, Result},
+-     };
 
--    use crate::{Logger, logger};
++     use super::*;
++     use std::io::Read;
++     use regex::Regex;</code></pre>
+<hr />
+<pre><code class="language-rust  no_run  noplayground">    #[test]
+-     fn file_handler() {
++     fn confile_handler() {
+-         let mut log = Logger::file_logger(module_path!(), "test_logs/file_handler.log");
+-         log.set_fn_name("file_handler");
++         let mut log = Logger::custom_logger(
++             module_path!(),
++             "ConfileHandler",
++             Box::new(ConfileHandler::create("test_logs/confile_handler.log").unwrap()),
++         );
++
++         log.set_fn_name("confile_handler");
 
-    #[test]
-    fn handler_trait() {
--        let mut log = Logger::file_logger(module_path!(), "test.log");
-+        let mut log = Logger::custom_logger(
-+            module_path!(),
-+            "ConfileHandler",
-+            Box::new(ConfileHandler::create("example.log").unwrap()),
-+        );
+-         let h = log.get_handler(crate::Handler::File).unwrap();
++         let h = log
++             .get_handler(Handler::Custom("ConfileHandler".to_string()))
++             .unwrap();
++
+        h.set_test_mode(false);
 
-+        log.set_fn_name("handler_trait");
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+            "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}-&gt;{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
         log.info("trait methods");
+        log.warning("The sky is falling!");
 
--        let handler = log.get_handler(crate::Handler::File).unwrap();
-+        let handler = log
-+            .get_handler(Handler::Custom("ConfileHandler".to_string()))
-+            .unwrap();
-        assert!(handler.is_open());
-        assert_eq!(handler.get_formatter().to_string(), "dt_fmt: \"%+\" - fmt_string: \"{dt:35} |{mod_path}-&gt;{fn_name}| [{level:7}] {message}\"".to_string());
-        assert_eq!(handler.get_log(), "".to_string());
-        handler.flush();
-        handler.close();
-    }
+-         let h = log.get_handler(crate::Handler::File).unwrap();
++         let h = log
++             .get_handler(Handler::Custom("ConfileHandler".to_string()))
++             .unwrap();
 
-    #[test]
+        assert_eq!(h.get_log(), "".to_string());
+
+        h.flush();
+        h.close();
+        log.exiting_with("This should get thrown away.");
+    }</code></pre>
+<p>Possible output:</p>
+<ul>
+<li>
+<p>console</p>
+<pre><code class="language-text">---- handlers::confile_handler::tests::confile_handler stdout ----
+my_project::handlers::confile_handler::tests-&gt;confile_handler [INFO   ] trait methods
+my_project::handlers::confile_handler::tests-&gt;confile_handler [WARNING] The sky is falling!
+</code></pre>
+</li>
+<li>
+<p>“test_logs/confile_handler.log”<br />
+Note: This file will continue to grow. So there maybe previous entries.</p>
+<pre><code class="language-text">2025-08-27T11:52:13.273205045+08:00 my_project::handlers::confile_handler::tests-&gt;confile_handler [INFO   ] trait methods
+2025-08-27T11:52:13.273294181+08:00 my_project::handlers::confile_handler::tests-&gt;confile_handler [WARNING] The sky is falling!
+</code></pre>
+</li>
+</ul>
+<hr />
+<pre><code class="language-rust  no_run  noplayground">    #[test]
+-     fn file_handler_file_test() {
++     fn confile_handler_file_test() {
+-         let expected = "flogging::handlers::file_handler::tests-&gt;file_handler_file_test [INFO   ] trait methods
+- flogging::handlers::file_handler::tests-&gt;file_handler_file_test [WARNING] The sky is falling!\n"
+-         .to_string();
++         let re_str =
++ "^(?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests-&gt;confile_handler_file_test \\[INFO   ] trait methods
++ (?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests-&gt;confile_handler_file_test \\[WARNING] The sky is falling!
++ $";
++
++         let re = Regex::new(re_str).unwrap();
+
+        let mut log = Logger::builder(module_path!())
+-             .set_fn_name("file_handler_file_test")
+-             .remove_file("test_logs/file_handler_file_test.log")
+-             .add_file_handler_with(
+-                 "test_logs/file_handler_file_test.log",
+-                 FormatType::Simple,
+-                 None,
+-             )
++             .set_fn_name("confile_handler_file_test")
++             .remove_file("test_logs/confile_handler_file_test.log")
++             .add_custom_handler(
++                 "ConfileHandler",
++                 Box::new(
++                     ConfileHandler::create("test_logs/confile_handler_file_test.log").unwrap(),
++                 ),
++             )
+            .build();
+
+-         let h = log.get_handler(crate::Handler::File).unwrap();
++         let h = log
++             .get_handler(crate::Handler::Custom("ConfileHandler".to_string()))
++             .unwrap();
++
+        h.set_test_mode(false);
+
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+-             "dt_fmt: \"\" - fmt_string: \"{mod_path}-&gt;{fn_name} [{level:7}] {message}\""
++             "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}-&gt;{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+-         let h = log.get_handler(crate::Handler::File).unwrap();
++         let h = log
++             .get_handler(crate::Handler::Custom("ConfileHandler".to_string()))
++             .unwrap();
+
+        assert_eq!(h.get_log(), "".to_string());
+
+        h.flush();
+        h.close();
+        assert!(!h.is_open());
+
+        log.severe("This should get thrown away.");
+
+-         if let Ok(mut file) = File::open("test_logs/file_handler_file_test.log") {
++         if let Ok(mut file) = File::open("test_logs/confile_handler_file_test.log") {
+            let mut buf = String::new();
+            if let Ok(count) = file.read_to_string(&amp;mut buf) {
+-                 assert_eq!(expected, buf);
++                 assert!(re.is_match(&amp;buf));
+            }
+        }
+    }</code></pre>
+<p>Possible output:</p>
+<ul>
+<li>
+<p>console</p>
+<pre><code class="language-text">---- handlers::confile_handler::tests::confile_handler_file_test stdout ----
+my_project::handlers::confile_handler::tests-&gt;confile_handler_file_test [INFO   ] trait methods
+my_project::handlers::confile_handler::tests-&gt;confile_handler_file_test [WARNING] The sky is falling!
+</code></pre>
+</li>
+<li>
+<p>“test_logs/confile_handler_file_test.log”</p>
+<pre><code class="language-text">2025-08-27T11:54:07.165918573+08:00 my_project::handlers::confile_handler::tests-&gt;confile_handler_file_test [INFO   ] trait methods
+2025-08-27T11:54:07.166004387+08:00 my_project::handlers::confile_handler::tests-&gt;confile_handler_file_test [WARNING] The sky is falling!
+</code></pre>
+</li>
+</ul>
+<hr />
+<pre><code class="language-rust  no_run  noplayground">    #[test]
+-     fn file_handler_test_mode() {
++     fn confile_handler_test_mode() {
+-         let expected = "flogging::handlers::file_handler::tests-&gt;file_handler_test_mode [INFO   ] trait methods
+- flogging::handlers::file_handler::tests-&gt;file_handler_test_mode [WARNING] The sky is falling!\n"
+-             .to_string();
++         let re_str =
++ "^my_project::handlers::confile_handler::tests-&gt;confile_handler_test_mode \\[INFO   ] trait methods
++ (?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests-&gt;confile_handler_test_mode \\[INFO   ] trait methods
++ my_project::handlers::confile_handler::tests-&gt;confile_handler_test_mode \\[WARNING] The sky is falling!
++ (?:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{9}\\+\\d{2}:\\d{2}) my_project::handlers::confile_handler::tests-&gt;confile_handler_test_mode \\[WARNING] The sky is falling!
++ $";
++
++         let re = Regex::new(re_str).unwrap();
+
+        let mut log = Logger::builder(module_path!())
+-             .set_fn_name("file_handler_test_mode")
+-             .remove_file("test_logs/file_handler_test_mode.log")
+-             .add_file_handler_with(
+-                 "test_logs/file_handler_test_mode.log",
+-                 FormatType::Simple,
+-                 None,
+-             )
++             .set_fn_name("confile_handler_test_mode")
++             .add_custom_handler(
++                 "ConfileHandler",
++                 Box::new(
++                     // This file is never written to:
++                     ConfileHandler::create("test_logs/confile_handler_test_mode.log").unwrap(),
++                 ),
++             )
+            .build();
+
+-         let h = log.get_handler(crate::Handler::File).unwrap();
++         let h = log
++             .get_handler(crate::Handler::Custom("ConfileHandler".to_string()))
++             .unwrap();
++
++         // All log entries will be stored in the internal buffer.
+        h.set_test_mode(true);
+
+        assert!(h.is_open());
+        assert_eq!(
+            h.get_formatter().to_string(),
+-             "dt_fmt: \"\" - fmt_string: \"{mod_path}-&gt;{fn_name} [{level:7}] {message}\""
++             "dt_fmt: \"%+\" - fmt_string: \"{dt:35} {mod_path}-&gt;{fn_name} [{level:7}] {message}\""
+                .to_string()
+        );
+
+        log.info("trait methods");
+        log.warning("The sky is falling!");
+
+-         let h = log.get_handler(crate::Handler::File).unwrap();
++         let h = log
++             .get_handler(crate::Handler::Custom("ConfileHandler".to_string()))
++             .unwrap();
++
+        let buf = h.get_log();
+
+-         assert_eq!(expected, buf);
++         assert!(re.is_match(&amp;buf));
+
+        h.flush();
+        h.close();
+    }</code></pre>
+<p>Test passes, but no other output.</p>
+<hr />
+<pre><code class="language-rust  no_run  noplayground">    #[test]
     #[should_panic(expected = "'filename' must not be empty")]
     fn filename_empty() {
--        let mut log = Logger::file_logger(module_path!(), "");
-+        let mut log = Logger::custom_logger(
-+            module_path!(),
-+            "ConfileHandler",
-+            Box::new(ConfileHandler::create("").unwrap()),
-+        );
+-         let _ = Logger::file_logger(module_path!(), "");
++         let _ = Logger::builder(module_path!())
++             .set_fn_name("confile_handler_test_mode")
++             .add_custom_handler(
++                 "ConfileHandler",
++                 Box::new(
++                     ConfileHandler::create("").unwrap(),
++                 ),
++             )
++             .build();
     }
-}
-<span class="boring">}</span></code></pre></pre>
-<p>Possible output, minus the tester’s extraneous stuff:</p>
+}</code></pre>
+<p>Test passes with output:</p>
 <ul>
-<li>console</li>
-</ul>
-<pre><code class="language-text">my_project::confile_handler::tests-&gt;handler_trait [INFO   ] trait methods
+<li>
+<p>console</p>
+<pre><code class="language-text">thread 'handlers::confile_handler::tests::filename_empty' panicked at src/handlers/confile_handler.rs:323:53:
+called `Result::unwrap()` on an `Err` value: Custom { kind: InvalidInput, error: "'filename' must not be empty" }
 </code></pre>
-<ul>
-<li><code>example.log</code></li>
+</li>
 </ul>
-<pre><code class="language-text">2025-08-14T18:14:37.468423953+08:00 my_project::confile_handler::tests-&gt;handler_trait [INFO   ] trait methods
-</code></pre>
+<hr />
 
                     </main>
 
@@ -280,6 +479,7 @@ mod tests {
         <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
 
 
 

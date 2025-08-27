@@ -24,11 +24,16 @@
 <a href=#24 id=24 data-nosnippet>24</a>//! # Handlers
 <a href=#25 id=25 data-nosnippet>25</a>//!
 <a href=#26 id=26 data-nosnippet>26</a>
-<a href=#27 id=27 data-nosnippet>27</a></span><span class="attr">#![allow(unused)]
-<a href=#28 id=28 data-nosnippet>28</a>
-<a href=#29 id=29 data-nosnippet>29</a></span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>console_handler;
-<a href=#30 id=30 data-nosnippet>30</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>file_handler;
-<a href=#31 id=31 data-nosnippet>31</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>formatter;
-<a href=#32 id=32 data-nosnippet>32</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>handler;
-<a href=#33 id=33 data-nosnippet>33</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>mock_handler;
-<a href=#34 id=34 data-nosnippet>34</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>string_handler;</code></pre></div></section></main></body></html>
+<a href=#27 id=27 data-nosnippet>27</a></span><span class="kw">mod </span>console_handler;
+<a href=#28 id=28 data-nosnippet>28</a><span class="kw">mod </span>file_handler;
+<a href=#29 id=29 data-nosnippet>29</a><span class="kw">mod </span>formatters;
+<a href=#30 id=30 data-nosnippet>30</a><span class="kw">mod </span>handler;
+<a href=#31 id=31 data-nosnippet>31</a><span class="kw">mod </span>mock_handler;
+<a href=#32 id=32 data-nosnippet>32</a><span class="kw">mod </span>string_handler;
+<a href=#33 id=33 data-nosnippet>33</a>
+<a href=#34 id=34 data-nosnippet>34</a><span class="kw">pub use </span>console_handler::{ConsoleHandler, console_type::<span class="kw-2">*</span>};
+<a href=#35 id=35 data-nosnippet>35</a><span class="kw">pub use </span>file_handler::FileHandler;
+<a href=#36 id=36 data-nosnippet>36</a><span class="kw">pub use </span>formatters::<span class="kw-2">*</span>;
+<a href=#37 id=37 data-nosnippet>37</a><span class="kw">pub use </span>handler::{Handler, handler_trait::<span class="kw-2">*</span>};
+<a href=#38 id=38 data-nosnippet>38</a><span class="kw">pub use </span>mock_handler::MockHandler;
+<a href=#39 id=39 data-nosnippet>39</a><span class="kw">pub use </span>string_handler::StringHandler;</code></pre></div></section></main></body></html>
