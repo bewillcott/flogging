@@ -296,7 +296,7 @@
 //! const_logger!({
 //!     Logger::builder(module_path!())
 //!         .add_console_handler()
-//!         .add_file_handler("test.log")
+//!         .add_file_handler("test_logs/debug.log")
 //!         .set_level(Level::FINEST)
 //!         .build()
 //! });

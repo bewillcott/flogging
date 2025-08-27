@@ -39,7 +39,6 @@ pub struct LoggerBuilder {
     handlers: RefCell<HashMap<Handler, Box<dyn HandlerTrait>>>,
 }
 
-#[allow(unused)]
 impl LoggerBuilder {
     pub(super) fn create(mod_path: String) -> Self {
         LoggerBuilder {
@@ -280,7 +279,7 @@ impl LoggerBuilder {
     /// use flogging::*;
     ///
     /// let mut log = Logger::builder(module_path!())
-    ///     .add_file_handler("mylog.txt")
+    ///     .add_file_handler("test_logs/builder.log")
     ///     .build();
     /// ```
     ///
@@ -305,7 +304,7 @@ impl LoggerBuilder {
     /// use flogging::*;
     ///
     /// let mut log = Logger::builder(module_path!())
-    ///     .add_file_handler_with("mylog.txt", FormatType::Iso8601, None)
+    ///     .add_file_handler_with("test_logs/builder.log", FormatType::Iso8601, None)
     ///     .build();
     /// ```
     /// Now using a custom formatter:
@@ -315,7 +314,7 @@ impl LoggerBuilder {
     ///
     /// let mut log = Logger::builder(module_path!())
     ///     .add_file_handler_with(
-    ///         "mylog.txt",
+    ///         "test_logs/builder.log",
     ///         FormatType::Custom,
     ///         Some(Box::new(MockFormatter::new())),
     ///     )
@@ -546,13 +545,13 @@ impl LoggerBuilder {
     /// use flogging::*;
     ///
     /// let mut log = Logger::builder(module_path!())
-    ///     .remove_file("mylog.txt")
-    ///     .add_file_handler("mylog.txt")
+    ///     .remove_file("test_logs/builder.log")
+    ///     .add_file_handler("test_logs/builder.log")
     ///     .build();
     /// ```
     ///
     pub fn remove_file(self, filename: &str) -> Self {
-        fs::remove_file(filename).is_err();
+        let _ = fs::remove_file(filename).is_err();
         self
     }
 
@@ -595,9 +594,9 @@ impl LoggerBuilder {
 
 #[cfg(test)]
 mod tests {
-    use std::io::{Result, Stdout, Write, stdout};
-    use regex::Regex;
     use crate::*;
+    use regex::Regex;
+    use std::io::{Result, Stdout, Write, stdout};
 
     #[test]
     fn temp() -> Result<()> {
