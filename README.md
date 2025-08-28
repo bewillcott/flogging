@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD036 MD037 -->
+<!-- markdownlint-disable-file MD036 MD037 MD033 -->
 
 # FLogging crate
 
@@ -6,11 +6,12 @@
 
 `Flogging` provides an easy framework for logging.
 
-Log entries can be sent to the console (stdout or stderr), file, memory log, or a custom handler. They
-can be formatted in various layouts: ISO8601, Simple, Unix TimeStamp, or a custom
-layout.
+Log entries can be sent to the console (stdout or stderr), file, memory log,
+or a custom handler. They can be formatted in various layouts: ISO8601, Simple,
+Unix TimeStamp, or a custom layout.
 
-Macros and public methods are provided, with the macros being the simplest _method_ of operation.
+Macros and public methods are provided, with the macros being the simplest _method_
+of operation.
 
 There are several levels for logging at:
 
@@ -31,7 +32,7 @@ There are even two special settings:
 
 **_Version 0.6.0_** **BREAKS**:
 
-- The output from `Iso8601Formatter`. It has been changed [^bars].
+- The output from `Iso8601Formatter` [^bars].
   The format string for `fmt_string` has been changed from:
 
   `"{dt:35} |{mod_path}->{fn_name}| [{level:7}] {message}"`
@@ -40,37 +41,54 @@ There are even two special settings:
 
   `"{dt:35} {mod_path}->{fn_name} [{level:7}] {message}"`
 
-- In similar fashion, both `SimpleFormatter` and `UnixTimestampFormatter` have been changed [^bars].
-- Added new method to `HandlerTrait` - `set_test_mode()`. This will require updating any custom formatters you have created.
+- In similar fashion, both `SimpleFormatter` and `UnixTimestampFormatter` have been
+  changed [^bars].
+- Added new method to `HandlerTrait` - `set_test_mode()`. This will require updating
+  any custom formatters you have created.
 
 [^bars]: This may affect any tests or logs that expect the precise old format.\
 Sorry about this. The "|" bars were a holdover from early testing, and were not
 removed before publishing.
 
 **Note:**\
-Version (0.6.0) is backwards compatible with version (0.5.0). Therefore it has the same warning. It is recommended that any use of version (0.4.X) be bumped to atleast (0.5.0), fixing the minor issue, as this will continue into all subsequent version updates.
+Version (0.6.0) is backwards compatible with version (0.5.0). Therefore it has the
+same warning. It is recommended that any use of version (0.4.X) be bumped to atleast
+ (0.5.0), fixing the minor issue, as this will continue into all subsequent version updates.
 
 **_Version 0.5.0_** **BREAKS** the custom formatter API.
 
-If you have _not_ yet started developing your own versions of the formatter, then this will _NOT_ affect you. The Public API is currently backwards compatible to version (0.4.1).
+If you have _not_ yet started developing your own versions of the formatter, then
+this will _NOT_ affect you. The Public API is currently backwards compatible to version (0.4.1).
 
 For the rest of you, please check out `FormatType::Custom` and view the **Change Log**.
 
-## New Instruction Guide
+## New Instruction Guide <a href="https://bewillcott.github.io/flogging" title="Click here to open Guide" target="_blank">*</a>
 
-That's right. I realized that having _just_ the API documentation was not going to be enough for you nerds out there, who just **love** to customize. So, I have written a guide. So far it covers the development of a _custom handler_ and a _custom formatter_. There should be enough of an example of each to get you started.
+That's right. I realized that having _just_ the API documentation was not going to be enough
+for you nerds out there, who just **love** to customize. So, I have written a guide. So far
+it covers the usage of both the **macros** and the **methods** (with an example <a href="https://github.com/bewillcott/my_project" title="Click here to open Project" target="_blank">project</a>),
+and the development of a _custom handler_ and a _custom formatter_. There should be enough
+of an example of each to get you started.
 
-At some point in the future, I might add more help/instructions. But at the moment I can't think of anything else to add. If you think of something that will help you and others, create an [issue on Github].
+At some point in the future, I might add more help/instructions. But at the moment I can't
+think of anything else to add. If you think of something that will help you and others,
+create an <a href="https://github.com/bewillcott/flogging/issues" title="Click here to open Issues" target="_blank">issue on Github</a>.
 
 ## Acknowledgement
 
-This project is being developed as a learning experience. I am fully aware that there are many other logging crates out there, but where is the fun in that? As a hobbyist it still seems like a good idea.
+This project is being developed as a learning experience. I am fully aware that there
+are many other logging crates out there, but where is the fun in that? As a hobbyist
+it still seems like a good idea.
 
-A lot of the functionality has been inspired by, and even copied from (at the API level), the JDK's `java.util.logging` package. Whether or not it will ever become a _full_ port, only time and my level of interest, will tell. Remember, "learning experience"?
+A lot of the functionality has been inspired by, and even copied from (at the API level),
+the JDK's `java.util.logging` package. Whether or not it will ever become a _full_ port,
+only time and my level of interest, will tell. Remember, "learning experience"?
 
 ## What's in a name?
 
-`Flogging`, as-in, "Flogging a dead horse", or "Just another f\*ing logger". As I wrote above, there are _many_ other logging crates around. This is just my learning spin on a very well covered tool.
+`Flogging`, as-in, "Flogging a dead horse", or "Just another f\*ing logger". As I wrote
+above, there are _many_ other logging crates around. This is just my learning spin on a
+ very well covered tool.
 
 ## What's in a number?
 
@@ -83,7 +101,7 @@ Therefore, once I am certain that the API is stable, I'll release v1.0.0.
 ## Coverage Report
 
 I have included the latest test coverage report, generated by `llvm-cov` and `llvm-cov-pretty`.\
-It is located here: [coverage report].
+It is located here: <a href="https://bewillcott.github.io/flogging/coverage" title="Click here to open Report" target="_blank">coverage report</a>.
 
 ## History
 
@@ -101,7 +119,5 @@ Anyway, have fun.\
 <mailto:bw.opensource@yahoo.com>
 
 [bw]: https://github.com/bewillcott
-[coverage report]: https://bewillcott.github.io/flogging/coverage
 [CHANGELOG.md]: https://bewillcott.github.io/flogging/extras/CHANGELOG.html
 [RELEASELOG.md]: https://bewillcott.github.io/flogging/extras/RELEASELOG.html
-[issue on Github]: https://github.com/bewillcott/flogging/issues
