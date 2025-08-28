@@ -12,12 +12,5 @@ other crate. Further, it should not be separately added to your project. Add
 $ cargo add flogging
 ```
 
-Alternatively, add the following to your project's `Cargo.toml` file:
-
-```text
-[dependencies]
-flogging = "0.6.0"
-```
-
 Version numbering will be maintained in accordance with the
 requirements of the `flogging` crate.
