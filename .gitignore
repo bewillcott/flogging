@@ -9,3 +9,5 @@ test_logs
 logger.dtd
 !licenseheader.txt
 .bacon-locations
+!.github
+.github/ISSUE_TEMPLATE/*.html
